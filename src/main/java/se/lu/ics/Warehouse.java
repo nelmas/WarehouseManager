@@ -2,7 +2,7 @@ package se.lu.ics;
 
 public class Warehouse {
 
-    // Attributes warehouseId, Address, Capacity
+    // Attributes
     private int warehouseId;
     private String address;
     private int capacity;
