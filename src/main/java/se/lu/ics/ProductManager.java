@@ -30,15 +30,5 @@ public class ProductManager {
         Product newProduct = new Product(id, name, category);
         addProduct(newProduct);
     }
-    // Find product by id
-    public static Product getProductById(String id, List<Product> productList) {
-        for (Product product : productList) {
-            if (product.getId() == id) {
-                return product;
-            }
-        }
-        return null; // Product with the given ID not found
-    }
-
 
 }
