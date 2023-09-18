@@ -98,4 +98,32 @@ public class ProductManager {
         return totalStock;
     }
 
+    public boolean removeProduct(String id) {
+        for (Product product : products) {
+            if (product.getId().equals(id)) {
+                products.remove(product);
+                return true; // Product removed successfully
+            }
+        }
+        return false; // Product with the given ID not found
+    }
+
+    // Remove a supplier by specifying its ID
+    public boolean removeSupplier(String supplierId) {
+        Supplier supplierToRemove = null;
+        for (Supplier supplier : suppliers) {
+            if (supplier.getSupplierId() == supplierId) {
+                supplierToRemove = supplier;
+                break;
+            }
+        }
+        
+        if (supplierToRemove != null) {
+            suppliers.remove(supplierToRemove);
+            return true; // Supplier removed successfully
+        } else {
+            return false; // Supplier with the given ID not found
+        }
+    }
 }
+
