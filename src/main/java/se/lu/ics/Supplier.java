@@ -2,12 +2,12 @@ package se.lu.ics;
 
 public class Supplier {
     private String name;
-    private int supplierId;
+    private String supplierId;
     private String address;
     private String email;
 
     // Constructor
-    public Supplier(String name, int supplierId, String address, String email) {
+    public Supplier(String name, String supplierId, String address, String email) {
         this.name = name;
         this.supplierId = supplierId;
         this.address = address;
@@ -23,11 +23,11 @@ public class Supplier {
         this.name = name;
     }
 
-    public int getSupplierId() {
+    public String getSupplierId() {
         return supplierId;
     }
 
-    public void setSupplierId(int supplierId) {
+    public void setSupplierId(String supplierId) {
         this.supplierId = supplierId;
     }
 
