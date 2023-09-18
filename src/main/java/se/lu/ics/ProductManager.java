@@ -38,9 +38,9 @@ public class ProductManager {
     }
 
     // Retrieve a product by its ID
-    public Product getProductById(String id) {
+    public Product getProductById(String productId) {
         for (Product product : products) {
-            if (product.getId() == id) {
+            if (product.getId() == productId) {
                 return product;
             }
         }
@@ -48,8 +48,8 @@ public class ProductManager {
     }
 
     // Register a new product
-    public void registerProduct(String id, String name, String category) {
-        Product newProduct = new Product(id, name, category);
+    public void registerProduct(String productId, String name, String category) {
+        Product newProduct = new Product(productId, name, category);
         addProduct(newProduct);
     }
 
@@ -80,7 +80,7 @@ public class ProductManager {
     public int getTotalStockForProduct(String id) {
         int totalStock = 0;
         for (Product product : products) {
-            if (product.getId() == id) {
+            if (product.getId() == productId) {
                 totalStock += product.getStock();
             }
         }
@@ -98,9 +98,9 @@ public class ProductManager {
         return totalStock;
     }
 
-    public boolean removeProduct(String id) {
+    public boolean removeProduct(String productId) {
         for (Product product : products) {
-            if (product.getId().equals(id)) {
+            if (product.getId().equals(productId)) {
                 products.remove(product);
                 return true; // Product removed successfully
             }
