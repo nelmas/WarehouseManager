@@ -1,5 +1,8 @@
 package se.lu.ics;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class Product {
     // Attributes
     private int id;
@@ -37,6 +40,15 @@ public class Product {
 
     public void setCategory(String category) {
         this.category = category;
+    }
+
+    public static Product getProductById(int id, List<Product> productList) {
+        for (Product product : productList) {
+            if (product.getId() == id) {
+                return product;
+            }
+        }
+        return null; // Product with the given ID not found
     }
 
 }
