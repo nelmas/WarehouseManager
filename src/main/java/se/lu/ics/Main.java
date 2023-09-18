@@ -13,7 +13,7 @@ public class Main {
         Properties connectionProperties = new Properties();
 
         try {
-            FileInputStream stream = new FileInputStream("src/main/resources/config.properties");
+            FileInputStream stream = new FileInputStream("src/main/resources/config/config.properties");
             connectionProperties.load(stream);
 
             String databaseServerName = (String) connectionProperties.get("database.server.name");
