@@ -77,10 +77,10 @@ public class ProductManager {
 
     // Display total stock for a certain product across all warehouses
     // Behöver vi lägga till attribut stock i Product så denna funktion kan fungera?
-    public int getTotalStockForProduct(String id) {
+    public int getTotalStockForProduct(String productId) {
         int totalStock = 0;
         for (Product product : products) {
-            if (product.getId() == productId) {
+            if (product.getProductId() == productId) {
                 totalStock += product.getStock();
             }
         }
@@ -88,10 +88,10 @@ public class ProductManager {
     }
 
     // Retrieve total stock for a product (by product ID)
-    public int getTotalStockForProduct(int productId) {
+    public int getTotalStockForProduct(String productId) {
         int totalStock = 0;
         for (Product product : products) {
-            if (product.getId() == id) {
+            if (product.getProductId() == productId) {
                 totalStock += product.getStock();
             }
         }
@@ -100,7 +100,7 @@ public class ProductManager {
 
     public boolean removeProduct(String productId) {
         for (Product product : products) {
-            if (product.getId().equals(productId)) {
+            if (product.getProductId().equals(productId)) {
                 products.remove(product);
                 return true; // Product removed successfully
             }
