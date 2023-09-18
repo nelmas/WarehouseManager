@@ -7,7 +7,7 @@ public class Product {
     private String category;
 
     // Constructor
-    public Product(int id, String name, String category) {
+    public Product(String id, String name, String category) {
         this.id = id;
         this.name = name;
         this.category = category;
