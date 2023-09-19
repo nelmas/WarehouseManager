@@ -41,8 +41,11 @@ public class ProductDAO {
             e.printStackTrace();
         }
     }
+
+    //Methods ---------------------------------------------
+        
     //Static getter for product by id
-    public static Product getProductById(String productId) {
+        public static Product getProductById(String productId) {
         for (Product product : products) {
             if (product.getProductId().equals(productId)) {
                 return product;
@@ -50,4 +53,17 @@ public class ProductDAO {
         }
         return null;
     }
+
+       //Method for registering a product
+        public void registerProduct(Product product) {
+            products.add(product);
+        }
+
+        // Remove a product from the list
+        public void removeProduct(Product product) {
+            products.remove(product);
+        }
+
+        
+
 }

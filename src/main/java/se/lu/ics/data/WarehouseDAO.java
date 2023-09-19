@@ -50,5 +50,12 @@ public class WarehouseDAO {
         return null;
     }
 
+    //Method for registering a warehouse
+    public void addWarehouse(Warehouse warehouse) {
+        warehouses.add(warehouse);
+    }
+
+
+
 }
 
