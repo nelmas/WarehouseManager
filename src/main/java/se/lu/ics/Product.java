@@ -2,19 +2,19 @@ package se.lu.ics;
 
 public class Product {
     // Attributes
-    private int id;
+    private String id;
     private String name;
     private String category;
 
     // Constructor
-    public Product(int id, String name, String category) {
+    public Product(String id, String name, String category) {
         this.id = id;
         this.name = name;
         this.category = category;
     }
 
     // Getter methods
-    public int getId() {
+    public String getId() {
         return id;
     }
 
@@ -27,7 +27,7 @@ public class Product {
     }
 
     // Setter methods
-    public void setId(int id) {
+    public void setId(String id) {
         this.id = id;
     }
 
