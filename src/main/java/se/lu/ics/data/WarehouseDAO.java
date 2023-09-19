@@ -1,0 +1,61 @@
+package se.lu.ics.data;
+
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+import se.lu.ics.models.Warehouse;
+
+public class WarehouseDAO {
+    
+
+     private static ObservableList<Warehouse> warehouses = FXCollections.observableArrayList();
+
+    static {
+        updateSuppliersFromDatabase(); 
+
+    }
+        //Getter for suppliers ObservableList
+        public static ObservableList<Warehouse> getSuppliers() {
+        return warehouses;
+    }
+    //Update supplier from database method
+    public static void updateSuppliersFromDatabase() {
+        String query = "SELECT * FROM Warehouse";
+        try (Connection connection = ConnectionHandler.getConnection()) {
+            PreparedStatement statement = connection.prepareStatement(query);
+            ResultSet resultSet = statement.executeQuery();
+            warehouses.clear(); 
+            while (resultSet.next()) {
+                String warehouseId = resultSet.getString("WarehouseId");
+                String address = resultSet.getString("Address");
+                Integer capacity = resultSet.getInt("Capacity");   
+                Warehouse warehouse = new Warehouse(warehouseId, address, capacity);
+                warehouses.add(warehouse);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+    //Static getter for warehouse by id
+    public static Warehouse GetWarehouseById(String warehouseId) {
+        for (Warehouse warehouse : warehouses) {
+            if (warehouse.getWarehouseId().equals(warehouseId)) {
+                return warehouse;
+            }
+        }
+        return null;
+    }
+
+    //Method for registering a warehouse
+    public void addWarehouse(Warehouse warehouse) {
+        warehouses.add(warehouse);
+    }
+
+
+
+}
+

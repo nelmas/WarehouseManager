@@ -1,0 +1,69 @@
+package se.lu.ics.data;
+
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+import se.lu.ics.models.Product; 
+
+public class ProductDAO {
+    
+
+     private static ObservableList<Product> products = FXCollections.observableArrayList();
+
+    static {
+        updateSuppliersFromDatabase(); 
+
+    }
+        //Getter for suppliers ObservableList
+        public static ObservableList<Product> getSuppliers() {
+        return products;
+    }
+    //Update supplier from database method
+    public static void updateSuppliersFromDatabase() {
+        String query = "SELECT * FROM Product";
+        try (Connection connection = ConnectionHandler.getConnection()) {
+            PreparedStatement statement = connection.prepareStatement(query);
+            ResultSet resultSet = statement.executeQuery();
+            products.clear(); 
+            while (resultSet.next()) {
+                String productId = resultSet.getString("ProductId");
+                String productName = resultSet.getString("ProductName");
+                String category = resultSet.getString("Category");
+                Product product = new Product(productId, productName, category);
+                products.add(product);
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    //Methods ---------------------------------------------
+        
+    //Static getter for product by id
+        public static Product getProductById(String productId) {
+        for (Product product : products) {
+            if (product.getProductId().equals(productId)) {
+                return product;
+            }
+        }
+        return null;
+    }
+
+       //Method for registering a product
+        public void registerProduct(Product product) {
+            products.add(product);
+        }
+
+        // Remove a product from the list
+        public void removeProduct(Product product) {
+            products.remove(product);
+        }
+
+        
+
+}
