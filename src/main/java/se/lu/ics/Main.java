@@ -1,69 +1,39 @@
 package se.lu.ics;
 
-import java.io.FileInputStream;
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.util.Properties;
 
-public class Main {
-    public static void main(String[] args) {
+import javafx.application.Application;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Scene;
+import javafx.scene.layout.AnchorPane;
+import javafx.stage.Stage;
 
+public class Main extends Application {
 
-        Properties connectionProperties = new Properties();
-
+    @Override
+    public void start(Stage primaryStage) {
+    
         try {
-            FileInputStream stream = new FileInputStream("src/main/resources/config/config.properties");
-            connectionProperties.load(stream);
+        String path = "fxml/Main.fxml";
+        // Load root layout from fxml file (on the classpath).
+        FXMLLoader loader = new FXMLLoader(getClass().getResource(path));
+        AnchorPane root = loader.load();
+// Create a scene and set it on the stage
+        Scene scene = new Scene(root);
+        primaryStage.setScene(scene);
+// Set the stage title and show it
+        primaryStage.setTitle("Main App");
+        primaryStage.show();
 
-            String databaseServerName = (String) connectionProperties.get("database.server.name");
-            String databaseServerPort = (String) connectionProperties.get("database.server.port");
-            String databaseName = (String) connectionProperties.get("database.name");
-            String databaseUserName = (String) connectionProperties.get("database.user.name");
-            String databaseUserPassword = (String) connectionProperties.get("database.user.password");
+    } catch (Exception e) {
 
-            String connectionURL = "jdbc:sqlserver://"
-            + databaseServerName + ":"
-            + databaseServerPort + ";"
-            + "database=" + databaseName + ";"
-            + "user=" + databaseUserName + ";"
-            + "password=" + databaseUserPassword + ";"
-            + "encrypt=true;" // Required for JDBC driver v10.2
-            + "trustServerCertificate=true;"; // Required for JDBC driver v10.2
+e.printStackTrace();
 
-            System.out.println(connectionURL);
-
-
-
-            String query = "SELECT * " 
-            + "FROM Product";
-
-      
-            Connection connection = DriverManager.getConnection(connectionURL);
-
-            PreparedStatement preparedStatement = connection.prepareStatement(query);
-
-            ResultSet resultSet = preparedStatement.executeQuery();
-
-            while (resultSet.next()) {
-                System.out.println("productName: " + resultSet.getString("Name"));
-                System.out.println("productId:  " + resultSet.getString("ProductId"));
-                
-            }
-      
-            resultSet.close();           
-            preparedStatement.close();
-            connection.close();
-
-        } catch (Exception e) {
-            System.out.println("Could not load properties file");
-            System.exit(1);
-
-
-
-        }
-
-    }
 }
 
+}
+
+public static void main(String[] args) {
+launch(args);
+
+}
+}

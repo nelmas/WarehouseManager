@@ -1,4 +1,4 @@
-package se.lu.ics;
+package se.lu.ics.models;
 
 public class Product {
     // Attributes

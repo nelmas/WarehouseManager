@@ -1,4 +1,4 @@
-package se.lu.ics;
+package se.lu.ics.models;
 import java.util.ArrayList;
 import java.util.List;
 
