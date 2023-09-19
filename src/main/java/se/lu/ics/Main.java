@@ -10,6 +10,7 @@ import java.util.Properties;
 public class Main {
     public static void main(String[] args) {
 
+
         Properties connectionProperties = new Properties();
 
         try {
