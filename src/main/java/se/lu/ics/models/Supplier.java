@@ -2,26 +2,26 @@ package se.lu.ics.models;
 
 
 public class Supplier {
-    private String name;
+    private String supplierName;
     private String supplierId;
     private String address;
     private String email;
 
     // Constructor
-    public Supplier(String name, String supplierId, String address, String email) {
-        this.name = name;
+    public Supplier(String supplierName, String supplierId, String address, String email) {
+        this.supplierName = supplierName;
         this.supplierId = supplierId;
         this.address = address;
         this.email = email;
     }
 
     // Getters and Setters
-    public String getName() {
-        return name;
+    public String getSupplierName() {
+        return supplierName;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setSupplierName(String supplierName) {
+        this.supplierName = supplierName;
     }
 
     public String getSupplierId() {
@@ -32,19 +32,19 @@ public class Supplier {
         this.supplierId = supplierId;
     }
 
-    public String getAddress() {
+    public String getSupplierAddress() {
         return address;
     }
 
-    public void setAddress(String address) {
+    public void setSupplierAddress(String address) {
         this.address = address;
     }
 
-    public String getEmail() {
+    public String getSupplierEmail() {
         return email;
     }
 
-    public void setEmail(String email) {
+    public void setSupplierEmail(String email) {
         this.email = email;
     }
 

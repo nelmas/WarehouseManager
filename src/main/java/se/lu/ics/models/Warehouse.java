@@ -3,40 +3,40 @@ package se.lu.ics.models;
 public class Warehouse {
 
     // Attributes
-    private int warehouseId;
-    private String address;
-    private int capacity;
+    private String warehouseId;
+    private String warehouseAddress;
+    private int warehouseCapacity;
 
     // Constructor
-    public Warehouse(int warehouseId, String address, int capacity) {
+    public Warehouse(String warehouseId, String warehouseAddress, int warehouseCapacity) {
         this.warehouseId = warehouseId;
-        this.address = address;
-        this.capacity = capacity;
+        this.warehouseAddress = warehouseAddress;
+        this.warehouseCapacity = warehouseCapacity;
     }
 
     // Getters and Setters
-    public int getWarehouseId() {
+    public String getWarehouseId() {
         return warehouseId;
     }
 
-    public void setWarehouseId(int id) {
-        this.warehouseId = id;
+    public void setWarehouseId(String warehouseId) {
+        this.warehouseId = warehouseId;
     }
 
-    public String getAddress() {
-        return address;
+    public String getWarehouseAddress() {
+        return warehouseAddress;
     }
 
-    public void setAddress(String address) {
-        this.address = address;
+    public void setWarehouseAddress(String warehouseAddress) {
+        this.warehouseAddress = warehouseAddress;
     }  
 
     public int getCapacity() {
-        return capacity;
+        return warehouseCapacity;
     }
 
-    public void setCapacity(int capacity) {
-        this.capacity = capacity;
+    public void setCapacity(int warehouseCapacity) {
+        this.warehouseCapacity = warehouseCapacity;
     }
     
 }

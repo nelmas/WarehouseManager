@@ -2,41 +2,41 @@ package se.lu.ics.models;
 
 public class Product {
     // Attributes
-    private String id;
-    private String name;
-    private String category;
+    private String productId;
+    private String productName;
+    private String productCategory;
 
     // Constructor
-    public Product(String id, String name, String category) {
-        this.id = id;
-        this.name = name;
-        this.category = category;
+    public Product(String productId, String productName, String productCategory) {
+        this.productId = productId;
+        this.productName = productName;
+        this.productCategory = productCategory;
     }
 
     // Getter methods
-    public String getId() {
-        return id;
+    public String getProductId() {
+        return productId;
     }
 
-    public String getName() {
-        return name;
+    public String getProductName() {
+        return productName;
     }
 
-    public String getCategory() {
-        return category;
+    public String getProductCategory() {
+        return productCategory;
     }
 
     // Setter methods
-    public void setId(String id) {
-        this.id = id;
+    public void setProductId(String id) {
+        this.productId = id;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setProductName(String productName) {
+        this.productName = productName;
     }
 
-    public void setCategory(String category) {
-        this.category = category;
+    public void setProductCategory(String productCategory) {
+        this.productCategory = productCategory;
     }
 
 }

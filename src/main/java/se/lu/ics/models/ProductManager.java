@@ -18,7 +18,7 @@ public class ProductManager {
     // Retrieve a product by its ID
     public Product getProductById(String id) {
         for (Product product : products) {
-            if (product.getId() == id) {
+            if (product.getProductId() == id) {
                 return product;
             }
         }
@@ -33,7 +33,7 @@ public class ProductManager {
     // Find product by id
     public static Product getProductById(String id, List<Product> productList) {
         for (Product product : productList) {
-            if (product.getId() == id) {
+            if (product.getProductId() == id) {
                 return product;
             }
         }
