@@ -1,4 +1,5 @@
-package se.lu.ics;
+package se.lu.ics.models;
+
 
 public class Supplier {
     private String name;
