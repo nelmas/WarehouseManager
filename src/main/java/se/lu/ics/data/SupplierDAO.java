@@ -21,7 +21,7 @@ public class SupplierDAO {
         public static ObservableList<Supplier> getSuppliers() {
         return suppliers;
     }
-
+    //Update supplier from database method
     public static void updateSuppliersFromDatabase() {
         String query = "SELECT * FROM Employee";
         try (Connection connection = ConnectionHandler.getConnection()) {
