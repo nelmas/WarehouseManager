@@ -8,7 +8,6 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-// hello
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="468.0" prefWidth="631.0" style="-fx-background-color: #ADD8E6;" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1">
    <children>
       <Button layoutX="44.0" layoutY="187.0" mnemonicParsing="false" prefHeight="49.0" prefWidth="179.0" text="Suppliers" />
