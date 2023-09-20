@@ -18,8 +18,8 @@ public class WarehouseDAO {
         updateSuppliersFromDatabase(); 
 
     }
-        //Getter for suppliers ObservableList
-        public static ObservableList<Warehouse> getWarehouses() {
+    //Getter for suppliers ObservableList
+    public static ObservableList<Warehouse> getWarehouses() {
         return warehouses;
     }
     //Update supplier from database method
@@ -41,7 +41,7 @@ public class WarehouseDAO {
         }
     }
     //Static getter for warehouse by id
-    public static Warehouse GetWarehouseById(String warehouseId) {
+    public static Warehouse getWarehouseById(String warehouseId) {
         for (Warehouse warehouse : warehouses) {
             if (warehouse.getWarehouseId().equals(warehouseId)) {
                 return warehouse;
