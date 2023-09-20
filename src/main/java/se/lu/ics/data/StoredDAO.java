@@ -33,7 +33,7 @@ public class StoredDAO {
             
             while (resultSet.next()) {
                 Product product = ProductDAO.getProductById(resultSet.getString("Product"));
-                Warehouse warehouse = WarehouseDAO.GetWarehouseById(resultSet.getString("Warehouse"));
+                Warehouse warehouse = WarehouseDAO.getWarehouseById(resultSet.getString("Warehouse"));
                 Integer stock = resultSet.getInt("Stock");
                 Stored stored = new Stored(product, warehouse, stock);
                 storedItems.add(stored);

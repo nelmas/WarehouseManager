@@ -31,7 +31,7 @@ public class Warehouse {
         this.warehouseAddress = warehouseAddress;
     }  
 
-    public int getCapacity() {
+    public int getWarehouseCapacity() {
         return warehouseCapacity;
     }
 

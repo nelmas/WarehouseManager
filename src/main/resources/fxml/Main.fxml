@@ -3,26 +3,26 @@
 <?import javafx.scene.control.Tab?>
 <?import javafx.scene.control.TabPane?>
 
-<TabPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" tabClosingPolicy="UNAVAILABLE" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/19">
+<TabPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" tabClosingPolicy="UNAVAILABLE" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="se.lu.ics.controllers.MainController">
    <tabs>
       <Tab text="Product">
          <content>
-            <fx:include source="Product.fxml"/>
+            <fx:include source="Product.fxml" />
          </content>
       </Tab>
       <Tab text="Supplier">
          <content>
-            <fx:include source="Supplier.fxml"/>
+            <fx:include source="Supplier.fxml" />
          </content>
       </Tab>
       <Tab text="Warehouse">
          <content>
-            <fx:include source="Warehouse.fxml"/>
+            <fx:include source="Warehouse.fxml" />
          </content>
       </Tab>
       <Tab text="Stored">
          <content>
-            <fx:include source="Stored.fxml"/>
+            <fx:include source="Stored.fxml" />
          </content>
       </Tab>
    </tabs>
