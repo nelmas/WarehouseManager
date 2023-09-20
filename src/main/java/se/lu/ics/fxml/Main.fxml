@@ -35,7 +35,7 @@
             </TableView>
             <Button layoutX="74.0" layoutY="462.0" mnemonicParsing="false" text="Remove" />
             <TextField fx:id="txtField_supplierSearchField" layoutX="22.0" layoutY="27.0" text="Search for supplier" />
-            <Label layoutX="25.0" layoutY="357.0" text="Add or remove a supplier? Fill in the fields and press &quot;Add&quot;" />
+            <Label layoutX="25.0" layoutY="357.0" text="Add or remove a supplier? Fill in the fields and press &quot;Add&quot; or &quot;Remove&quot;" />
             <TextField fx:id="txtField_supplierId" layoutX="25.0" layoutY="417.0" />
             <TextField fx:id="txtField_supplierAddress" layoutX="194.0" layoutY="417.0" />
             <TextField fx:id="txtField_supplierCapacity" layoutX="363.0" layoutY="417.0" />
