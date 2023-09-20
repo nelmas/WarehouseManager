@@ -32,7 +32,7 @@ public class SupplierDAO {
                 String name = resultSet.getString("Name"); 
                 String address = resultSet.getString("Address");
                 String email = resultSet.getString("Email");   
-                Supplier supplier = new Supplier(supplierId, name, address, email);
+                Supplier supplier = new Supplier(name, supplierId, address, email);
                 suppliers.add(supplier);
             }
         } catch (SQLException e) {
@@ -43,6 +43,31 @@ public class SupplierDAO {
         //Method for registering a supplier 
         public void addSupplier(Supplier supplier) {
         suppliers.add(supplier);
+    }
+
+    // add supplier to database
+    public static void addSupplierToDatabase(String name, String supplierId, String address, String email){
+        String query = "INSERT INTO Supplier (Name, SupplierId, Address, Email)";
+
+        try (Connection connection = ConnectionHandler.getConnection()) {
+            // Create a PreparedStatement to insert the supplier
+            PreparedStatement statement = connection.prepareStatement(query);
+            statement.setString(1, name);
+            statement.setString(2, supplierId);
+            statement.setString(3, address);
+            statement.setString(4, email);
+            
+            int rowsInserted = statement.executeUpdate();
+
+            // If the insertion was successful, add to the observable list
+            if (rowsInserted > 0) {
+                Supplier supplier = new Supplier(name, supplierId, address, email);
+                suppliers.add(supplier);
+            }
+        } catch (SQLException e) {
+            // TODO: Error handling
+            e.printStackTrace();
+        }
     }
     
 
