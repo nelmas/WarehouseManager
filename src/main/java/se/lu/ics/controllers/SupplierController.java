@@ -82,9 +82,9 @@ public class SupplierController {
     }
 
     @FXML
-    public void buttonDepartmentAdd_OnClick() {
+    public void button_addSupplier_OnClick() {
         try {
-        String supplierId = textField_supplierId.getText();
+            String supplierId = textField_supplierId.getText();
 			String name = textField_supplierName.getText();
 			String address = textField_supplierAddress.getText();
 			String email = textField_supplierEmail.getText();
@@ -94,14 +94,22 @@ public class SupplierController {
         } catch (Exception e1) {
 			label_errorMessage.setText("Error: Please make sure you have proper data inputs in all fields");
         }
+        System.out.println("Hello World");
     }
 
-    public void button_removeSupplier() {
-        //TODO
-    }
+    @FXML
+    public void button_removeSupplier_OnClick(){
+        Supplier supplier = tableView_supplier.getSelectionModel().getSelectedItem();
+		if (supplier == null) {
+			label_errorMessage.setText("Error: Please choose a supplier from the table above");
+		} else {
 
-    public void button_addSupplier() {
-        //TODO
+            System.out.println("Hello World");
+
+		
+        /* SupplierDAO.button_removeSupplier */
+        }
+        // Initialize again to get changes
     }
     
 }

@@ -25,13 +25,13 @@
       <TextField fx:id="textField_supplierId" layoutX="461.0" layoutY="101.0" />
       <TextField fx:id="textField_supplierName" layoutX="462.0" layoutY="153.0" />
       <TextField fx:id="textField_supplierAddress" layoutX="460.0" layoutY="204.0" />
-      <Button fx:id="button_removeSupplier" layoutX="408.0" layoutY="409.0" mnemonicParsing="false" text="Remove" />
-      <Button fx:id="button_addSupplier" layoutX="519.0" layoutY="288.0" mnemonicParsing="false" text="Add" />
+      <Button fx:id="button_removeSupplier" layoutX="408.0" layoutY="409.0" mnemonicParsing="false" onAction="#button_removeSupplier_OnClick" text="Remove" />
+      <Button fx:id="button_addSupplier" layoutX="519.0" layoutY="288.0" mnemonicParsing="false" onAction="#button_addSupplier_OnClick" text="Add" />
       <Label fx:id="label_supplierAddInfo" alignment="CENTER" layoutX="466.0" layoutY="18.0" prefHeight="70.0" prefWidth="185.0" text="Add a supplier? Fill in the fields and press &quot;Add&quot;" textAlignment="CENTER" wrapText="true" />
       <Label fx:id="label_supplierId" layoutX="470.0" layoutY="80.0" text="Supplier ID" />
       <Label fx:id="label_supplierName" layoutX="462.0" layoutY="136.0" text="Supplier Name" />
       <Label fx:id="label_supplierAddress" layoutX="460.0" layoutY="188.0" text="Supplier Address" />
-      <Label fx:id="label_errorMessage" layoutX="45.0" layoutY="435.0" prefHeight="17.0" prefWidth="9.0" textFill="RED" />
+      <Label fx:id="label_errorMessage" layoutX="45.0" layoutY="435.0" prefHeight="17.0" prefWidth="613.0" textFill="RED" />
       <Label fx:id="label_supplierEmail" layoutX="462.0" layoutY="237.0" text="Supplier Email" />
       <TextField fx:id="textField_supplierEmail" layoutX="459.0" layoutY="254.0" />
       <Label fx:id="label_supplierRemove" layoutX="343.0" layoutY="352.0" prefHeight="60.0" prefWidth="215.0" text="Remove a supplier? Mark a supplier from the table, and press &quot;Remove&quot;" textAlignment="CENTER" wrapText="true" />
