@@ -1,5 +1,6 @@
 package se.lu.ics.controllers;
 
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.TabPane;
 import javafx.scene.control.Button;
@@ -19,15 +20,19 @@ public class SupplierController {
 
     @FXML private Label label_supplierSearchField;
 
-    @FXML private Label label_supplierAddRemoveInfo;
+    @FXML private Label label_supplierAddInfo;
 
     @FXML private Label label_supplierId;
 
     @FXML private Label label_supplierAddress;
 
-    @FXML private Label label_supplierCapacity;
+    @FXML private Label label_supplierName;
 
     @FXML private Label label_errorMessage;
+
+    @FXML private Label label_supplierRemove;
+
+    @FXML private Label label_supplierEmail;
 
     @FXML private TextField textField_supplierSearchField;
 
@@ -35,7 +40,9 @@ public class SupplierController {
 
     @FXML private TextField textField_supplierAddress;
 
-    @FXML private TextField textField_supplierCapacity;
+     @FXML private TextField textField_supplierEmail;
+
+    @FXML private TextField textField_supplierName;
 
     @FXML private TableView<Supplier> tableView_supplier;
 
@@ -55,8 +62,8 @@ public class SupplierController {
     public void initialize() {        
         column_supplierId.setCellValueFactory(new PropertyValueFactory<Supplier, String>("supplierId"));
         column_supplierName.setCellValueFactory(new PropertyValueFactory<Supplier, String>("supplierName"));
-        column_supplierAddress.setCellValueFactory(new PropertyValueFactory<Supplier, String>("address"));
-        column_supplierEmail.setCellValueFactory(new PropertyValueFactory<Supplier, String>("email"));
+        column_supplierAddress.setCellValueFactory(new PropertyValueFactory<Supplier, String>("supplierAddress"));
+        column_supplierEmail.setCellValueFactory(new PropertyValueFactory<Supplier, String>("supplierEmail"));
 
         tableView_supplier.setItems(SupplierDAO.getSuppliers());
     }
@@ -72,6 +79,21 @@ public class SupplierController {
     
         }  
 
+    }
+
+    @FXML
+    public void buttonDepartmentAdd_OnClick() {
+        try {
+        String supplierId = textField_supplierId.getText();
+			String name = textField_supplierName.getText();
+			String address = textField_supplierAddress.getText();
+			String email = textField_supplierEmail.getText();
+
+        SupplierDAO.addSupplierToDatabase(name, supplierId, address, email);
+
+        } catch (Exception e1) {
+			label_errorMessage.setText("Error: Please make sure you have proper data inputs in all fields");
+        }
     }
 
     public void button_removeSupplier() {
