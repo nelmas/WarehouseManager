@@ -39,6 +39,11 @@ public class SupplierDAO {
             e.printStackTrace();
         }
     }
+
+        //Method for registering a supplier 
+        public void addSupplier(Supplier supplier) {
+        suppliers.add(supplier);
+    }
     
 
 }

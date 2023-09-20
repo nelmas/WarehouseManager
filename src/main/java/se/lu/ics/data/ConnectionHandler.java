@@ -11,12 +11,14 @@ import java.util.Properties;
 
 
 public class ConnectionHandler {
-private static String connectionURL;
-private static String configFilePath = "maven-jdbc-demo/src/main/resources/config/config.properties";
 
+
+private static String connectionURL;
+private static String configFilePath = "src/main/resources/config/config.properties";
 
 static {
-Properties connectionProperties = new Properties();
+
+    Properties connectionProperties = new Properties();
 
 try {
     FileInputStream stream = new FileInputStream(configFilePath);
