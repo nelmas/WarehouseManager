@@ -2,10 +2,9 @@ package se.lu.ics;
 
 
 import javafx.application.Application;
-import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
-import javafx.scene.layout.AnchorPane;
+import javafx.scene.control.TabPane;
 import javafx.stage.Stage;
 
 public class Main extends Application {
@@ -16,7 +15,7 @@ public class Main extends Application {
             // Load root layout from FXML file (on the classpath).
             String path = "/fxml/Main.fxml";  // Corrected path
             FXMLLoader loader = new FXMLLoader(getClass().getResource(path));
-            AnchorPane root = loader.load();
+            TabPane root = loader.load();
     
             // Create a scene and set it on the stage
             Scene scene = new Scene(root);
@@ -28,6 +27,7 @@ public class Main extends Application {
     
         } catch (Exception e) {
             e.printStackTrace();
+            System.out.println("Failed to launch application");
         }
     }
 

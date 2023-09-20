@@ -19,7 +19,7 @@ public class WarehouseDAO {
 
     }
         //Getter for suppliers ObservableList
-        public static ObservableList<Warehouse> getSuppliers() {
+        public static ObservableList<Warehouse> getWarehouses() {
         return warehouses;
     }
     //Update supplier from database method
@@ -54,7 +54,7 @@ public class WarehouseDAO {
     public void addWarehouse(Warehouse warehouse) {
         warehouses.add(warehouse);
     }
-
+    
 
 
 }
