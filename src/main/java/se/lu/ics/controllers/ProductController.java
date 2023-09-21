@@ -1,5 +1,6 @@
 package se.lu.ics.controllers;
 
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -52,7 +53,18 @@ public class ProductController {
         columnProductSupplierId.setCellValueFactory(new PropertyValueFactory<Product, String>("supplierId"));
         
         tableViewProduct.getItems().addAll(ProductDAO.getProducts());
-    }
+
+        tableViewProduct.getSelectionModel().selectedItemProperty().addListener(
+            (observable, oldSelection, newSelection) -> { if (newSelection != null) {
+                Product selectedProduct = tableViewProduct.getSelectionModel().getSelectedItem();
+
+                textFieldProductId.setText(selectedProduct.getProductId());
+                textFieldProductName.setText(selectedProduct.getProductName());
+                textFieldProductCategory.setText(selectedProduct.getProductCategory());
+            }
+        });
+    };
+    
 
     
 public void buttonAddProduct_OnClick() {
@@ -84,5 +96,28 @@ public void buttonAddProduct_OnClick() {
         label_errorMessage.setText("Error: " + e.getMessage());
     }
 }
-}
 
+    public void buttonUpdateProduct_OnClick(ActionEvent event) {
+        String productId = textFieldProductId.getText();
+        String productName = textFieldProductName.getText();
+        String productCategory = textFieldProductCategory.getText();
+
+        Product productToUpdate = tableViewProduct.getSelectionModel().getSelectedItem();
+        productToUpdate.setProductId(productId);
+        productToUpdate.setProductName(productName);
+        productToUpdate.setProductCategory(productCategory);
+
+        tableViewProduct.refresh();
+
+    }
+
+    public void buttonRemoveProduct_OnClick(ActionEvent event) {
+        // remove selected product from the TableView
+        Product productToRemove = tableViewProduct.getSelectionModel().getSelectedItem();
+        tableViewProduct.getItems().remove(productToRemove);
+
+        tableViewProduct.refresh();
+
+    }
+
+}
