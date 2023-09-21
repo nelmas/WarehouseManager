@@ -14,7 +14,7 @@ public class ConnectionHandler {
 
 
 private static String connectionURL;
-private static String configFilePath = "vscode-demo-assignment-hoggers-hjaltar/src/main/resources/config/config.properties";
+private static String configFilePath = "javafx-maven-git-demo\\src\\main\\resources\\config\\config.properties";
 
 static {
 
