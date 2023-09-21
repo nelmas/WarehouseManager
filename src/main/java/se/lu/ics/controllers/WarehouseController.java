@@ -93,10 +93,9 @@ public class WarehouseController {
 
         // Category table
         categoryColumnProduct.setCellValueFactory(new PropertyValueFactory<Product, String>("productCategory"));
-        // Create a set to store distinct categories
+        // Distinct categories stored in hashSet. 
         Set<String> distinctCategories = new HashSet<>();
-
-        // Assuming you have an ObservableList<Product> productsList with all products
+        
         for (Product product : ProductDAO.getProducts()) {
             distinctCategories.add(product.getProductCategory());
         }
@@ -106,10 +105,11 @@ public class WarehouseController {
         for (String category : distinctCategories) {
             distinctCategoryProducts.add(new Product("", "", category, null));
         }
-
         // Populate tableViewCategory with the dummy products
         tableViewCategory.getItems().addAll(distinctCategoryProducts);
-
+        
+        
+        
         // Add listener to warehouse table
         warehouseTableView.getSelectionModel().selectedItemProperty().addListener((obs, oldSelection, newSelection) -> {
             if (newSelection != null) {
@@ -140,5 +140,15 @@ public class WarehouseController {
         storedTableView.getItems().clear();
         storedTableView.getItems()
                 .addAll(StoredDAO.getStoredInfoWithProductCategory(selectedCategory.getProductCategory()));
+    }
+    //Method for adding a warehouse
+    public void addWarehouseButtonClicked() {
+        String warehouseId = TextFieldWarehouseId.getText();
+        String warehouseAddress = TextFieldWarehouseAddress.getText();
+        Integer warehouseCapacity = Integer.parseInt(TextFieldWarehouseCapacity.getText());
+        WarehouseDAO.addWarehouse(warehouseId, warehouseAddress, warehouseCapacity);
+        warehouseTableView.getItems().clear();
+        warehouseTableView.getItems().addAll(WarehouseDAO.getWarehouses());
+        
     }
 }
