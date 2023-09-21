@@ -46,29 +46,31 @@ public class SupplierDAO {
     }
 
     // add supplier to database
-    public static void addSupplierToDatabase(String name, String supplierId, String address, String email){
-        String query = "INSERT INTO Supplier (Name, SupplierId, Address, Email)";
-
-        try (Connection connection = ConnectionHandler.getConnection()) {
-            // Create a PreparedStatement to insert the supplier
-            PreparedStatement statement = connection.prepareStatement(query);
+    public static void addSupplierToDatabase(String name, String supplierId, String address, String email) {
+        String query = "INSERT INTO Supplier (Name, SupplierId, Address, Email) VALUES (?, ?, ?, ?)";
+        
+        try (Connection connection = ConnectionHandler.getConnection();
+             PreparedStatement statement = connection.prepareStatement(query)) {
+            
             statement.setString(1, name);
             statement.setString(2, supplierId);
             statement.setString(3, address);
             statement.setString(4, email);
             
             int rowsInserted = statement.executeUpdate();
-
-            // If the insertion was successful, add to the observable list
+    
             if (rowsInserted > 0) {
                 Supplier supplier = new Supplier(name, supplierId, address, email);
-                suppliers.add(supplier);
+                suppliers.add(supplier); // Make sure suppliers is correctly initialized
             }
+                        
         } catch (SQLException e) {
-            // TODO: Error handling
-            e.printStackTrace();
+            e.printStackTrace(); // Log the error
+            // Handle the error (e.g., show an error message to the user)
         }
     }
+
+
     
 
 }
