@@ -56,7 +56,7 @@ public class ProductDAO {
     }
 
        //Method for registering a product
-        public void registerProduct(Product product) {
+        public void addProduct(Product product) {
             products.add(product);
         }
 
