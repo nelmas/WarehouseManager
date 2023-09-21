@@ -107,4 +107,30 @@ public class SupplierDAO {
         return null;
     }
 
+    public static ObservableList<Product> getSuppliedProducts(Supplier supplier) {
+        ObservableList<Product> suppliedProducts = FXCollections.observableArrayList();
+        String supplierId = supplier.getSupplierId(); // Get the supplier's ID
+
+        // Query the database to retrieve products supplied by the specified supplier
+        String query = "SELECT * FROM Product WHERE SupplierId = ?";
+        try (Connection connection = ConnectionHandler.getConnection();
+             PreparedStatement statement = connection.prepareStatement(query)) {
+
+            statement.setString(1, supplierId);
+            ResultSet resultSet = statement.executeQuery();
+
+            while (resultSet.next()) {
+                String productId = resultSet.getString("ProductId");
+                String productName = resultSet.getString("Name");
+                String category = resultSet.getString("Category");
+                Product product = new Product(productId, productName, category, supplier);
+                suppliedProducts.add(product);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return suppliedProducts;
+    }
+
 }
