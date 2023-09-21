@@ -24,6 +24,8 @@ public class SupplierController {
 
     @FXML private Label label_supplierId;
 
+    @FXML private Label label_supplierProductInfo;
+
     @FXML private Label label_supplierAddress;
 
     @FXML private Label label_supplierName;
@@ -46,7 +48,11 @@ public class SupplierController {
 
     @FXML private TableView<Supplier> tableView_supplier;
 
+    @FXML private TableView<Supplier> tableView_supplierProductList;
+
     @FXML private TableColumn<Supplier, String> column_supplierId;
+
+    @FXML private TableColumn<Supplier, String> tableColumn_supplierProductList;
 
     @FXML private TableColumn<Supplier, String> column_supplierName;
 
