@@ -19,7 +19,7 @@ public class StoredDAO {
         updateStoredItemsFromDatabase(); 
 
     }
-        //Getter for suppliers ObservableList
+        //Getter for storedItems ObservableList
         public static ObservableList<Stored> getStoredItems() {
         return storedItems;
     }

@@ -14,7 +14,7 @@ public class Main extends Application {
     public void start(Stage primaryStage) {
         try {
             // Load root layout from FXML file (on the classpath).
-            String path = "/fxml/Main.fxml";  // Corrected path
+            String path = "/fxml/Main.fxml";  
             FXMLLoader loader = new FXMLLoader(getClass().getResource(path));
             TabPane root = loader.load();
     
