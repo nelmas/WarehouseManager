@@ -3,6 +3,8 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.HashSet;
+import java.util.Set;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -19,7 +21,7 @@ public class StoredDAO {
         updateStoredItemsFromDatabase(); 
 
     }
-        //Getter for suppliers ObservableList
+        //Getter for storedItems ObservableList
         public static ObservableList<Stored> getStoredItems() {
         return storedItems;
     }
@@ -52,4 +54,16 @@ public class StoredDAO {
             }
         } return storedItemsWithWarehouse;
     }
+    public static ObservableList<Stored> getStoredInfoWithProductCategory(String productCategory) {
+        ObservableList<Stored> storedItemsWithProductCategory = FXCollections.observableArrayList();
+    
+        for (Stored stored : storedItems) {
+            String category = stored.getProduct().getProductCategory();
+            if (category.equals(productCategory)) {
+                storedItemsWithProductCategory.add(stored);
+            }
+        } return storedItemsWithProductCategory;
+        
+    }
+    
 }

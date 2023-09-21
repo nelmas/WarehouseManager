@@ -97,10 +97,11 @@ public class SupplierController {
 
         SupplierDAO.addSupplierToDatabase(name, supplierId, address, email);
 
+        clearTextFields();
+
         } catch (Exception e1) {
 			label_errorMessage.setText("Error: Please make sure you have proper data inputs in all fields");
         }
-        System.out.println("Hello World");
     }
 
     @FXML
@@ -109,14 +110,20 @@ public class SupplierController {
 		if (supplier == null) {
 			label_errorMessage.setText("Error: Please choose a supplier from the table above");
 		} else {
+            tableView_supplier.getItems().remove(supplier);
 
-            System.out.println("Hello World");
-
-		
-        /* SupplierDAO.button_removeSupplier */
+            // Remove the selected supplier from the data source (assuming SupplierDAO handles this)
+            SupplierDAO.removeSupplierFromDatabase(supplier);
         }
-        // Initialize again to get changes
     }
+
+    private void clearTextFields() {
+        textField_supplierId.clear();
+        textField_supplierName.clear();
+        textField_supplierAddress.clear();
+        textField_supplierEmail.clear();
+    }
+    
     
 }
 

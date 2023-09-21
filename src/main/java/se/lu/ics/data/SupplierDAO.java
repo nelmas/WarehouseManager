@@ -63,13 +63,47 @@ public class SupplierDAO {
                 Supplier supplier = new Supplier(name, supplierId, address, email);
                 suppliers.add(supplier); // Make sure suppliers is correctly initialized
             }
-                        
+
         } catch (SQLException e) {
             e.printStackTrace(); // Log the error
             // Handle the error (e.g., show an error message to the user)
         }
     }
 
+    public static void removeSupplierFromDatabase(Supplier supplier) {
+        String query = "DELETE FROM Supplier WHERE SupplierId = ?";
+        
+        try (Connection connection = ConnectionHandler.getConnection();
+             PreparedStatement statement = connection.prepareStatement(query)) {
+            
+            statement.setString(1, supplier.getSupplierId());
+            
+            int rowsDeleted = statement.executeUpdate();
+    
+            if (rowsDeleted > 0) {
+                // Successfully deleted from the database; now remove from the local list
+                suppliers.remove(supplier);
+            } else {
+                // Handle the case where the supplier was not found in the database
+                // (e.g., show an error message to the user)
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace(); // Log the error
+            // Handle the error (e.g., show an error message to the user)
+        }
+    }
+
+
+    //Static getter for Supplier by ID
+    public static Supplier getSupplierById(String supplierId) {
+        for (Supplier supplier : suppliers) {
+            if (supplier.getSupplierId().equals(supplierId)) {
+                return supplier;
+            }
+        }
+        return null;
+    }
 
     
 
