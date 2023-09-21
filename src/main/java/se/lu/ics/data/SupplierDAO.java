@@ -92,8 +92,8 @@ public class SupplierDAO {
             }
 
         } catch (SQLException e) {
-            e.printStackTrace(); // Log the error
-            // Handle the error (e.g., show an error message to the user)
+            e.printStackTrace(); 
+            
         }
     }
 
