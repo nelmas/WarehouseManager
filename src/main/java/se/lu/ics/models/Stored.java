@@ -1,17 +1,20 @@
 package se.lu.ics.models;
 
 public class Stored {
-    private Product product; 
-    private Warehouse warehouse; 
-    private int stock; 
+    private Product product;
+    private Warehouse warehouse;
+    private int stock;
 
-    //Constructor
+    // Constructor
     public Stored(Product product, Warehouse warehouse, int stock) {
         this.product = product;
         this.warehouse = warehouse;
         this.stock = stock;
+        warehouse.addStock(this);
+        product.addStock(this);
     }
-    //Getters & Setters
+
+    // Getters & Setters
     public Product getProduct() {
         return product;
     }
@@ -23,14 +26,25 @@ public class Stored {
     public void setWarehouse(Warehouse warehouse) {
         this.warehouse = warehouse;
     }
+
     public Warehouse getWarehouse() {
         return warehouse;
     }
+
     public void setStock(int stock) {
-        this.stock = stock;  
+        this.stock = stock;
     }
+
     public int getStock() {
         return stock;
     }
-    
+
+    public String getProductId() {
+         return product.getProductId();
+    }
+
+    public String getProductName() {
+        return product.getProductName();
+    }
+
 }

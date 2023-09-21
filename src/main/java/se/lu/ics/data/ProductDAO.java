@@ -7,7 +7,8 @@ import java.sql.SQLException;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import se.lu.ics.models.Product; 
+import se.lu.ics.models.Product;
+import se.lu.ics.models.Stored; 
 
 public class ProductDAO {
     
@@ -15,15 +16,15 @@ public class ProductDAO {
      private static ObservableList<Product> products = FXCollections.observableArrayList();
 
     static {
-        updateSuppliersFromDatabase(); 
+        updateProductsFromDatabase(); 
 
     }
-        //Getter for suppliers ObservableList
+        //Getter for product ObservableList
         public static ObservableList<Product> getProducts() {
         return products;
     }
-    //Update supplier from database method
-    public static void updateSuppliersFromDatabase() {
+    //Update product from database method
+    public static void updateProductsFromDatabase() {
         String query = "SELECT * FROM Product";
         try (Connection connection = ConnectionHandler.getConnection()) {
             PreparedStatement statement = connection.prepareStatement(query);
@@ -31,7 +32,7 @@ public class ProductDAO {
             products.clear(); 
             while (resultSet.next()) {
                 String productId = resultSet.getString("ProductId");
-                String productName = resultSet.getString("ProductName");
+                String productName = resultSet.getString("Name");
                 String category = resultSet.getString("Category");
                 Product product = new Product(productId, productName, category);
                 products.add(product);
