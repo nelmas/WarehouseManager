@@ -1,10 +1,15 @@
 package se.lu.ics.models;
 
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+
 public class Product {
     // Attributes
     private String productId;
     private String productName;
     private String productCategory;
+
+    private ObservableList<Stored> stockList = FXCollections.observableArrayList();
 
     // Constructor
     public Product(String productId, String productName, String productCategory) {
@@ -38,7 +43,11 @@ public class Product {
     public void setProductCategory(String productCategory) {
         this.productCategory = productCategory;
     }
-
+    public void addStock(Stored stock) {
+        stockList.add(stock);
+        
+    }
+   
 }
 
 
