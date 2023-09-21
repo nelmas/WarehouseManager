@@ -42,7 +42,18 @@ public class ProductController {
         columnProductCategory.setCellValueFactory(new PropertyValueFactory<Product, String>("productCategory"));
 
         tableViewProduct.getItems().addAll(ProductDAO.getProducts());
-    }
+
+        tableViewProduct.getSelectionModel().selectedItemProperty().addListener(
+            (observable, oldSelection, newSelection) -> { if (newSelection != null) {
+                Product selectedProduct = tableViewProduct.getSelectionModel().getSelectedItem();
+
+                textFieldProductId.setText(selectedProduct.getProductId());
+                textFieldProductName.setText(selectedProduct.getProductName());
+                textFieldProductCategory.setText(selectedProduct.getProductCategory());
+            }
+        });
+    };
+    
 
     
 public void buttonAddProduct_OnClick() {
