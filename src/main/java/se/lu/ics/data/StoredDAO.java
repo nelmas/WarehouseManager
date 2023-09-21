@@ -16,15 +16,15 @@ public class StoredDAO {
      private static ObservableList<Stored> storedItems = FXCollections.observableArrayList();
 
     static {
-        updateSuppliersFromDatabase(); 
+        updateStoredItemsFromDatabase(); 
 
     }
         //Getter for suppliers ObservableList
-        public static ObservableList<Stored> getSuppliers() {
+        public static ObservableList<Stored> getStoredItems() {
         return storedItems;
     }
     //Update supplier from database method
-    public static void updateSuppliersFromDatabase() {
+    public static void updateStoredItemsFromDatabase() {
         String query = "SELECT * FROM Stored";
         try (Connection connection = ConnectionHandler.getConnection()) {
             PreparedStatement statement = connection.prepareStatement(query);
@@ -32,8 +32,8 @@ public class StoredDAO {
             storedItems.clear(); 
             
             while (resultSet.next()) {
-                Product product = ProductDAO.getProductById(resultSet.getString("Product"));
-                Warehouse warehouse = WarehouseDAO.getWarehouseById(resultSet.getString("Warehouse"));
+                Product product = ProductDAO.getProductById(resultSet.getString("ProductId"));
+                Warehouse warehouse = WarehouseDAO.getWarehouseById(resultSet.getString("WarehouseId"));
                 Integer stock = resultSet.getInt("Stock");
                 Stored stored = new Stored(product, warehouse, stock);
                 storedItems.add(stored);
@@ -42,5 +42,14 @@ public class StoredDAO {
         } catch (SQLException e) {
             e.printStackTrace();
         }
+    }
+
+    public static ObservableList<Stored> getStoredInfoWithWarehouse (Warehouse warehouse) {
+        ObservableList<Stored> storedItemsWithWarehouse = FXCollections.observableArrayList();
+        for (Stored stored : storedItems) {
+            if (stored.getWarehouse().equals(warehouse)) {
+                storedItemsWithWarehouse.add(stored); 
+            }
+        } return storedItemsWithWarehouse;
     }
 }
