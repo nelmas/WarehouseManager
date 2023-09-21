@@ -12,7 +12,7 @@
         <columns>
           <TableColumn fx:id="warehouseIdColumn" prefWidth="142.0" text="ID" />
           <TableColumn fx:id="warehouseAddressColumn" prefWidth="133.0" text="Adress" />
-            <TableColumn fx:id="warehouseCapacityColumn" prefWidth="151.0" text="Capacity" />
+            <TableColumn fx:id="warehouseCapacityColumn" prefWidth="101.0" text="Capacity" />
         </columns>
       </TableView>
       <Button fx:id="warehouseAddButton" layoutX="11.0" layoutY="439.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="48.0" text="+" AnchorPane.bottomAnchor="105.0" AnchorPane.leftAnchor="11.0" AnchorPane.rightAnchor="721.0" AnchorPane.topAnchor="439.0" />

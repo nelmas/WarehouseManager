@@ -7,13 +7,14 @@
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="se.lu.ics.controllers.ProductController">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="se.lu.ics.controllers.ProductController">
    <children>
-      <TableView fx:id="tableViewProduct" layoutX="39.0" layoutY="100.0" prefHeight="266.0" prefWidth="302.0">
+      <TableView fx:id="tableViewProduct" layoutX="39.0" layoutY="100.0" prefHeight="271.0" prefWidth="357.0">
         <columns>
           <TableColumn fx:id="columnProductId" prefWidth="88.0" text="Product ID" />
           <TableColumn fx:id="columnProductName" prefWidth="98.4000244140625" text="Product Name" />
-            <TableColumn fx:id="columnProductCategory" prefWidth="116.0" text="Product Category" />
+            <TableColumn fx:id="columnProductCategory" prefWidth="104.0" text="Product Category" />
+            <TableColumn fx:id="columnProductSupplierId" prefWidth="73.0" text="SupplierId" />
         </columns>
          <columnResizePolicy>
             <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
@@ -21,14 +22,16 @@
       </TableView>
       <Label layoutX="39.0" layoutY="46.0" text="Search for product" />
       <TextField fx:id="textFieldSearchProduct" layoutX="39.0" layoutY="68.0" />
-      <TextField fx:id="textFieldProductId" layoutX="355.0" layoutY="167.0" />
-      <TextField fx:id="textFieldProductName" layoutX="355.0" layoutY="233.0" />
-      <TextField fx:id="textFieldProductCategory" layoutX="355.0" layoutY="298.0" />
-      <Label layoutX="355.0" layoutY="141.0" text="Product ID" />
-      <Label layoutX="357.0" layoutY="208.0" text="Product Name" />
-      <Label layoutX="357.0" layoutY="278.0" text="Product Category" />
-      <Button fx:id="buttonAddProduct" layoutX="357.0" layoutY="340.0" mnemonicParsing="false" onAction="#buttonAddProduct_OnClick" text="Add" />
-      <Button fx:id="buttonRemoveProduct" layoutX="410.0" layoutY="340.0" mnemonicParsing="false" text="Remove" />
-      <Label layoutX="354.0" layoutY="94.0" prefHeight="38.0" prefWidth="170.0" text="Add or remove a product by filling in the text areas below" wrapText="true" />
+      <TextField fx:id="textFieldProductId" layoutX="403.0" layoutY="159.0" />
+      <TextField fx:id="textFieldProductName" layoutX="403.0" layoutY="207.0" />
+      <TextField fx:id="textFieldProductCategory" layoutX="403.0" layoutY="255.0" />
+      <Label layoutX="403.0" layoutY="141.0" text="Product ID" />
+      <Label layoutX="405.0" layoutY="186.0" text="Product Name" />
+      <Label layoutX="405.0" layoutY="235.0" text="Product Category" />
+      <Button fx:id="buttonAddProduct" layoutX="405.0" layoutY="340.0" mnemonicParsing="false" onAction="#buttonAddProduct_OnClick" text="Add" />
+      <Button fx:id="buttonRemoveProduct" layoutX="458.0" layoutY="340.0" mnemonicParsing="false" text="Remove" />
+      <Label layoutX="402.0" layoutY="94.0" prefHeight="38.0" prefWidth="170.0" text="Add or remove a product by filling in the text areas below" wrapText="true" />
+      <TextField fx:id="textFieldSupplierId" layoutX="404.0" layoutY="302.0" />
+      <Label fx:id="labelSupplierId" layoutX="406.0" layoutY="283.0" text="SupplierId" />
    </children>
 </AnchorPane>
