@@ -1,6 +1,7 @@
 package se.lu.ics.controllers;
 
 import javafx.collections.ObservableList;
+import javafx.collections.transformation.FilteredList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.TabPane;
@@ -70,6 +71,9 @@ public class SupplierController {
 
     @FXML private Button button_removeSupplier;
 
+    // Define a FilteredList to filter the suppliers
+    private FilteredList<Supplier> filteredSuppliers;
+
     //method for initializing the tableview
     public void initialize() {        
         column_supplierId.setCellValueFactory(new PropertyValueFactory<Supplier, String>("supplierId"));
@@ -78,6 +82,34 @@ public class SupplierController {
         column_supplierEmail.setCellValueFactory(new PropertyValueFactory<Supplier, String>("supplierEmail"));
 
         tableView_supplier.setItems(SupplierDAO.getSuppliers());
+
+        // Create a FilteredList and bind it to the original list of suppliers
+        filteredSuppliers = new FilteredList<>(SupplierDAO.getSuppliers(), p -> true);
+        tableView_supplier.setItems(filteredSuppliers);
+
+        // Add an event listener to the textField_supplierSearchField for filtering
+        textField_supplierSearchField.textProperty().addListener((observable, oldValue, newValue) -> {
+            filteredSuppliers.setPredicate(supplier -> {
+                // If the search field is empty, show all suppliers
+                if (newValue == null || newValue.isEmpty()) {
+                    return true;
+                }
+
+                // Convert the search text to lowercase for case-insensitive filtering
+                String searchText = newValue.toLowerCase();
+
+                // Check if the supplier's name or any of its products' IDs contain the search text
+                if (supplier.getSupplierName().toLowerCase().contains(searchText)) {
+                    return true;
+                }
+
+                if (supplier.getSupplierId().toLowerCase().contains(searchText)) {
+                    return true;
+                }
+
+                return false; // No match found
+            });
+        });
 
         // Products table
         tableColumn_supplierProductId.setCellValueFactory(new PropertyValueFactory<Product, String>("productId"));
@@ -132,17 +164,19 @@ public class SupplierController {
     }
 
     @FXML
-    public void button_removeSupplier_OnClick(){
-        Supplier supplier = tableView_supplier.getSelectionModel().getSelectedItem();
-		if (supplier == null) {
-			label_errorMessage.setText("Error: Please choose a supplier from the table above");
-		} else {
-            tableView_supplier.getItems().remove(supplier);
-
-            // Remove the selected supplier from the data source (assuming SupplierDAO handles this)
-            SupplierDAO.removeSupplierFromDatabase(supplier);
-        }
+public void button_removeSupplier_OnClick(){
+    Supplier supplier = tableView_supplier.getSelectionModel().getSelectedItem();
+    if (supplier == null) {
+        label_errorMessage.setText("Error: Please choose a supplier from the table above");
+    } else {
+        // Remove the selected supplier from the data source (assuming SupplierDAO handles this)
+        SupplierDAO.removeSupplierFromDatabase(supplier);
+        
+        // Remove the supplier from the table view and refresh it
+        tableView_supplier.getItems().remove(supplier);
+        tableView_supplier.refresh(); // Refresh the table view
     }
+}
 
     private void clearTextFields() {
         textField_supplierId.clear();
