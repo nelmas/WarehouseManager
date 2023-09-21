@@ -46,5 +46,8 @@ public class Stored {
     public String getProductName() {
         return product.getProductName();
     }
+    public String getSupplierId() {
+        return product.getSupplierId();
+    }
 
 }
