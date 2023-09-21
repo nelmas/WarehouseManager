@@ -63,11 +63,13 @@ public void buttonAddProduct_OnClick() {
         String productCategory = textFieldProductCategory.getText();
         Supplier supplierId = SupplierDAO.getSupplierById(textFieldSupplierId.getText());
         // Create a Product object with the provided data
+
         Product product = new Product(productId, productName, productCategory, supplierId);
+
 
         // Add the product to the TableView
         
-        tableViewProduct.getItems().add(product);
+        //tableViewProduct.getItems().add(product);
 
         // You might want to update your data source (ProductDAO) if needed
         //ProductDAO.addProductToDatabase(product);
