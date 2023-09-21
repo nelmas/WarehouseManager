@@ -1,5 +1,7 @@
 package se.lu.ics.models;
 
+import javafx.collections.ObservableList;
+import se.lu.ics.data.SupplierDAO;
 
 public class Supplier {
     private String supplierName;
@@ -46,6 +48,12 @@ public class Supplier {
 
     public void setSupplierEmail(String email) {
         this.email = email;
+    }
+
+    // Implement the getSuppliedProducts() method
+    public ObservableList<Product> getSuppliedProducts() {
+        // Call the SupplierDAO method to retrieve the products supplied by this supplier
+        return SupplierDAO.getSuppliedProducts(this);
     }
 
 }

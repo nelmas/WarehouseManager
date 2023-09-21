@@ -1,4 +1,5 @@
 package se.lu.ics.data;
+import se.lu.ics.models.Product;
 import se.lu.ics.models.Supplier;
 
 
@@ -6,6 +7,8 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.List;
+
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
@@ -94,7 +97,6 @@ public class SupplierDAO {
         }
     }
 
-
     //Static getter for Supplier by ID
     public static Supplier getSupplierById(String supplierId) {
         for (Supplier supplier : suppliers) {
@@ -104,7 +106,5 @@ public class SupplierDAO {
         }
         return null;
     }
-
-    
 
 }

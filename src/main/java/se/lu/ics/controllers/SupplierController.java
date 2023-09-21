@@ -1,15 +1,19 @@
 package se.lu.ics.controllers;
 
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.TabPane;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableRow;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import se.lu.ics.models.Supplier;
+import se.lu.ics.data.ProductDAO;
+import se.lu.ics.data.StoredDAO;
 import se.lu.ics.data.SupplierDAO;
 import se.lu.ics.data.WarehouseDAO;
 import se.lu.ics.models.Product;
@@ -48,11 +52,13 @@ public class SupplierController {
 
     @FXML private TableView<Supplier> tableView_supplier;
 
-    @FXML private TableView<Supplier> tableView_supplierProductList;
+    @FXML private TableView<Product> tableView_supplierProductList;
+
+    @FXML private TableColumn<Product, String> tableColumn_supplierProductId;
+
+    @FXML private TableColumn<Product, String> tableColumn_supplierProductName;
 
     @FXML private TableColumn<Supplier, String> column_supplierId;
-
-    @FXML private TableColumn<Supplier, String> tableColumn_supplierProductList;
 
     @FXML private TableColumn<Supplier, String> column_supplierName;
 
@@ -72,7 +78,28 @@ public class SupplierController {
         column_supplierEmail.setCellValueFactory(new PropertyValueFactory<Supplier, String>("supplierEmail"));
 
         tableView_supplier.setItems(SupplierDAO.getSuppliers());
+
+        // Products table
+        tableColumn_supplierProductId.setCellValueFactory(new PropertyValueFactory<Product, String>("productId"));
+        tableColumn_supplierProductName.setCellValueFactory(new PropertyValueFactory<Product, String>("productName"));
+        
+        tableView_supplierProductList.getItems().addAll(ProductDAO.getProducts());
+
+        // Add an event listener for selecting a supplier in tableView_supplier
+        tableView_supplier.getSelectionModel().selectedItemProperty().addListener((obs, oldSupplier, newSupplier) -> {
+        if (newSupplier != null) {
+            // Populate tableView_supplierProductList with the products supplied by the selected supplier
+            ObservableList<Product> suppliedProducts = newSupplier.getSuppliedProducts();
+            tableView_supplierProductList.setItems(suppliedProducts);
+        } else {
+            // Clear tableView_supplierProductList if no supplier is selected
+            tableView_supplierProductList.getItems().clear();
+        }
+    });
+
     }
+
+
 
     //Search for supplier by id method 
     public void supplierSearchById () {
@@ -123,7 +150,6 @@ public class SupplierController {
         textField_supplierAddress.clear();
         textField_supplierEmail.clear();
     }
-    
     
 }
 
