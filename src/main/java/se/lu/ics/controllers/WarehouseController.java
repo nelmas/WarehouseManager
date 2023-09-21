@@ -56,6 +56,8 @@ public class WarehouseController {
     private TextField TextFieldWarehouseAddress;
     @FXML
     private TextField TextFieldWarehouseCapacity;
+    @FXML 
+    private Button resetButtonWarehouse; 
 
     // Stored
     @FXML
@@ -68,6 +70,8 @@ public class WarehouseController {
     private TableColumn<Stored, Integer> StoredStockColumn;
     @FXML
     private TableColumn<Stored, String> storedSupplierIdColumn;
+    @FXML
+    private Label labelStock; 
 
     // Category
     @FXML
@@ -115,6 +119,7 @@ public class WarehouseController {
             if (newSelection != null) {
                 labelClickOnWarehouse.setVisible(false);
                 showProductsFromWarehouse();
+                
             }
         });
 
@@ -132,6 +137,7 @@ public class WarehouseController {
         Warehouse selectedWarehouse = warehouseTableView.getSelectionModel().getSelectedItem();
         storedTableView.getItems().clear();
         storedTableView.getItems().addAll(StoredDAO.getStoredInfoWithWarehouse(selectedWarehouse));
+        calculateStock(selectedWarehouse); 
     }
 
     // Method that shows product based on the category we press
@@ -151,4 +157,28 @@ public class WarehouseController {
         warehouseTableView.getItems().addAll(WarehouseDAO.getWarehouses());
         
     }
-}
+    //Calculate stock method
+    public void calculateStock (Warehouse selectedWarehouse) {
+        int stock = 0;
+       for(Stored stored : storedTableView.getItems()) {
+           stock += stored.getStock();
+       }
+         int warehouseCapacity = selectedWarehouse.getWarehouseCapacity();
+        int availableCapacity = warehouseCapacity - stock;               
+
+                labelStock.setText("Available stock: " + availableCapacity);
+           } 
+           
+        public void resetButtonWarehouse() {
+            TextFieldWarehouseId.clear();
+            TextFieldWarehouseAddress.clear();
+            TextFieldWarehouseCapacity.clear();
+            
+            storedTableView.getItems().clear();
+            storedTableView.getItems().addAll(StoredDAO.getStoredItems());
+      
+            System.out.println("Reset button clicked");
+        }
+       }
+
+
