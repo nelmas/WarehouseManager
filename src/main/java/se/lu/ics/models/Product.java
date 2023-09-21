@@ -8,17 +8,24 @@ public class Product {
     private String productId;
     private String productName;
     private String productCategory;
+    private Supplier supplier; 
 
     private ObservableList<Stored> stockList = FXCollections.observableArrayList();
 
     // Constructor
-    public Product(String productId, String productName, String productCategory) {
+    public Product(String productId, String productName, String productCategory, Supplier supplier) {
         this.productId = productId;
         this.productName = productName;
         this.productCategory = productCategory;
+        this.supplier = supplier; 
     }
 
     // Getter methods
+
+    public Supplier getSupplier() {
+        return supplier;
+    }
+
     public String getProductId() {
         return productId;
     }
@@ -32,6 +39,9 @@ public class Product {
     }
 
     // Setter methods
+    public void setSupplier(Supplier supplier) {
+        this.supplier = supplier;
+    }
     public void setProductId(String id) {
         this.productId = id;
     }
@@ -46,6 +56,9 @@ public class Product {
     public void addStock(Stored stock) {
         stockList.add(stock);
         
+    }
+    public String getSupplierId () {
+        return supplier.getSupplierId();
     }
    
 }

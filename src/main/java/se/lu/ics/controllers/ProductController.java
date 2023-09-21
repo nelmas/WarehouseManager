@@ -10,7 +10,10 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import se.lu.ics.models.Product;
+import se.lu.ics.models.Stored;
+import se.lu.ics.models.Supplier;
 import se.lu.ics.data.ProductDAO;
+import se.lu.ics.data.SupplierDAO;
 
 
 
@@ -18,6 +21,8 @@ public class ProductController {
     
     @FXML
     private TextField textFieldProductId;
+    @FXML
+    private TextField textFieldSupplierId; 
     @FXML
     private TextField textFieldProductName;
       @FXML
@@ -33,7 +38,11 @@ public class ProductController {
       @FXML
     private TableColumn<Product, String> columnProductCategory;
       @FXML
+    private TableColumn<Product, String> columnProductSupplierId;
+      @FXML
     private Label label_errorMessage;
+    @FXML
+    private Label labelSupplierId; 
 
 
     public void initialize () 
@@ -41,7 +50,8 @@ public class ProductController {
         columnProductId.setCellValueFactory(new PropertyValueFactory<Product, String>("productId"));
         columnProductName.setCellValueFactory(new PropertyValueFactory<Product, String>("productName"));
         columnProductCategory.setCellValueFactory(new PropertyValueFactory<Product, String>("productCategory"));
-
+        columnProductSupplierId.setCellValueFactory(new PropertyValueFactory<Product, String>("supplierId"));
+        
         tableViewProduct.getItems().addAll(ProductDAO.getProducts());
 
         tableViewProduct.getSelectionModel().selectedItemProperty().addListener(
@@ -63,13 +73,15 @@ public void buttonAddProduct_OnClick() {
         String productId = textFieldProductId.getText();
         String productName = textFieldProductName.getText();
         String productCategory = textFieldProductCategory.getText();
-
+        Supplier supplierId = SupplierDAO.getSupplierById(textFieldSupplierId.getText());
         // Create a Product object with the provided data
-        Product product = new Product(productId, productName, productCategory);
+
+        Product product = new Product(productId, productName, productCategory, supplierId);
+
 
         // Add the product to the TableView
         
-        tableViewProduct.getItems().add(product);
+        //tableViewProduct.getItems().add(product);
 
         // You might want to update your data source (ProductDAO) if needed
         //ProductDAO.addProductToDatabase(product);
