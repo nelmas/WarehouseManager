@@ -19,7 +19,7 @@ public class ProductDAO {
 
     }
         //Getter for suppliers ObservableList
-        public static ObservableList<Product> getSuppliers() {
+        public static ObservableList<Product> getProducts() {
         return products;
     }
     //Update supplier from database method
