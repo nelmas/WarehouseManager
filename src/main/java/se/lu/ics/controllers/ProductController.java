@@ -100,6 +100,11 @@ public void buttonAddProduct_OnClick() {
     }
 
     public void buttonRemoveProduct_OnClick(ActionEvent event) {
+        // remove selected product from the TableView
+        Product productToRemove = tableViewProduct.getSelectionModel().getSelectedItem();
+        tableViewProduct.getItems().remove(productToRemove);
+
+        tableViewProduct.refresh();
 
     }
 

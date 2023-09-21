@@ -28,7 +28,7 @@
       <Label layoutX="357.0" layoutY="208.0" text="Product Name" />
       <Label layoutX="357.0" layoutY="278.0" text="Product Category" />
       <Button fx:id="buttonAddProduct" layoutX="356.0" layoutY="340.0" mnemonicParsing="false" onAction="#buttonAddProduct_OnClick" text="Add" />
-      <Button fx:id="buttonRemoveProduct" layoutX="472.0" layoutY="339.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="64.0" text="Remove" />
+      <Button fx:id="buttonRemoveProduct" layoutX="472.0" layoutY="339.0" mnemonicParsing="false" onAction="#buttonRemoveProduct_OnClick" prefHeight="26.0" prefWidth="64.0" text="Remove" />
       <Label layoutX="354.0" layoutY="94.0" prefHeight="38.0" prefWidth="170.0" text="Add or remove a product by filling in the text areas below" wrapText="true" />
       <Button fx:id="buttonUpdateProduct" layoutX="405.0" layoutY="340.0" mnemonicParsing="false" onAction="#buttonUpdateProduct_OnClick" text="Update" />
    </children>
