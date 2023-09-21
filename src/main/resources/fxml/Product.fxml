@@ -7,9 +7,9 @@
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="se.lu.ics.controllers.ProductController">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="se.lu.ics.controllers.ProductController">
    <children>
-      <TableView fx:id="tableViewProduct" layoutX="39.0" layoutY="100.0" prefHeight="271.0" prefWidth="357.0">
+      <TableView fx:id="tableViewProduct" layoutX="29.0" layoutY="100.0" prefHeight="271.0" prefWidth="357.0">
         <columns>
           <TableColumn fx:id="columnProductId" prefWidth="88.0" text="Product ID" />
           <TableColumn fx:id="columnProductName" prefWidth="98.4000244140625" text="Product Name" />
