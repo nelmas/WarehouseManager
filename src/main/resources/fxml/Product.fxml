@@ -21,14 +21,15 @@
       </TableView>
       <Label layoutX="39.0" layoutY="46.0" text="Search for product" />
       <TextField fx:id="textFieldSearchProduct" layoutX="39.0" layoutY="68.0" />
-      <TextField fx:id="textFieldProductId" layoutX="355.0" layoutY="167.0" />
-      <TextField fx:id="textFieldProductName" layoutX="355.0" layoutY="233.0" />
-      <TextField fx:id="textFieldProductCategory" layoutX="355.0" layoutY="298.0" />
+      <TextField fx:id="textFieldProductId" layoutX="355.0" layoutY="167.0" prefHeight="26.0" prefWidth="182.0" />
+      <TextField fx:id="textFieldProductName" layoutX="355.0" layoutY="233.0" prefHeight="26.0" prefWidth="182.0" />
+      <TextField fx:id="textFieldProductCategory" layoutX="355.0" layoutY="298.0" prefHeight="26.0" prefWidth="182.0" />
       <Label layoutX="355.0" layoutY="141.0" text="Product ID" />
       <Label layoutX="357.0" layoutY="208.0" text="Product Name" />
       <Label layoutX="357.0" layoutY="278.0" text="Product Category" />
-      <Button fx:id="buttonAddProduct" layoutX="357.0" layoutY="340.0" mnemonicParsing="false" onAction="#buttonAddProduct_OnClick" text="Add" />
-      <Button fx:id="buttonRemoveProduct" layoutX="410.0" layoutY="340.0" mnemonicParsing="false" text="Remove" />
+      <Button fx:id="buttonAddProduct" layoutX="356.0" layoutY="340.0" mnemonicParsing="false" onAction="#buttonAddProduct_OnClick" text="Add" />
+      <Button fx:id="buttonRemoveProduct" layoutX="472.0" layoutY="339.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="64.0" text="Remove" />
       <Label layoutX="354.0" layoutY="94.0" prefHeight="38.0" prefWidth="170.0" text="Add or remove a product by filling in the text areas below" wrapText="true" />
+      <Button fx:id="buttonUpdateProduct" layoutX="405.0" layoutY="340.0" mnemonicParsing="false" onAction="#buttonUpdateProduct_OnClick" text="Update" />
    </children>
 </AnchorPane>

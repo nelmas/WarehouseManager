@@ -1,5 +1,6 @@
 package se.lu.ics.controllers;
 
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -83,5 +84,23 @@ public void buttonAddProduct_OnClick() {
         label_errorMessage.setText("Error: " + e.getMessage());
     }
 }
-}
 
+    public void buttonUpdateProduct_OnClick(ActionEvent event) {
+        String productId = textFieldProductId.getText();
+        String productName = textFieldProductName.getText();
+        String productCategory = textFieldProductCategory.getText();
+
+        Product productToUpdate = tableViewProduct.getSelectionModel().getSelectedItem();
+        productToUpdate.setProductId(productId);
+        productToUpdate.setProductName(productName);
+        productToUpdate.setProductCategory(productCategory);
+
+        tableViewProduct.refresh();
+
+    }
+
+    public void buttonRemoveProduct_OnClick(ActionEvent event) {
+
+    }
+
+}
