@@ -4,6 +4,7 @@
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
 
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="570.0" prefWidth="780.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="se.lu.ics.controllers.WarehouseController">
@@ -15,7 +16,7 @@
             <TableColumn fx:id="warehouseCapacityColumn" prefWidth="101.0" text="Capacity" />
         </columns>
       </TableView>
-      <Button fx:id="warehouseAddButton" layoutX="12.0" layoutY="298.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="48.0" text="+" AnchorPane.bottomAnchor="246.0" AnchorPane.leftAnchor="12.0" AnchorPane.rightAnchor="720.0" AnchorPane.topAnchor="298.0" />
+      <Button fx:id="warehouseAddButton" layoutX="198.0" layoutY="482.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="48.0" text="+" AnchorPane.bottomAnchor="62.0" AnchorPane.leftAnchor="198.0" AnchorPane.rightAnchor="534.0" AnchorPane.topAnchor="482.0" />
       <TableView fx:id="storedTableView" layoutX="391.0" layoutY="40.0" prefHeight="258.0" prefWidth="377.0" AnchorPane.bottomAnchor="272.0" AnchorPane.leftAnchor="391.0" AnchorPane.rightAnchor="12.0" AnchorPane.topAnchor="40.0">
         <columns>
           <TableColumn fx:id="StoredProductIdColumn" prefWidth="106.0" text="ProductId" />
@@ -31,5 +32,12 @@
         </columns>
       </TableView>
       <Label fx:id="labelClickOnCategory" layoutX="462.0" layoutY="511.0" text="Click on a category to view certain producs" />
+      <TextField fx:id="TextFieldWarehouseId" layoutX="145.0" layoutY="342.0" />
+      <TextField fx:id="TextFieldWarehouseAddress" layoutX="145.0" layoutY="390.0" />
+      <TextField fx:id="TextFieldWarehouseCapacity" layoutX="145.0" layoutY="439.0" />
+      <Label fx:id="labelWarehouseId" layoutX="60.0" layoutY="347.0" text="Warehouse ID:" />
+      <Label fx:id="labelWarehouseAddress" layoutX="27.0" layoutY="393.0" text="Warehouse Address:" />
+      <Label fx:id="labelWarehouseCapacity" layoutX="23.0" layoutY="443.0" text="Warehouse Capacity:" />
+      <Label fx:id="labelAddWarehouse" layoutX="167.0" layoutY="487.0" text="Add" />
    </children>
 </AnchorPane>
