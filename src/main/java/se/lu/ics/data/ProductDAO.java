@@ -58,6 +58,16 @@ public class ProductDAO {
         return null;
     }
 
+    //Static getter for product by category
+        public static Product getProductByCategory(String productCategory) {
+        for (Product product : products) {
+            if (product.getProductCategory().equals(productCategory)) {
+                return product; 
+            }
+        } return null; 
+
+    }
+
        //Method for registering a product
         public void addProduct(Product product) {
             products.add(product);

@@ -1,5 +1,9 @@
 package se.lu.ics.controllers;
 
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 import java.util.function.Supplier;
 
 import javafx.fxml.FXML;
@@ -37,7 +41,21 @@ public class WarehouseController {
     @FXML
     private Label warehouseLabel;
     @FXML
-    private Label labelClickOnWarehouse; 
+    private Label labelClickOnWarehouse;
+    @FXML
+    private Label labelWarehouseId; 
+    @FXML
+    private Label labelWarehouseAddress; 
+    @FXML
+    private Label labelWarehouseCapacity; 
+    @FXML 
+    private Label labelAddWarehouse;
+    @FXML 
+    private TextField TextFieldWarehouseId; 
+    @FXML
+    private TextField TextFieldWarehouseAddress;
+    @FXML
+    private TextField TextFieldWarehouseCapacity;
 
     // Stored
     @FXML
@@ -49,7 +67,15 @@ public class WarehouseController {
     @FXML
     private TableColumn<Stored, Integer> StoredStockColumn;
     @FXML
-    private TableColumn<Stored, String> storedSupplierIdColumn;  
+    private TableColumn<Stored, String> storedSupplierIdColumn;
+
+    // Category
+    @FXML
+    private TableView<Product> tableViewCategory;
+    @FXML
+    private TableColumn<Product, String> categoryColumnProduct;
+    @FXML
+    private Label labelClickOnCategory;
 
     public void initialize() {
         // Warehouse table
@@ -65,11 +91,38 @@ public class WarehouseController {
         storedSupplierIdColumn.setCellValueFactory(new PropertyValueFactory<Stored, String>("supplierId"));
         storedTableView.getItems().addAll(StoredDAO.getStoredItems());
 
+        // Category table
+        categoryColumnProduct.setCellValueFactory(new PropertyValueFactory<Product, String>("productCategory"));
+        // Create a set to store distinct categories
+        Set<String> distinctCategories = new HashSet<>();
+
+        // Assuming you have an ObservableList<Product> productsList with all products
+        for (Product product : ProductDAO.getProducts()) {
+            distinctCategories.add(product.getProductCategory());
+        }
+
+        // Create dummy Product objects for distinct categories
+        List<Product> distinctCategoryProducts = new ArrayList<>();
+        for (String category : distinctCategories) {
+            distinctCategoryProducts.add(new Product("", "", category, null));
+        }
+
+        // Populate tableViewCategory with the dummy products
+        tableViewCategory.getItems().addAll(distinctCategoryProducts);
+
         // Add listener to warehouse table
         warehouseTableView.getSelectionModel().selectedItemProperty().addListener((obs, oldSelection, newSelection) -> {
             if (newSelection != null) {
                 labelClickOnWarehouse.setVisible(false);
                 showProductsFromWarehouse();
+            }
+        });
+
+        // Add listener to Category table
+        tableViewCategory.getSelectionModel().selectedItemProperty().addListener((obs, oldSelection, newSelection) -> {
+            if (newSelection != null) {
+                labelClickOnCategory.setVisible(false);
+                showProductsFromCategory();
             }
         });
     }
@@ -79,5 +132,13 @@ public class WarehouseController {
         Warehouse selectedWarehouse = warehouseTableView.getSelectionModel().getSelectedItem();
         storedTableView.getItems().clear();
         storedTableView.getItems().addAll(StoredDAO.getStoredInfoWithWarehouse(selectedWarehouse));
+    }
+
+    // Method that shows product based on the category we press
+    public void showProductsFromCategory() {
+        Product selectedCategory = tableViewCategory.getSelectionModel().getSelectedItem();
+        storedTableView.getItems().clear();
+        storedTableView.getItems()
+                .addAll(StoredDAO.getStoredInfoWithProductCategory(selectedCategory.getProductCategory()));
     }
 }
