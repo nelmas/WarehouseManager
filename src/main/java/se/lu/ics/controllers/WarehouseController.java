@@ -66,21 +66,7 @@ public class WarehouseController {
         });
     }
 
-    // //Search for warehouse by id method
-    // public void searchWarehouseById () {
-    // String warehouseId = warehouseSearchtextField.getText().toLowerCase();
-    // for (Warehouse warehouse : WarehouseDAO.getWarehouses()) {
-    // if (warehouse.getWarehouseId().toLowerCase().equals(warehouseId)) {
-    // warehouseTableView.getSelectionModel().select(warehouse);
-
-    // return;
-    // }
-    // warehouseTableView.getSelectionModel().clearSelection();
-    // }
-
-    // }
-
-    // method that shows products based on the warehouse i press
+    // method that shows products based on the warehouse we press
     public void showProductsFromWarehouse() {
         Warehouse selectedWarehouse = warehouseTableView.getSelectionModel().getSelectedItem();
         storedTableView.getItems().clear();
