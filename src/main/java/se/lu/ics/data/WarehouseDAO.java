@@ -10,29 +10,30 @@ import javafx.collections.ObservableList;
 import se.lu.ics.models.Warehouse;
 
 public class WarehouseDAO {
-    
 
-     private static ObservableList<Warehouse> warehouses = FXCollections.observableArrayList();
+    private static ObservableList<Warehouse> warehouses = FXCollections.observableArrayList();
 
     static {
-        updateSuppliersFromDatabase(); 
+        updateSuppliersFromDatabase();
 
     }
-    //Getter for suppliers ObservableList
+
+    // Getter for suppliers ObservableList
     public static ObservableList<Warehouse> getWarehouses() {
         return warehouses;
     }
-    //Update supplier from database method
+
+    // Update supplier from database method
     public static void updateSuppliersFromDatabase() {
         String query = "SELECT * FROM Warehouse";
         try (Connection connection = ConnectionHandler.getConnection()) {
             PreparedStatement statement = connection.prepareStatement(query);
             ResultSet resultSet = statement.executeQuery();
-            warehouses.clear(); 
+            warehouses.clear();
             while (resultSet.next()) {
                 String warehouseId = resultSet.getString("WarehouseId");
                 String address = resultSet.getString("Address");
-                Integer capacity = resultSet.getInt("Capacity");   
+                Integer capacity = resultSet.getInt("Capacity");
                 Warehouse warehouse = new Warehouse(warehouseId, address, capacity);
                 warehouses.add(warehouse);
             }
@@ -40,7 +41,8 @@ public class WarehouseDAO {
             e.printStackTrace();
         }
     }
-    //Static getter for warehouse by id
+
+    // Static getter for warehouse by id
     public static Warehouse getWarehouseById(String warehouseId) {
         for (Warehouse warehouse : warehouses) {
             if (warehouse.getWarehouseId().equals(warehouseId)) {
@@ -50,12 +52,32 @@ public class WarehouseDAO {
         return null;
     }
 
-    //Method for registering a warehouse
+    // Method for registering a warehouse
     public void addWarehouse(Warehouse warehouse) {
         warehouses.add(warehouse);
     }
-    
 
+    public static void addWarehouse(String warehouseId, String address, Integer capacity) {
+        String query = "INSERT INTO Warehouse (WarehouseId, Address, Capacity) VALUES (?, ?, ?)";
+
+        try (Connection connection = ConnectionHandler.getConnection();
+            PreparedStatement statement = connection.prepareStatement(query)) {
+
+            statement.setString(1, warehouseId);
+            statement.setString(2, address);
+            statement.setInt(3, capacity);
+
+            int rowsInserted = statement.executeUpdate();
+
+            if (rowsInserted > 0) {
+                Warehouse warehouse = new Warehouse(warehouseId, address, capacity);
+                warehouses.add(warehouse);
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+    }
 
 }
-

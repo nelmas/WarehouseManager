@@ -16,7 +16,7 @@
             <TableColumn fx:id="warehouseCapacityColumn" prefWidth="101.0" text="Capacity" />
         </columns>
       </TableView>
-      <Button fx:id="warehouseAddButton" layoutX="198.0" layoutY="482.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="48.0" text="+" AnchorPane.bottomAnchor="62.0" AnchorPane.leftAnchor="198.0" AnchorPane.rightAnchor="534.0" AnchorPane.topAnchor="482.0" />
+      <Button fx:id="warehouseAddButton" layoutX="257.0" layoutY="474.0" mnemonicParsing="false" onAction="#addWarehouseButtonClicked" prefHeight="26.0" prefWidth="48.0" text="+" AnchorPane.bottomAnchor="70.0" AnchorPane.leftAnchor="257.0" AnchorPane.rightAnchor="475.0" AnchorPane.topAnchor="474.0" />
       <TableView fx:id="storedTableView" layoutX="391.0" layoutY="40.0" prefHeight="258.0" prefWidth="377.0" AnchorPane.bottomAnchor="272.0" AnchorPane.leftAnchor="391.0" AnchorPane.rightAnchor="12.0" AnchorPane.topAnchor="40.0">
         <columns>
           <TableColumn fx:id="StoredProductIdColumn" prefWidth="106.0" text="ProductId" />
@@ -38,6 +38,6 @@
       <Label fx:id="labelWarehouseId" layoutX="60.0" layoutY="347.0" text="Warehouse ID:" />
       <Label fx:id="labelWarehouseAddress" layoutX="27.0" layoutY="393.0" text="Warehouse Address:" />
       <Label fx:id="labelWarehouseCapacity" layoutX="23.0" layoutY="443.0" text="Warehouse Capacity:" />
-      <Label fx:id="labelAddWarehouse" layoutX="167.0" layoutY="487.0" text="Add" />
+      <Label fx:id="labelAddWarehouse" layoutX="225.0" layoutY="479.0" text="Add" />
    </children>
 </AnchorPane>
