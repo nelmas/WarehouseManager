@@ -51,6 +51,14 @@ public class WarehouseController {
     @FXML
     private TableColumn<Stored, String> storedSupplierIdColumn;  
 
+    //Category
+    @FXML 
+    private TableView<Product> tableViewCategory;
+    @FXML
+    private TableColumn<Product, String> categoryColumnProduct; 
+    @FXML
+    private Label labelClickOnCategory; 
+
     public void initialize() {
         // Warehouse table
         warehouseIdColumn.setCellValueFactory(new PropertyValueFactory<Warehouse, String>("warehouseId"));
@@ -65,11 +73,24 @@ public class WarehouseController {
         storedSupplierIdColumn.setCellValueFactory(new PropertyValueFactory<Stored, String>("supplierId"));
         storedTableView.getItems().addAll(StoredDAO.getStoredItems());
 
+        // Category table
+        categoryColumnProduct.setCellValueFactory(new PropertyValueFactory<Product, String>("productCategory"));
+        tableViewCategory.getItems().addAll(ProductDAO.getProducts());
+
+
         // Add listener to warehouse table
         warehouseTableView.getSelectionModel().selectedItemProperty().addListener((obs, oldSelection, newSelection) -> {
             if (newSelection != null) {
                 labelClickOnWarehouse.setVisible(false);
                 showProductsFromWarehouse();
+            }
+        });
+
+        //Add listener to Category table
+        tableViewCategory.getSelectionModel().selectedItemProperty().addListener((obs, oldSelection, newSelection) -> {
+            if (newSelection != null) {
+                labelClickOnCategory.setVisible(false);
+                showProductsFromCategory();
             }
         });
     }
@@ -79,5 +100,12 @@ public class WarehouseController {
         Warehouse selectedWarehouse = warehouseTableView.getSelectionModel().getSelectedItem();
         storedTableView.getItems().clear();
         storedTableView.getItems().addAll(StoredDAO.getStoredInfoWithWarehouse(selectedWarehouse));
+    }
+
+    //Method that shows product based on the category we press
+    public void showProductsFromCategory() {
+        Product selectedCategory = tableViewCategory.getSelectionModel().getSelectedItem(); 
+        storedTableView.getItems().clear();
+        storedTableView.getItems().addAll(StoredDAO.getStoredInfoWithProductCategory(selectedCategory.getProductCategory()));
     }
 }

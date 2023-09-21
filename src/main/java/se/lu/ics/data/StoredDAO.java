@@ -52,4 +52,12 @@ public class StoredDAO {
             }
         } return storedItemsWithWarehouse;
     }
+    public static ObservableList<Stored> getStoredInfoWithProductCategory (String productCategory) {
+        ObservableList<Stored> storedItemsWithProductCategory = FXCollections.observableArrayList();
+        for (Stored stored : storedItems) {
+            if (stored.getProduct().getProductCategory().equals(productCategory)) {
+                storedItemsWithProductCategory.add(stored); 
+            }
+        } return storedItemsWithProductCategory;
+    }
 }
