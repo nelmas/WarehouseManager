@@ -71,6 +71,16 @@ public class SupplierDAO {
     }
 
 
+    //Static getter for Supplier by ID
+    public static Supplier getSupplierById(String supplierId) {
+        for (Supplier supplier : suppliers) {
+            if (supplier.getSupplierId().equals(supplierId)) {
+                return supplier;
+            }
+        }
+        return null;
+    }
+
     
 
 }

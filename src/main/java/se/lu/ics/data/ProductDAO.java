@@ -8,7 +8,8 @@ import java.sql.SQLException;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import se.lu.ics.models.Product;
-import se.lu.ics.models.Stored; 
+import se.lu.ics.models.Stored;
+import se.lu.ics.models.Supplier; 
 
 public class ProductDAO {
     
@@ -30,11 +31,13 @@ public class ProductDAO {
             PreparedStatement statement = connection.prepareStatement(query);
             ResultSet resultSet = statement.executeQuery();
             products.clear(); 
+
             while (resultSet.next()) {
                 String productId = resultSet.getString("ProductId");
                 String productName = resultSet.getString("Name");
                 String category = resultSet.getString("Category");
-                Product product = new Product(productId, productName, category);
+                Supplier supplierId = SupplierDAO.getSupplierById(resultSet.getString("SupplierId")); 
+                Product product = new Product(productId, productName, category, supplierId);
                 products.add(product);
             }
 

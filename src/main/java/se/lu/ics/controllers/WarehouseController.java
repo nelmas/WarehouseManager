@@ -1,5 +1,7 @@
 package se.lu.ics.controllers;
 
+import java.util.function.Supplier;
+
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -34,16 +36,20 @@ public class WarehouseController {
     private Button warehouseAddButton;
     @FXML
     private Label warehouseLabel;
+    @FXML
+    private Label labelClickOnWarehouse; 
 
     // Stored
     @FXML
     private TableView<Stored> storedTableView;
     @FXML
-    private TableColumn<Stored, String> StoredProductIdColumn;;
+    private TableColumn<Stored, String> StoredProductIdColumn;
     @FXML
     private TableColumn<Stored, String> StoredProductNameColumn;
     @FXML
     private TableColumn<Stored, Integer> StoredStockColumn;
+    @FXML
+    private TableColumn<Stored, String> storedSupplierIdColumn;  
 
     public void initialize() {
         // Warehouse table
@@ -56,11 +62,13 @@ public class WarehouseController {
         StoredProductIdColumn.setCellValueFactory(new PropertyValueFactory<Stored, String>("productId"));
         StoredProductNameColumn.setCellValueFactory(new PropertyValueFactory<Stored, String>("productName"));
         StoredStockColumn.setCellValueFactory(new PropertyValueFactory<Stored, Integer>("stock"));
+        storedSupplierIdColumn.setCellValueFactory(new PropertyValueFactory<Stored, String>("supplierId"));
         storedTableView.getItems().addAll(StoredDAO.getStoredItems());
 
         // Add listener to warehouse table
         warehouseTableView.getSelectionModel().selectedItemProperty().addListener((obs, oldSelection, newSelection) -> {
             if (newSelection != null) {
+                labelClickOnWarehouse.setVisible(false);
                 showProductsFromWarehouse();
             }
         });
