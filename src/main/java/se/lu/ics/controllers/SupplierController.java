@@ -133,6 +133,26 @@ public class SupplierController {
         }
     });
 
+    // Add an event listener for selecting a supplier in tableView_supplier
+    tableView_supplier.getSelectionModel().selectedItemProperty().addListener((obs, oldSupplier, newSupplier) -> {
+        if (newSupplier != null) {
+            // Populate text fields with the selected supplier's information
+            textField_supplierName.setText(newSupplier.getSupplierName());
+            textField_supplierAddress.setText(newSupplier.getSupplierAddress());
+            textField_supplierEmail.setText(newSupplier.getSupplierEmail());
+
+            // Populate tableView_supplierProductList with the products supplied by the selected supplier
+            ObservableList<Product> suppliedProducts = newSupplier.getSuppliedProducts();
+            tableView_supplierProductList.setItems(suppliedProducts);
+        } else {
+            // Clear text fields and tableView_supplierProductList if no supplier is selected
+            textField_supplierName.clear();
+            textField_supplierAddress.clear();
+            textField_supplierEmail.clear();
+            tableView_supplierProductList.getItems().clear();
+        }
+    });
+
     }
 
 
