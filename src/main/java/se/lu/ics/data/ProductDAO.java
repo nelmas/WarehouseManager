@@ -116,4 +116,21 @@ public class ProductDAO {
             }
         }
 
+        public static void updateProductInDatabase(Product updatedProduct) {
+            String query = "UPDATE Product SET Name = ?, Category = ?, SupplierId = ? WHERE ProductId = ?";
+
+            try (Connection connection = ConnectionHandler.getConnection();
+                 PreparedStatement statement = connection.prepareStatement(query)) {
+                statement.setString(1, updatedProduct.getProductName());
+                statement.setString(2, updatedProduct.getProductCategory());
+                statement.setString(3, updatedProduct.getSupplier().getSupplierId());
+                statement.setString(4, updatedProduct.getProductId());
+
+                statement.executeUpdate();
+            } catch (SQLException e) {
+                e.printStackTrace();
+                // Handle the exception as needed
+            }
+        }
+
 }

@@ -46,6 +46,8 @@ public class ProductController {
 
     @FXML private Button buttonRemoveProduct;
 
+    @FXML private Button buttonUpdateProduct;
+
 
     public void initialize () 
     {
@@ -124,6 +126,40 @@ public class ProductController {
     }
 } */
 
+@FXML
+public void buttonUpdateProduct_OnClick(ActionEvent event) {
+    Product selectedProduct = tableViewProduct.getSelectionModel().getSelectedItem();
+
+    if (selectedProduct == null) {
+        label_errorMessage.setText("Error: Please select a product to update.");
+        return;
+    }
+
+    try {
+        // Get the updated values from the text fields
+        String productName = textFieldProductName.getText();
+        String productCategory = textFieldProductCategory.getText();
+
+        // Update the selected product's information
+        selectedProduct.setProductName(productName);
+        selectedProduct.setProductCategory(productCategory);
+
+        // Update the product in the data source (assuming ProductDAO handles this)
+        ProductDAO.updateProductInDatabase(selectedProduct);
+
+        // Refresh the table view to reflect the changes
+        tableViewProduct.refresh();
+
+        clearInputFields();
+        clearLabels();
+
+        // Display a success message
+        label_errorMessage.setText("Product updated successfully");
+    } catch (Exception e) {
+        label_errorMessage.setText("Error: Please make sure you have proper data inputs in all fields");
+    }
+}
+
 public void buttonRemoveProduct_OnClick(ActionEvent event) {
   // Get the selected product from the TableView
   Product productToRemove = tableViewProduct.getSelectionModel().getSelectedItem();
@@ -150,7 +186,7 @@ private void clearInputFields() {
   textFieldSupplierId.clear();
 }
 
-    public void buttonUpdateProduct_OnClick(ActionEvent event) {
+        /* public void buttonUpdateProduct_OnClick(ActionEvent event) {
         String productId = textFieldProductId.getText();
         String productName = textFieldProductName.getText();
         String productCategory = textFieldProductCategory.getText();
@@ -162,7 +198,7 @@ private void clearInputFields() {
 
         tableViewProduct.refresh();
 
-    }
+    } */
 
     private void clearLabels() {
       labelSupplierId.setText(null);
