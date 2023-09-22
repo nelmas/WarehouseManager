@@ -56,5 +56,9 @@ public class Supplier {
         return SupplierDAO.getSuppliedProducts(this);
     }
 
+    public String getId() {
+        return null;
+    }
+
 }
 

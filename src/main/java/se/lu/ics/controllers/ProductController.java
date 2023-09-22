@@ -39,10 +39,12 @@ public class ProductController {
     private TableColumn<Product, String> columnProductCategory;
       @FXML
     private TableColumn<Product, String> columnProductSupplierId;
-      @FXML
-    private Label label_errorMessage;
-    @FXML
-    private Label labelSupplierId; 
+    
+    @FXML private Label label_errorMessage;
+    
+    @FXML private Label labelSupplierId; 
+
+    @FXML private Button buttonRemoveProduct;
 
 
     public void initialize () 
@@ -65,9 +67,34 @@ public class ProductController {
         });
     };
     
-
+    public void buttonAddProduct_OnClick(ActionEvent event) {
+      try {
+          String productId = textFieldProductId.getText();
+          String productName = textFieldProductName.getText();
+          String productCategory = textFieldProductCategory.getText();
+          Supplier supplier = SupplierDAO.getSupplierById(textFieldSupplierId.getText());
+  
+          // Create a Product object with the provided data
+          Product product = new Product(productId, productName, productCategory, supplier);
+  
+          // Add the product to the TableView
+          tableViewProduct.getItems().add(product);
+  
+          // You might want to update your data source (ProductDAO) if needed
+          ProductDAO.addProductToDatabase(product);
+  
+          // Clear the input fields after adding the product
+          textFieldProductId.clear();
+          textFieldProductName.clear();
+          textFieldProductCategory.clear();
+          textFieldSupplierId.clear(); // Clear the supplier field as well
+  
+      } catch (Exception e) {
+          label_errorMessage.setText("Error: " + e.getMessage());
+      }
+  }
     
-public void buttonAddProduct_OnClick() {
+/* public void buttonAddProduct_OnClick() {
 
     try {
         String productId = textFieldProductId.getText();
@@ -95,6 +122,32 @@ public void buttonAddProduct_OnClick() {
     } catch (Exception e) {
         label_errorMessage.setText("Error: " + e.getMessage());
     }
+} */
+
+public void buttonRemoveProduct_OnClick(ActionEvent event) {
+  // Get the selected product from the TableView
+  Product productToRemove = tableViewProduct.getSelectionModel().getSelectedItem();
+
+  if (productToRemove != null) {
+      // Remove the product from the TableView
+      tableViewProduct.getItems().remove(productToRemove);
+
+      // Remove the product from the database
+      ProductDAO.removeProductFromDatabase(productToRemove);
+      
+      // Clear the input fields (if needed)
+      clearInputFields();
+      clearLabels();
+  } else {
+      label_errorMessage.setText("Error: Please select a product to remove.");
+  }
+}
+
+private void clearInputFields() {
+  textFieldProductId.clear();
+  textFieldProductName.clear();
+  textFieldProductCategory.clear();
+  textFieldSupplierId.clear();
 }
 
     public void buttonUpdateProduct_OnClick(ActionEvent event) {
@@ -111,13 +164,9 @@ public void buttonAddProduct_OnClick() {
 
     }
 
-    public void buttonRemoveProduct_OnClick(ActionEvent event) {
-        // remove selected product from the TableView
-        Product productToRemove = tableViewProduct.getSelectionModel().getSelectedItem();
-        tableViewProduct.getItems().remove(productToRemove);
-
-        tableViewProduct.refresh();
-
+    private void clearLabels() {
+      labelSupplierId.setText(null);
+      label_errorMessage.setText(null);
     }
 
 }

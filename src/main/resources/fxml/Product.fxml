@@ -7,7 +7,7 @@
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="se.lu.ics.controllers.ProductController">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="se.lu.ics.controllers.ProductController">
    <children>
       <TableView fx:id="tableViewProduct" layoutX="29.0" layoutY="100.0" prefHeight="271.0" prefWidth="357.0">
         <columns>
@@ -29,9 +29,10 @@
       <Label layoutX="405.0" layoutY="186.0" text="Product Name" />
       <Label layoutX="405.0" layoutY="235.0" text="Product Category" />
       <Button fx:id="buttonAddProduct" layoutX="405.0" layoutY="340.0" mnemonicParsing="false" onAction="#buttonAddProduct_OnClick" text="Add" />
-      <Button fx:id="buttonRemoveProduct" layoutX="458.0" layoutY="340.0" mnemonicParsing="false" text="Remove" />
+      <Button fx:id="buttonRemoveProduct" layoutX="458.0" layoutY="340.0" mnemonicParsing="false" onAction="#buttonRemoveProduct_OnClick" text="Remove" />
       <Label layoutX="402.0" layoutY="94.0" prefHeight="38.0" prefWidth="170.0" text="Add or remove a product by filling in the text areas below" wrapText="true" />
       <TextField fx:id="textFieldSupplierId" layoutX="404.0" layoutY="303.0" />
       <Label fx:id="labelSupplierId" layoutX="406.0" layoutY="283.0" text="SupplierId" />
+      <Label fx:id="label_errorMessage" layoutX="29.0" layoutY="378.0" />
    </children>
 </AnchorPane>
