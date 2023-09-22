@@ -97,6 +97,33 @@ public class SupplierDAO {
         }
     }
 
+    public static void updateSupplierInDatabase(Supplier supplier) {
+        String query = "UPDATE Supplier SET Name = ?, Address = ?, Email = ? WHERE SupplierId = ?";
+        
+        try (Connection connection = ConnectionHandler.getConnection();
+             PreparedStatement statement = connection.prepareStatement(query)) {
+            
+            statement.setString(1, supplier.getSupplierName());
+            statement.setString(2, supplier.getSupplierAddress());
+            statement.setString(3, supplier.getSupplierEmail());
+            statement.setString(4, supplier.getSupplierId());
+            
+            int rowsUpdated = statement.executeUpdate();
+    
+            if (rowsUpdated > 0) {
+                // Successfully updated in the database
+                // No need to update the local list since it's already updated
+            } else {
+                // Handle the case where the supplier was not found in the database
+                // (e.g., show an error message to the user)
+            }
+    
+        } catch (SQLException e) {
+            e.printStackTrace(); 
+            // Handle the error (e.g., show an error message to the user)
+        }
+    }
+
     //Static getter for Supplier by ID
     public static Supplier getSupplierById(String supplierId) {
         for (Supplier supplier : suppliers) {

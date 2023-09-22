@@ -25,6 +25,8 @@ public class SupplierController {
 
     @FXML private Label label_supplierSearchField;
 
+    @FXML private Label label_supplierUpdateInfo;
+
     @FXML private Label label_supplierAddInfo;
 
     @FXML private Label label_supplierId;
@@ -70,6 +72,8 @@ public class SupplierController {
     @FXML private Button button_addSupplier;
 
     @FXML private Button button_removeSupplier;
+
+    @FXML private Button button_updateSupplier;
 
     // Define a FilteredList to filter the suppliers
     private FilteredList<Supplier> filteredSuppliers;
@@ -175,6 +179,40 @@ public void button_removeSupplier_OnClick(){
         // Remove the supplier from the table view and refresh it
         tableView_supplier.getItems().remove(supplier);
         tableView_supplier.refresh(); // Refresh the table view
+    }
+}
+
+@FXML
+public void button_updateSupplier_OnClick() {
+    Supplier selectedSupplier = tableView_supplier.getSelectionModel().getSelectedItem();
+    if (selectedSupplier == null) {
+        label_errorMessage.setText("Error: Please choose a supplier from the table above");
+        return;
+    }
+
+    try {
+        // Get the updated values from the text fields
+        String name = textField_supplierName.getText();
+        String address = textField_supplierAddress.getText();
+        String email = textField_supplierEmail.getText();
+
+        // Update the selected supplier's information
+        selectedSupplier.setSupplierName(name);
+        selectedSupplier.setSupplierAddress(address);
+        selectedSupplier.setSupplierEmail(email);
+
+        // Update the supplier in the data source (assuming SupplierDAO handles this)
+        SupplierDAO.updateSupplierInDatabase(selectedSupplier);
+
+        // Refresh the table view to reflect the changes
+        tableView_supplier.refresh();
+
+        clearTextFields();
+
+        // Display a success message
+        label_errorMessage.setText("Supplier updated successfully");
+    } catch (Exception e) {
+        label_errorMessage.setText("Error: Please make sure you have proper data inputs in all fields");
     }
 }
 
