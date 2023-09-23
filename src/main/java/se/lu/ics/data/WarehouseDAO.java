@@ -57,11 +57,12 @@ public class WarehouseDAO {
         warehouses.add(warehouse);
     }
 
-    public static void addWarehouse(String warehouseId, String address, Integer capacity) {
+    public static void addWarehouse(String warehouseId, String address, Integer capacity) throws SQLException {
         String query = "INSERT INTO Warehouse (WarehouseId, Address, Capacity) VALUES (?, ?, ?)";
 
-        try (Connection connection = ConnectionHandler.getConnection();
-            PreparedStatement statement = connection.prepareStatement(query)) {
+        Connection connection = ConnectionHandler.getConnection();
+        PreparedStatement statement = connection.prepareStatement(query);
+        {
 
             statement.setString(1, warehouseId);
             statement.setString(2, address);
@@ -74,10 +75,8 @@ public class WarehouseDAO {
                 warehouses.add(warehouse);
             }
 
-        } catch (SQLException e) {
-            e.printStackTrace();
         }
 
     }
-
+    
 }
