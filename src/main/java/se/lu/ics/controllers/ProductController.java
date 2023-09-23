@@ -4,6 +4,7 @@ import javafx.collections.transformation.FilteredList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
+import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
@@ -28,6 +29,8 @@ public class ProductController {
     private TextField textFieldProductCategory;
     @FXML
     private TextField textFieldSearchProduct;
+    @FXML
+    private ComboBox <String> comboBoxSupplierId;
       @FXML
     private Button buttonAddProduct;
       @FXML
@@ -102,7 +105,8 @@ public class ProductController {
           String productId = textFieldProductId.getText();
           String productName = textFieldProductName.getText();
           String productCategory = textFieldProductCategory.getText();
-          Supplier supplier = SupplierDAO.getSupplierById(textFieldSupplierId.getText());
+          String supplierId = comboBoxSupplierId.getValue();
+          Supplier supplier = SupplierDAO.getSupplierById(supplierId);
   
           // Create a Product object with the provided data
           Product product = new Product(productId, productName, productCategory, supplier);
@@ -117,8 +121,9 @@ public class ProductController {
           textFieldProductId.clear();
           textFieldProductName.clear();
           textFieldProductCategory.clear();
-          textFieldSupplierId.clear(); // Clear the supplier field as well
   
+
+
       } catch (Exception e) {
           label_errorMessage.setText("Error: " + e.getMessage());
       }
