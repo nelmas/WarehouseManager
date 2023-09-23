@@ -77,20 +77,23 @@ public class ProductDAO {
             products.remove(product);
         }
 
-        public static void addProductToDatabase(Product product) {
+        public static void addProductToDatabase(String productId, String productName, String productCategory, Supplier supplier) {
             String query = "INSERT INTO Product (ProductId, Name, Category, SupplierId) VALUES (?, ?, ?, ?)";
+            String supplierId = supplier.getSupplierId();
         
             try (Connection connection = ConnectionHandler.getConnection();
                  PreparedStatement statement = connection.prepareStatement(query)) {
-                statement.setString(1, product.getProductId());
-                statement.setString(2, product.getProductName());
-                statement.setString(3, product.getProductCategory());
-                statement.setString(4, product.getSupplier().getSupplierId());
-        
-                statement.executeUpdate();
-        
+                statement.setString(1, productId);
+                statement.setString(2, productName);
+                statement.setString(3, productCategory);
+                statement.setString(4, supplierId);
+                int rowsInserted = statement.executeUpdate();
+
+                if (rowsInserted > 0) {
+                    Product product = new Product(productId, productName, productCategory, supplier);
                 // After successfully inserting the product, you can update your local data
                 products.add(product);
+                }
             } catch (SQLException e) {
                 e.printStackTrace();
                 // Handle the exception as needed
