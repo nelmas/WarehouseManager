@@ -7,6 +7,7 @@ import java.util.Set;
 
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
+import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
@@ -75,6 +76,30 @@ public class WarehouseController {
     private TableColumn<Product, String> categoryColumnProduct;
     @FXML
     private Label labelClickOnCategory;
+
+    // Add/remove products
+
+    @FXML private Label label_errorMessageAddRemoveProducts;
+
+    @FXML private Label label_chooseProduct;
+
+    @FXML private Label label_infoAddRemoveProduct;
+
+    @FXML private Label label_chooseWarehouse;
+
+    @FXML private Label labelEnterQuantity;
+
+    @FXML private Button buttonAddProduct;
+
+    @FXML private Button buttonRemoveProduct;
+
+    @FXML private TextField textFieldEnterQuantity;
+
+    @FXML private ComboBox<String> ComboBoxChooseProduct;
+
+    @FXML private ComboBox<String> ComboBoxChooseWarehouse;
+
+
 
     public void initialize() {
         // Warehouse table
