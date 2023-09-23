@@ -2,24 +2,17 @@ package se.lu.ics.controllers;
 
 import javafx.collections.ObservableList;
 import javafx.collections.transformation.FilteredList;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.control.TabPane;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableRow;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import se.lu.ics.models.Supplier;
 import se.lu.ics.data.ProductDAO;
-import se.lu.ics.data.StoredDAO;
 import se.lu.ics.data.SupplierDAO;
-import se.lu.ics.data.WarehouseDAO;
 import se.lu.ics.models.Product;
-import se.lu.ics.models.Stored;
-import se.lu.ics.models.Warehouse;
 
 public class SupplierController {
 
