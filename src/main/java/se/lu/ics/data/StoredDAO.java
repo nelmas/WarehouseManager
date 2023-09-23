@@ -13,7 +13,7 @@ import se.lu.ics.models.Warehouse;
 public class StoredDAO {
     
 
-     private static ObservableList<Stored> storedItems = FXCollections.observableArrayList();
+     public static ObservableList<Stored> storedItems = FXCollections.observableArrayList();
 
     static {
         updateStoredItemsFromDatabase(); 
@@ -62,6 +62,31 @@ public class StoredDAO {
             }
         } return storedItemsWithProductCategory;
         
+    }
+
+    public static void updateStoredItem(Stored stored) throws SQLException {
+        String updateQuery = "UPDATE Stored SET Stock = ? WHERE ProductId = ? AND WarehouseId = ?";
+        try (Connection connection = ConnectionHandler.getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement(updateQuery)) {
+
+            preparedStatement.setInt(1, stored.getStock());
+            preparedStatement.setString(2, stored.getProduct().getProductId());
+            preparedStatement.setString(3, stored.getWarehouse().getWarehouseId());
+
+            preparedStatement.executeUpdate();
+        }
+    }
+
+    public static int getTotalStockInWarehouse(Warehouse warehouse) {
+        int totalStock = 0;
+    
+        for (Stored stored : StoredDAO.storedItems) {
+            if (stored.getWarehouse().equals(warehouse)) {
+                totalStock += stored.getStock();
+            }
+        }
+    
+        return totalStock;
     }
     
 }
