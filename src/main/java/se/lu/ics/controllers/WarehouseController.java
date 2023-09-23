@@ -1,22 +1,19 @@
 package se.lu.ics.controllers;
 
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-import java.util.function.Supplier;
+
 
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.scene.control.TabPane;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.scene.layout.AnchorPane;
-import javafx.scene.text.Text;
-import javafx.util.Callback;
 import se.lu.ics.data.ProductDAO;
 import se.lu.ics.data.StoredDAO;
 import se.lu.ics.data.WarehouseDAO;
@@ -43,21 +40,25 @@ public class WarehouseController {
     @FXML
     private Label labelClickOnWarehouse;
     @FXML
-    private Label labelWarehouseId; 
+    private Label labelWarehouseId;
     @FXML
-    private Label labelWarehouseAddress; 
+    private Label labelWarehouseAddress;
     @FXML
-    private Label labelWarehouseCapacity; 
-    @FXML 
+    private Label labelWarehouseCapacity;
+    @FXML
     private Label labelAddWarehouse;
-    @FXML 
-    private TextField TextFieldWarehouseId; 
+    @FXML
+    private TextField TextFieldWarehouseId;
     @FXML
     private TextField TextFieldWarehouseAddress;
     @FXML
     private TextField TextFieldWarehouseCapacity;
-    @FXML 
-    private Button resetButtonWarehouse; 
+    @FXML
+    private Button resetButtonWarehouse;
+    @FXML
+    private Label labelAddWarehouseError;
+    @FXML
+    private Label labelAddWarehouseSuccess;
 
     // Stored
     @FXML
@@ -71,7 +72,9 @@ public class WarehouseController {
     @FXML
     private TableColumn<Stored, String> storedSupplierIdColumn;
     @FXML
-    private Label labelStock; 
+    private Label labelStock;
+    @FXML
+    private Label labelProductAmount;
 
     // Category
     @FXML
@@ -94,12 +97,13 @@ public class WarehouseController {
         StoredStockColumn.setCellValueFactory(new PropertyValueFactory<Stored, Integer>("stock"));
         storedSupplierIdColumn.setCellValueFactory(new PropertyValueFactory<Stored, String>("supplierId"));
         storedTableView.getItems().addAll(StoredDAO.getStoredItems());
+        calculateProductAmount();
 
         // Category table
         categoryColumnProduct.setCellValueFactory(new PropertyValueFactory<Product, String>("productCategory"));
-        // Distinct categories stored in hashSet. 
+        // Distinct categories stored in hashSet.
         Set<String> distinctCategories = new HashSet<>();
-        
+
         for (Product product : ProductDAO.getProducts()) {
             distinctCategories.add(product.getProductCategory());
         }
@@ -111,15 +115,13 @@ public class WarehouseController {
         }
         // Populate tableViewCategory with the dummy products
         tableViewCategory.getItems().addAll(distinctCategoryProducts);
-        
-        
-        
+
         // Add listener to warehouse table
         warehouseTableView.getSelectionModel().selectedItemProperty().addListener((obs, oldSelection, newSelection) -> {
             if (newSelection != null) {
                 labelClickOnWarehouse.setVisible(false);
                 showProductsFromWarehouse();
-                
+
             }
         });
 
@@ -134,51 +136,102 @@ public class WarehouseController {
 
     // method that shows products based on the warehouse we press
     public void showProductsFromWarehouse() {
+        labelProductAmount.setVisible(false);
         Warehouse selectedWarehouse = warehouseTableView.getSelectionModel().getSelectedItem();
         storedTableView.getItems().clear();
         storedTableView.getItems().addAll(StoredDAO.getStoredInfoWithWarehouse(selectedWarehouse));
-        calculateStock(selectedWarehouse); 
+        calculateCapacity(selectedWarehouse);
     }
 
     // Method that shows product based on the category we press
     public void showProductsFromCategory() {
+        labelProductAmount.setVisible(false);
+        calculateProductAmount();
         Product selectedCategory = tableViewCategory.getSelectionModel().getSelectedItem();
         storedTableView.getItems().clear();
         storedTableView.getItems()
                 .addAll(StoredDAO.getStoredInfoWithProductCategory(selectedCategory.getProductCategory()));
     }
-    //Method for adding a warehouse
+
     public void addWarehouseButtonClicked() {
-        String warehouseId = TextFieldWarehouseId.getText();
-        String warehouseAddress = TextFieldWarehouseAddress.getText();
-        Integer warehouseCapacity = Integer.parseInt(TextFieldWarehouseCapacity.getText());
-        WarehouseDAO.addWarehouse(warehouseId, warehouseAddress, warehouseCapacity);
-        warehouseTableView.getItems().clear();
-        warehouseTableView.getItems().addAll(WarehouseDAO.getWarehouses());
-        
-    }
-    //Calculate stock method
-    public void calculateStock (Warehouse selectedWarehouse) {
-        int stock = 0;
-       for(Stored stored : storedTableView.getItems()) {
-           stock += stored.getStock();
-       }
-         int warehouseCapacity = selectedWarehouse.getWarehouseCapacity();
-        int availableCapacity = warehouseCapacity - stock;               
 
-                labelStock.setText("Available stock: " + availableCapacity);
-           } 
-           
-        public void resetButtonWarehouse() {
-            TextFieldWarehouseId.clear();
-            TextFieldWarehouseAddress.clear();
-            TextFieldWarehouseCapacity.clear();
+        try {
+            String warehouseId = TextFieldWarehouseId.getText();
+            String warehouseAddress = TextFieldWarehouseAddress.getText();
+            String warehouseCapacityString = TextFieldWarehouseCapacity.getText();
+
             
-            storedTableView.getItems().clear();
-            storedTableView.getItems().addAll(StoredDAO.getStoredItems());
-      
-            System.out.println("Reset button clicked");
+
+            if (warehouseId.isEmpty() || warehouseAddress.isEmpty() || warehouseCapacityString.isEmpty()) {
+                labelAddWarehouseError.setText("Please fill in all fields");
+                System.out.println("Please fill in all fields");
+
+            } else {
+                int warehouseCapacity = Integer.parseInt(warehouseCapacityString);
+                WarehouseDAO.addWarehouse(warehouseId, warehouseAddress, warehouseCapacity);
+                warehouseTableView.getItems().clear();
+                warehouseTableView.getItems().addAll(WarehouseDAO.getWarehouses());
+                labelAddWarehouseSuccess.setText("Warehouse added");
+                labelAddWarehouseError.setText("");
+            }
+         } catch (SQLException e1) {
+           
+            if(e1.getErrorCode() == 2627) {
+            labelAddWarehouseSuccess.setText("");
+            labelAddWarehouseError.setText("Warehouse already exists");
+            System.out.println("Warehouse already exists");
+            
+        }   if(e1.getErrorCode() == 0) {
+                labelAddWarehouseSuccess.setText("");
+                labelAddWarehouseError.setText("Connection to database lost");
+                System.out.println("No connection to database");
+            }
+            
+        }   catch (NumberFormatException e2) {
+            labelAddWarehouseSuccess.setText("");
+            labelAddWarehouseError.setText("Capacity needs to be a number");
+            
+
+        }  catch (Exception e) {
+            labelAddWarehouseSuccess.setText("");
+            labelAddWarehouseError.setText("Something went wrong");
+            System.out.println("Something went wrong");
         }
-       }
+           
+    }
 
+    // Calculate capacity method
+    public void calculateCapacity(Warehouse selectedWarehouse) {
+        int stock = 0;
+        for (Stored stored : storedTableView.getItems()) {
+            stock += stored.getStock();
+        }
+        int warehouseCapacity = selectedWarehouse.getWarehouseCapacity();
+        int availableCapacity = warehouseCapacity - stock;
+        
 
+        labelStock.setText("Available capacity: " + availableCapacity);
+    }
+
+    public void calculateProductAmount() {
+        int productAmount = 0;
+        for (Product products : ProductDAO.getProducts()) {
+            productAmount += ProductDAO.getProducts().size();
+            break;
+        }
+        labelProductAmount.setText("Product amount: " + productAmount);
+    }
+
+    public void resetButtonWarehouse() {
+        TextFieldWarehouseId.clear();
+        TextFieldWarehouseAddress.clear();
+        TextFieldWarehouseCapacity.clear();
+        
+        
+
+        storedTableView.getItems().clear();
+        storedTableView.getItems().addAll(StoredDAO.getStoredItems());
+
+        System.out.println("Reset button clicked");
+    }
+}
