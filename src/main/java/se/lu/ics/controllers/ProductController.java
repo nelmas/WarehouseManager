@@ -1,5 +1,6 @@
 package se.lu.ics.controllers;
 
+import javafx.collections.transformation.FilteredList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
@@ -27,6 +28,8 @@ public class ProductController {
     private TextField textFieldProductName;
       @FXML
     private TextField textFieldProductCategory;
+    @FXML
+    private TextField textFieldSearchProduct;
       @FXML
     private Button buttonAddProduct;
       @FXML
@@ -48,6 +51,7 @@ public class ProductController {
 
     @FXML private Button buttonUpdateProduct;
 
+    private FilteredList<Product> filteredProducts;
 
     public void initialize () 
     {
@@ -57,9 +61,35 @@ public class ProductController {
         columnProductSupplierId.setCellValueFactory(new PropertyValueFactory<Product, String>("supplierId"));
         
         tableViewProduct.getItems().addAll(ProductDAO.getProducts());
+        tableViewProduct.setItems(ProductDAO.getProducts());
+
+        filteredProducts = new FilteredList<>(ProductDAO.getProducts(), p -> true);
+        tableViewProduct.setItems(filteredProducts);
+
+        textFieldSearchProduct.textProperty().addListener((observable, oldValue, newValue) -> {
+            filteredProducts.setPredicate(product -> {
+                if (newValue == null || newValue.isEmpty()) {
+                    return true;
+                }
+
+                String lowerCaseFilter = newValue.toLowerCase();
+
+                if (product.getProductId().toLowerCase().contains(lowerCaseFilter)) {
+                    return true;
+                } else if (product.getProductName().toLowerCase().contains(lowerCaseFilter)) {
+                    return true;
+                } else if (product.getProductCategory().toLowerCase().contains(lowerCaseFilter)) {
+                    return true;
+                } else if (product.getSupplierId().toLowerCase().contains(lowerCaseFilter)) {
+                    return true;
+                }
+                return false;
+            });
+        });
 
         tableViewProduct.getSelectionModel().selectedItemProperty().addListener(
-            (observable, oldSelection, newSelection) -> { if (newSelection != null) {
+            (observable, oldSelection, newSelection) -> { 
+              if (newSelection != null) {
                 Product selectedProduct = tableViewProduct.getSelectionModel().getSelectedItem();
 
                 textFieldProductId.setText(selectedProduct.getProductId());
@@ -185,6 +215,22 @@ private void clearInputFields() {
   textFieldProductCategory.clear();
   textFieldSupplierId.clear();
 }
+
+//Search for product by id method
+public void productSearchById () {
+  String productId = textFieldSearchProduct.getText().toLowerCase();
+  for (Product product : ProductDAO.getProducts()) {
+      tableViewProduct.getSelectionModel().select(product); 
+      if (product.getProductId().toLowerCase().equals(productId)) {
+          
+      }
+
+                  
+          
+  
+      }  
+
+  }
 
         /* public void buttonUpdateProduct_OnClick(ActionEvent event) {
         String productId = textFieldProductId.getText();
