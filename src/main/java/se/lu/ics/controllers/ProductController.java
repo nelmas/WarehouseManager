@@ -244,7 +244,7 @@ public class ProductController {
 
       // Remove the product from the database
 
-      ProductDAO.removeProductFromDatabase(productToRemove);
+      ProductDAO.removeProductFromProductTable(productToRemove);
       tableViewProduct.refresh();
 
       // Clear the input fields (if needed)
