@@ -324,6 +324,7 @@ public class WarehouseController {
 
     // Add product to warehouse
     @FXML
+
     public void button_addProductToWarehouse_OnClick(ActionEvent event) {
         try {
             String selectedProduct = ComboBoxChooseProduct.getValue();
@@ -358,8 +359,13 @@ public class WarehouseController {
             labelAddProductToWarehouseSuccess.setText("");
             label_errorMessageAddRemoveProducts.setText("Please enter a valid quantity.");
 
+
         }
+    } catch (NumberFormatException e) {
+        label_errorMessageAddRemoveProducts.setText("Please enter a valid quantity.");
     }
+}
+
 
     // Remove product from warehouse
 
@@ -381,9 +387,9 @@ public class WarehouseController {
                 updateDatabase();
                 storedTableView.refresh();
                 label_errorMessageAddRemoveProducts.setText("");
-
                 labelAddProductToWarehouseSuccess.setText("Products removed from warehouse");
                 label_errorMessageAddRemoveProducts.setText("");
+
             }
         } catch (NumberFormatException e) {
             label_errorMessageAddRemoveProducts.setText("Please enter a valid quantity.");
@@ -392,10 +398,13 @@ public class WarehouseController {
 
     @FXML
     private void updateDatabase() {
+
         StoredDAO.updateStoredItemsFromDatabase();
         storedTableView.getItems().clear();
         storedTableView.getItems().addAll(StoredDAO.getStoredItems());
+
     }
+}
 
     @FXML
     private void clearAddRemoveProductFields() {

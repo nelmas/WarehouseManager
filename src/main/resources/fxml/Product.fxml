@@ -1,13 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="488.0" prefWidth="904.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="se.lu.ics.controllers.ProductController">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="488.0" prefWidth="904.0" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="se.lu.ics.controllers.ProductController">
    <children>
       <TableView fx:id="tableViewProduct" layoutX="29.0" layoutY="100.0" prefHeight="271.0" prefWidth="357.0">
         <columns>
@@ -20,8 +21,8 @@
             <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
          </columnResizePolicy>
       </TableView>
-      <Label layoutX="39.0" layoutY="46.0" text="Search for product" />
-      <TextField fx:id="textFieldSearchProduct" layoutX="39.0" layoutY="68.0" />
+      <Label layoutX="29.0" layoutY="46.0" text="Search for product" />
+      <TextField fx:id="textFieldSearchProduct" layoutX="29.0" layoutY="69.0" />
       <TextField fx:id="textFieldProductId" layoutX="403.0" layoutY="159.0" />
       <TextField fx:id="textFieldProductName" layoutX="403.0" layoutY="207.0" />
       <TextField fx:id="textFieldProductCategory" layoutX="403.0" layoutY="255.0" />
@@ -31,9 +32,9 @@
       <Button fx:id="buttonAddProduct" layoutX="405.0" layoutY="340.0" mnemonicParsing="false" onAction="#buttonAddProduct_OnClick" text="Add" />
       <Button fx:id="buttonRemoveProduct" layoutX="458.0" layoutY="340.0" mnemonicParsing="false" onAction="#buttonRemoveProduct_OnClick" text="Remove" />
       <Label layoutX="402.0" layoutY="94.0" prefHeight="38.0" prefWidth="170.0" text="Add or remove a product by filling in the text areas below" wrapText="true" />
-      <TextField fx:id="textFieldSupplierId" layoutX="404.0" layoutY="303.0" />
-      <Label fx:id="labelSupplierId" layoutX="406.0" layoutY="283.0" text="SupplierId" />
+      <Label fx:id="labelSupplierId" layoutX="406.0" layoutY="283.0" text="Choose a supplier:" />
       <Label fx:id="label_errorMessage" layoutX="29.0" layoutY="378.0" />
       <Button fx:id="buttonUpdateProduct" layoutX="536.0" layoutY="340.0" mnemonicParsing="false" onAction="#buttonUpdateProduct_OnClick" text="Update Product Information" />
+      <ComboBox fx:id="comboBoxSupplierId" layoutX="403.0" layoutY="302.0" prefWidth="150.0" />
    </children>
 </AnchorPane>

@@ -42,16 +42,6 @@ public class WarehouseDAO {
         }
     }
 
-    // Static getter for warehouse by id
-    public static Warehouse getWarehouseById(String warehouseId) {
-        for (Warehouse warehouse : warehouses) {
-            if (warehouse.getWarehouseId().equals(warehouseId)) {
-                return warehouse;
-            }
-        }
-        return null;
-    }
-
     // Method for registering a warehouse
     public void addWarehouse(Warehouse warehouse) {
         warehouses.add(warehouse);
@@ -79,7 +69,17 @@ public class WarehouseDAO {
 
     }
 
-   
-    
+
+    public static Warehouse getWarehouseById(String warehouseId) {
+        // You should replace this with your actual data retrieval logic
+        // For example, if you have a list of warehouses in memory:
+        for (Warehouse warehouse : warehouses) {
+            if (warehouse.getWarehouseId().equals(warehouseId)) {
+                return warehouse;
+            }
+        }
+        return null; // Return null if the warehouse is not found
+    }
+
     
 }
