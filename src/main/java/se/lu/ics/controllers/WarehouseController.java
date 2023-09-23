@@ -63,6 +63,8 @@ public class WarehouseController {
     private Label labelAddWarehouseError;
     @FXML
     private Label labelAddWarehouseSuccess;
+    @FXML
+    private Button lowStockButton;
 
     // Stored
     @FXML
@@ -90,29 +92,40 @@ public class WarehouseController {
 
     // Add/remove products
 
-    @FXML private Label label_errorMessageAddRemoveProducts;
+    @FXML
+    private Label label_errorMessageAddRemoveProducts;
 
-    @FXML private Label label_chooseProduct;
+    @FXML
+    private Label label_chooseProduct;
 
-    @FXML private Label label_infoAddRemoveProduct;
+    @FXML
+    private Label label_infoAddRemoveProduct;
 
-    @FXML private Label label_chooseWarehouse;
+    @FXML
+    private Label label_chooseWarehouse;
 
-    @FXML private Label labelEnterQuantity;
+    @FXML
+    private Label labelEnterQuantity;
 
-    @FXML private Button buttonAddProduct;
+    @FXML
+    private Button buttonAddProduct;
 
-    @FXML private Button buttonRemoveProduct;
+    @FXML
+    private Button buttonRemoveProduct;
 
-    @FXML private TextField textFieldEnterQuantity;
+    @FXML
+    private TextField textFieldEnterQuantity;
 
-    @FXML private ComboBox<String> ComboBoxChooseProduct;
+    @FXML
+    private ComboBox<String> ComboBoxChooseProduct;
 
-    @FXML private ComboBox<String> ComboBoxChooseWarehouse;
 
+    @FXML
+    private ComboBox<String> ComboBoxChooseWarehouse;
 
     private ObservableList<String> productIds = FXCollections.observableArrayList();
     private ObservableList<String> warehouseIds = FXCollections.observableArrayList();
+
 
 
 
@@ -167,6 +180,7 @@ public class WarehouseController {
             if (newSelection != null) {
                 labelClickOnWarehouse.setVisible(false);
                 showProductsFromWarehouse();
+                calculateProductAmount();
 
             }
         });
@@ -182,21 +196,25 @@ public class WarehouseController {
 
     // method that shows products based on the warehouse we press
     public void showProductsFromWarehouse() {
-        labelProductAmount.setVisible(false);
+        calculateProductAmount();
         Warehouse selectedWarehouse = warehouseTableView.getSelectionModel().getSelectedItem();
         storedTableView.getItems().clear();
         storedTableView.getItems().addAll(StoredDAO.getStoredInfoWithWarehouse(selectedWarehouse));
         calculateCapacity(selectedWarehouse);
+        labelStock.setVisible(true);
+        labelProductAmount.setVisible(true);
     }
 
     // Method that shows product based on the category we press
     public void showProductsFromCategory() {
-        labelProductAmount.setVisible(false);
+        labelProductAmount.setVisible(true);
+        labelStock.setVisible(true);
         calculateProductAmount();
         Product selectedCategory = tableViewCategory.getSelectionModel().getSelectedItem();
         storedTableView.getItems().clear();
         storedTableView.getItems()
                 .addAll(StoredDAO.getStoredInfoWithProductCategory(selectedCategory.getProductCategory()));
+
     }
 
     public void addWarehouseButtonClicked() {
@@ -205,8 +223,6 @@ public class WarehouseController {
             String warehouseId = TextFieldWarehouseId.getText();
             String warehouseAddress = TextFieldWarehouseAddress.getText();
             String warehouseCapacityString = TextFieldWarehouseCapacity.getText();
-
-            
 
             if (warehouseId.isEmpty() || warehouseAddress.isEmpty() || warehouseCapacityString.isEmpty()) {
                 labelAddWarehouseError.setText("Please fill in all fields");
@@ -220,30 +236,30 @@ public class WarehouseController {
                 labelAddWarehouseSuccess.setText("Warehouse added");
                 labelAddWarehouseError.setText("");
             }
-         } catch (SQLException e1) {
-           
-            if(e1.getErrorCode() == 2627) {
-            labelAddWarehouseSuccess.setText("");
-            labelAddWarehouseError.setText("Warehouse already exists");
-            System.out.println("Warehouse already exists");
-            
-        }   if(e1.getErrorCode() == 0) {
+        } catch (SQLException e1) {
+
+            if (e1.getErrorCode() == 2627) {
+                labelAddWarehouseSuccess.setText("");
+                labelAddWarehouseError.setText("Warehouse already exists");
+                System.out.println("Warehouse already exists");
+
+            }
+            if (e1.getErrorCode() == 0) {
                 labelAddWarehouseSuccess.setText("");
                 labelAddWarehouseError.setText("Connection to database lost");
                 System.out.println("No connection to database");
             }
-            
-        }   catch (NumberFormatException e2) {
+
+        } catch (NumberFormatException e2) {
             labelAddWarehouseSuccess.setText("");
             labelAddWarehouseError.setText("Capacity needs to be a number");
-            
 
-        }  catch (Exception e) {
+        } catch (Exception e) {
             labelAddWarehouseSuccess.setText("");
             labelAddWarehouseError.setText("Something went wrong");
             System.out.println("Something went wrong");
         }
-           
+
     }
 
     // Calculate capacity method
@@ -254,31 +270,42 @@ public class WarehouseController {
         }
         int warehouseCapacity = selectedWarehouse.getWarehouseCapacity();
         int availableCapacity = warehouseCapacity - stock;
-        
 
         labelStock.setText("Available capacity: " + availableCapacity);
     }
 
     public void calculateProductAmount() {
         int productAmount = 0;
-        for (Product products : ProductDAO.getProducts()) {
-            productAmount += ProductDAO.getProducts().size();
+        for (Stored stored : storedTableView.getItems()) {
+            productAmount += storedTableView.getItems().size();
             break;
         }
+
         labelProductAmount.setText("Product amount: " + productAmount);
     }
 
     public void resetButtonWarehouse() {
+        labelStock.setVisible(false);
+
         TextFieldWarehouseId.clear();
         TextFieldWarehouseAddress.clear();
         TextFieldWarehouseCapacity.clear();
-        
-        
+        labelAddWarehouseError.setText("");
+        labelAddWarehouseSuccess.setText("");
 
         storedTableView.getItems().clear();
         storedTableView.getItems().addAll(StoredDAO.getStoredItems());
-
+        calculateProductAmount();
         System.out.println("Reset button clicked");
+    }
+
+
+    public void lowStockButtonClicked() {
+        
+        storedTableView.getItems().clear();
+        storedTableView.getItems().addAll(StoredDAO.getLowStockProducts());
+        calculateProductAmount();
+
     }
 
     // Add product to warehouse
@@ -384,4 +411,5 @@ public class WarehouseController {
     }
 
     
+
 }

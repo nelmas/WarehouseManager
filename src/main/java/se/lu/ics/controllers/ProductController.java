@@ -10,8 +10,10 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import se.lu.ics.models.Product;
+import se.lu.ics.models.Stored;
 import se.lu.ics.models.Supplier;
 import se.lu.ics.data.ProductDAO;
+import se.lu.ics.data.StoredDAO;
 import se.lu.ics.data.SupplierDAO;
 
 
@@ -183,7 +185,8 @@ public void buttonUpdateProduct_OnClick(ActionEvent event) {
 
         // Display a success message
         label_errorMessage.setText("Product updated successfully");
-    } catch (Exception e) {
+   
+      } catch (Exception e) {
         label_errorMessage.setText("Error: Please make sure you have proper data inputs in all fields");
     }
 }
@@ -191,13 +194,15 @@ public void buttonUpdateProduct_OnClick(ActionEvent event) {
 public void buttonRemoveProduct_OnClick(ActionEvent event) {
   // Get the selected product from the TableView
   Product productToRemove = tableViewProduct.getSelectionModel().getSelectedItem();
+  
 
   if (productToRemove != null) {
       // Remove the product from the TableView
       tableViewProduct.getItems().remove(productToRemove);
 
       // Remove the product from the database
-      ProductDAO.removeProductFromDatabase(productToRemove);
+      ProductDAO.removeProductFromProductTable(productToRemove);
+      
       
       // Clear the input fields (if needed)
       clearInputFields();
