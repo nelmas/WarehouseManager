@@ -38,6 +38,8 @@ public class ProductController {
   @FXML
   private TableView<Product> tableViewProduct;
   @FXML
+  private TableView<Product> tableView_supplierProductList;
+  @FXML
   private TableColumn<Product, String> columnProductId;
   @FXML
   private TableColumn<Product, String> columnProductName;
@@ -122,7 +124,14 @@ public class ProductController {
       if (productName.isEmpty() || productId.isEmpty() || productCategory.isEmpty()) {
         label_errorMessage.setText("Product ID, Name and Category cannot be empty. Please fill in all fields.");
         return;
-
+      }
+      {
+        for (Product existingProduct : tableViewProduct.getItems()) {
+          if (existingProduct.getProductId().equals(productId)) {
+              label_errorMessage.setText("Product ID must be unique. Please enter a non-existing ID.");
+              return; // Exit the method to prevent adding the product
+          }
+      }
       }
 
       productName = productName.substring(0, 1).toUpperCase() + productName.substring(1).toLowerCase();
@@ -215,6 +224,7 @@ public class ProductController {
 
       // Refresh the table view to reflect the changes
       tableViewProduct.refresh();
+      tableView_supplierProductList.refresh();
 
       clearInputFields();
       clearLabels();
@@ -244,7 +254,7 @@ public class ProductController {
 
       // Remove the product from the database
 
-      ProductDAO.removeProductFromDatabase(productToRemove);
+      ProductDAO.removeProductFromProductTable(productToRemove);
       tableViewProduct.refresh();
 
       // Clear the input fields (if needed)
@@ -258,7 +268,7 @@ public class ProductController {
     textFieldProductId.clear();
     textFieldProductName.clear();
     textFieldProductCategory.clear();
-    //textFieldSupplierId.clear();
+   
   }
 
   // Search for product by id method
