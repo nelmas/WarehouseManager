@@ -122,7 +122,14 @@ public class ProductController {
       if (productName.isEmpty() || productId.isEmpty() || productCategory.isEmpty()) {
         label_errorMessage.setText("Product ID, Name and Category cannot be empty. Please fill in all fields.");
         return;
-
+      }
+      {
+        for (Product existingProduct : tableViewProduct.getItems()) {
+          if (existingProduct.getProductId().equals(productId)) {
+              label_errorMessage.setText("Product ID must be unique. Please enter a non-existing ID.");
+              return; // Exit the method to prevent adding the product
+          }
+      }
       }
 
       productName = productName.substring(0, 1).toUpperCase() + productName.substring(1).toLowerCase();
