@@ -16,8 +16,6 @@ public class StoredDAO {
 
      public static ObservableList<Stored> storedItems = FXCollections.observableArrayList();
 
-    private static ObservableList<Stored> storedItems = FXCollections.observableArrayList();
-
 
     static {
         updateStoredItemsFromDatabase();
