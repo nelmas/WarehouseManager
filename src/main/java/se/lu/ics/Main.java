@@ -6,7 +6,6 @@ import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.control.TabPane;
-import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 
 public class Main extends Application {
@@ -15,7 +14,7 @@ public class Main extends Application {
     public void start(Stage primaryStage) {
         try {
             // Load root layout from FXML file (on the classpath).
-            String path = "/fxml/Main.fxml";  
+            String path = "/fxml/Main.fxml";
             FXMLLoader loader = new FXMLLoader(getClass().getResource(path));
             TabPane root = loader.load();
     
