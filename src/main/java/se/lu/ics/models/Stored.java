@@ -1,5 +1,7 @@
 package se.lu.ics.models;
 
+import se.lu.ics.data.StoredDAO;
+
 public class Stored {
     private Product product;
     private Warehouse warehouse;
@@ -52,4 +54,17 @@ public class Stored {
     public String getProductCategory() {
         return product.getProductCategory();
     }
+
+    public static int getTotalStockInWarehouse(Warehouse warehouse) {
+        int totalStock = 0;
+    
+        for (Stored stored : StoredDAO.storedItems) {
+            if (stored.getWarehouse().equals(warehouse)) {
+                totalStock += stored.getStock();
+            }
+        }
+    
+        return totalStock;
+    }
+    
 }

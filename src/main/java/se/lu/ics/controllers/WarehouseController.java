@@ -310,46 +310,60 @@ public class WarehouseController {
 
     // Add product to warehouse
     @FXML
-    public void button_addProductToWarehouse_OnClick(ActionEvent event) {
-        try {
-            String selectedProduct = ComboBoxChooseProduct.getValue();
-            String selectedWarehouse = ComboBoxChooseWarehouse.getValue();
-            int quantity = Integer.parseInt(textFieldEnterQuantity.getText());
+public void button_addProductToWarehouse_OnClick(ActionEvent event) {
+    try {
+        String selectedProduct = ComboBoxChooseProduct.getValue();
+        String selectedWarehouseId = ComboBoxChooseWarehouse.getValue();
+        int quantity = Integer.parseInt(textFieldEnterQuantity.getText());
 
-            if (selectedProduct == null || selectedWarehouse == null || quantity <= 0) {
-                label_errorMessageAddRemoveProducts.setText("Please select a product, a warehouse, and enter a valid quantity.");
-            } else {
-                Product product = ProductDAO.getProductById(selectedProduct);
-                Warehouse warehouse = WarehouseDAO.getWarehouseById(selectedWarehouse);
+        if (selectedProduct == null || selectedWarehouseId == null || quantity <= 0) {
+            label_errorMessageAddRemoveProducts.setText("Please select a product, a warehouse, and enter a valid quantity.");
+        } else {
+            // Get the actual Warehouse object corresponding to the selected warehouse ID
+            Warehouse selectedWarehouse = WarehouseDAO.getWarehouseById(selectedWarehouseId);
 
-                // Check if the product is already stored in the warehouse
-                Stored existingStoredItem = null;
-                for (Stored stored : storedTableView.getItems()) {
-                    if (stored.getProduct().equals(product) && stored.getWarehouse().equals(warehouse)) {
-                        existingStoredItem = stored;
-                        break;
-                    }
-                }
+            if (selectedWarehouse != null) {
+                int currentQuantity = StoredDAO.getTotalStockInWarehouse(selectedWarehouse);
+                int maxCapacity = selectedWarehouse.getWarehouseCapacity();
 
-                if (existingStoredItem != null) {
-                    // Product already exists in the warehouse, update the quantity
-                    int newQuantity = existingStoredItem.getStock() + quantity;
-                    existingStoredItem.setStock(newQuantity);
+                if (quantity + currentQuantity > maxCapacity) {
+                    label_errorMessageAddRemoveProducts.setText("The warehouse does not have enough capacity.");
                 } else {
-                    // Product doesn't exist in the warehouse, create a new Stored item
-                    Stored newStoredItem = new Stored(product, warehouse, quantity);
-                    storedTableView.getItems().add(newStoredItem);
-                }
+                    Product product = ProductDAO.getProductById(selectedProduct);
 
-                // Update the database and clear input fields
-                updateDatabase();
-                clearAddRemoveProductFields();
-                label_errorMessageAddRemoveProducts.setText("");
+                    // Check if the product is already stored in the warehouse
+                    Stored existingStoredItem = null;
+                    for (Stored stored : selectedWarehouse.getStockList()) {
+                        if (stored.getProduct().getProductId().equals(product.getProductId())) {
+                            existingStoredItem = stored;
+                            break;
+                        }
+                    }
+
+                    if (existingStoredItem != null) {
+                        // Product already exists in the warehouse, update the quantity
+                        int newQuantity = existingStoredItem.getStock() + quantity;
+                        existingStoredItem.setStock(newQuantity);
+                    } else {
+                        // Product doesn't exist in the warehouse, create a new Stored item
+                        Stored newStoredItem = new Stored(product, selectedWarehouse, quantity);
+                        selectedWarehouse.addStock(newStoredItem);
+                    }
+
+                    // Update the database and clear input fields
+                    updateDatabase();
+                    clearAddRemoveProductFields();
+                    label_errorMessageAddRemoveProducts.setText("");
+                }
+            } else {
+                label_errorMessageAddRemoveProducts.setText("Warehouse not found.");
             }
-        } catch (NumberFormatException e) {
-            label_errorMessageAddRemoveProducts.setText("Please enter a valid quantity.");
         }
+    } catch (NumberFormatException e) {
+        label_errorMessageAddRemoveProducts.setText("Please enter a valid quantity.");
     }
+}
+
 
     // Remove product from warehouse
     @FXML
@@ -377,8 +391,7 @@ public class WarehouseController {
                 if (existingStoredItem != null) {
                     int currentQuantity = existingStoredItem.getStock();
                     if (quantity >= currentQuantity) {
-                        // Remove the entire quantity of the product from the warehouse
-                        storedTableView.getItems().remove(existingStoredItem);
+                        label_errorMessageAddRemoveProducts.setText("There is not enough of this product in the warehouse.");
                     } else {
                         // Reduce the quantity of the product in the warehouse
                         existingStoredItem.setStock(currentQuantity - quantity);
@@ -398,11 +411,17 @@ public class WarehouseController {
     }
 
     private void updateDatabase() {
-        // Update the database with the changes made in the storedTableView
-        // You can iterate through storedTableView.getItems() and update the database accordingly.
-        // This involves updating the 'stock' column in the 'Stored' table for each item.
-        // You should implement the database update logic here.
+    try {
+        // Iterate through the items in storedTableView and update the database
+        for (Stored stored : storedTableView.getItems()) {
+            StoredDAO.updateStoredItem(stored);
+        }
+        label_errorMessageAddRemoveProducts.setText("Database updated successfully");
+    } catch (SQLException e) {
+        label_errorMessageAddRemoveProducts.setText("Error updating the database");
+        e.printStackTrace(); // Handle the exception appropriately
     }
+}
 
     private void clearAddRemoveProductFields() {
         ComboBoxChooseProduct.getSelectionModel().clearSelection();
