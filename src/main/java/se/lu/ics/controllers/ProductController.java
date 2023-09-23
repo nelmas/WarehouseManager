@@ -21,8 +21,8 @@ public class ProductController {
 
   @FXML
   private TextField textFieldProductId;
-  @FXML
-  private TextField textFieldSupplierId;
+ // @FXML
+  //private TextField textFieldSupplierId;
   @FXML
   private TextField textFieldProductName;
   @FXML
@@ -116,17 +116,35 @@ public class ProductController {
       String productId = textFieldProductId.getText();
       String productName = textFieldProductName.getText();
       String productCategory = textFieldProductCategory.getText();
+
+      if (productName.isEmpty() || productId.isEmpty() || productCategory.isEmpty()) {
+        label_errorMessage.setText("Product ID, Name and Category cannot be empty. Please fill in all fields.");
+        return;
+
+      }
+
+      productName = productName.substring(0, 1).toUpperCase() + productName.substring(1).toLowerCase();
+      productCategory = productCategory.substring(0, 1).toUpperCase() + productCategory.substring(1).toLowerCase();
+      
       String supplierId = comboBoxSupplierId.getValue();
+      if (supplierId == null) {
+        label_errorMessage.setText("Please select a supplier.");
+        return;
+      }
       Supplier supplier = SupplierDAO.getSupplierById(supplierId);
+      if (supplier == null) {
+        label_errorMessage.setText("Supplier cannot be found.");
+        return;
+      }
 
       // Create a Product object with the provided data
-      Product product = new Product(productId, productName, productCategory, supplier);
-
+      //Product product = new Product(productId, productName, productCategory, supplier);
+      
       // Add the product to the TableView
-      tableViewProduct.getItems().add(product);
+      //tableViewProduct.getItems().addAll(product);
 
       // You might want to update your data source (ProductDAO) if needed
-      ProductDAO.addProductToDatabase(product);
+      ProductDAO.addProductToDatabase(productId, productName, productCategory, supplier);
 
       // Clear the input fields after adding the product
       textFieldProductId.clear();
@@ -206,30 +224,34 @@ public class ProductController {
     }
   }
 
+  @FXML
   public void buttonRemoveProduct_OnClick(ActionEvent event) {
     // Get the selected product from the TableView
     Product productToRemove = tableViewProduct.getSelectionModel().getSelectedItem();
+    String productId = productToRemove.getProductId();
 
-    if (productToRemove != null) {
+    
+
+    //if (productToRemove != null) {
       // Remove the product from the TableView
-      tableViewProduct.getItems().remove(productToRemove);
+      //tableViewProduct.getItems().remove(productToRemove);
 
       // Remove the product from the database
       ProductDAO.removeProductFromDatabase(productToRemove);
+      tableViewProduct.refresh();
 
       // Clear the input fields (if needed)
       clearInputFields();
       clearLabels();
-    } else {
-      label_errorMessage.setText("Error: Please select a product to remove.");
-    }
+    
   }
+  
 
   private void clearInputFields() {
     textFieldProductId.clear();
     textFieldProductName.clear();
     textFieldProductCategory.clear();
-    textFieldSupplierId.clear();
+    //textFieldSupplierId.clear();
   }
 
   // Search for product by id method
