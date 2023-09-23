@@ -35,6 +35,6 @@
       <Label fx:id="labelSupplierId" layoutX="406.0" layoutY="283.0" text="Choose a supplier:" />
       <Label fx:id="label_errorMessage" layoutX="29.0" layoutY="378.0" />
       <Button fx:id="buttonUpdateProduct" layoutX="536.0" layoutY="340.0" mnemonicParsing="false" onAction="#buttonUpdateProduct_OnClick" text="Update Product Information" />
-      <ComboBox fx:id="comboBoxSupplier" layoutX="403.0" layoutY="302.0" prefWidth="150.0" />
+      <ComboBox fx:id="comboBoxSupplierId" layoutX="403.0" layoutY="302.0" prefWidth="150.0" />
    </children>
 </AnchorPane>

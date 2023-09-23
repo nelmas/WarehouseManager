@@ -159,4 +159,12 @@ public class SupplierDAO {
         return suppliedProducts;
     }
 
+    public static ObservableList<String> getAllSupplierIds() {
+        ObservableList<String> supplierIds = FXCollections.observableArrayList();
+        for (Supplier supplier : suppliers) {
+            supplierIds.add(supplier.getSupplierId());
+        }
+        return supplierIds;
+    }
+
 }
