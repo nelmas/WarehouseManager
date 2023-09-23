@@ -4,8 +4,6 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.sql.Connection;
 import java.sql.DriverManager;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Properties;
 
@@ -15,7 +13,7 @@ public class ConnectionHandler {
 
 private static String connectionURL;
 
-private static String configFilePath = "src/main/resources/config/config.properties";
+private static String configFilePath = "vscode-demo-assignment-hoggers-hjaltar/src/main/resources/config/config.properties";
 
 
 static {

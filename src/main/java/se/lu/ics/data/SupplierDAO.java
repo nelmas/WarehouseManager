@@ -1,4 +1,5 @@
 package se.lu.ics.data;
+import se.lu.ics.models.Product;
 import se.lu.ics.models.Supplier;
 
 
@@ -6,6 +7,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
@@ -94,6 +96,32 @@ public class SupplierDAO {
         }
     }
 
+    public static void updateSupplierInDatabase(Supplier supplier) {
+        String query = "UPDATE Supplier SET Name = ?, Address = ?, Email = ? WHERE SupplierId = ?";
+        
+        try (Connection connection = ConnectionHandler.getConnection();
+             PreparedStatement statement = connection.prepareStatement(query)) {
+            
+            statement.setString(1, supplier.getSupplierName());
+            statement.setString(2, supplier.getSupplierAddress());
+            statement.setString(3, supplier.getSupplierEmail());
+            statement.setString(4, supplier.getSupplierId());
+            
+            int rowsUpdated = statement.executeUpdate();
+    
+            if (rowsUpdated > 0) {
+                // Successfully updated in the database
+                // No need to update the local list since it's already updated
+            } else {
+                // Handle the case where the supplier was not found in the database
+                // (e.g., show an error message to the user)
+            }
+    
+        } catch (SQLException e) {
+            e.printStackTrace(); 
+            // Handle the error (e.g., show an error message to the user)
+        }
+    }
 
     //Static getter for Supplier by ID
     public static Supplier getSupplierById(String supplierId) {
@@ -105,6 +133,30 @@ public class SupplierDAO {
         return null;
     }
 
-    
+    public static ObservableList<Product> getSuppliedProducts(Supplier supplier) {
+        ObservableList<Product> suppliedProducts = FXCollections.observableArrayList();
+        String supplierId = supplier.getSupplierId(); // Get the supplier's ID
+
+        // Query the database to retrieve products supplied by the specified supplier
+        String query = "SELECT * FROM Product WHERE SupplierId = ?";
+        try (Connection connection = ConnectionHandler.getConnection();
+             PreparedStatement statement = connection.prepareStatement(query)) {
+
+            statement.setString(1, supplierId);
+            ResultSet resultSet = statement.executeQuery();
+
+            while (resultSet.next()) {
+                String productId = resultSet.getString("ProductId");
+                String productName = resultSet.getString("Name");
+                String category = resultSet.getString("Category");
+                Product product = new Product(productId, productName, category, supplier);
+                suppliedProducts.add(product);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return suppliedProducts;
+    }
 
 }

@@ -8,7 +8,6 @@ import java.sql.SQLException;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import se.lu.ics.models.Product;
-import se.lu.ics.models.Stored;
 import se.lu.ics.models.Supplier; 
 
 public class ProductDAO {
@@ -78,6 +77,58 @@ public class ProductDAO {
             products.remove(product);
         }
 
+        public static void addProductToDatabase(Product product) {
+            String query = "INSERT INTO Product (ProductId, Name, Category, SupplierId) VALUES (?, ?, ?, ?)";
         
+            try (Connection connection = ConnectionHandler.getConnection();
+                 PreparedStatement statement = connection.prepareStatement(query)) {
+                statement.setString(1, product.getProductId());
+                statement.setString(2, product.getProductName());
+                statement.setString(3, product.getProductCategory());
+                statement.setString(4, product.getSupplier().getSupplierId());
+        
+                statement.executeUpdate();
+        
+                // After successfully inserting the product, you can update your local data
+                products.add(product);
+            } catch (SQLException e) {
+                e.printStackTrace();
+                // Handle the exception as needed
+            }
+        }
+
+        public static void removeProductFromDatabase(Product product) {
+            String query = "DELETE FROM Product WHERE ProductId = ?";
+        
+            try (Connection connection = ConnectionHandler.getConnection();
+                 PreparedStatement statement = connection.prepareStatement(query)) {
+                statement.setString(1, product.getProductId());
+        
+                statement.executeUpdate();
+        
+                // After successfully removing the product, update your local data
+                products.remove(product);
+            } catch (SQLException e) {
+                e.printStackTrace();
+                // Handle the exception as needed
+            }
+        }
+
+        public static void updateProductInDatabase(Product updatedProduct) {
+            String query = "UPDATE Product SET Name = ?, Category = ?, SupplierId = ? WHERE ProductId = ?";
+
+            try (Connection connection = ConnectionHandler.getConnection();
+                 PreparedStatement statement = connection.prepareStatement(query)) {
+                statement.setString(1, updatedProduct.getProductName());
+                statement.setString(2, updatedProduct.getProductCategory());
+                statement.setString(3, updatedProduct.getSupplier().getSupplierId());
+                statement.setString(4, updatedProduct.getProductId());
+
+                statement.executeUpdate();
+            } catch (SQLException e) {
+                e.printStackTrace();
+                // Handle the exception as needed
+            }
+        }
 
 }
