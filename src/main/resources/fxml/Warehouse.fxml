@@ -8,9 +8,9 @@
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="570.0" prefWidth="1176.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="se.lu.ics.controllers.WarehouseController">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="559.0" prefWidth="1173.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="se.lu.ics.controllers.WarehouseController">
    <children>
-      <TableView fx:id="warehouseTableView" layoutX="14.0" layoutY="53.0" prefHeight="245.0" prefWidth="377.0" AnchorPane.bottomAnchor="272.0" AnchorPane.leftAnchor="12.0" AnchorPane.rightAnchor="787.0" AnchorPane.topAnchor="53.0">
+      <TableView fx:id="warehouseTableView" layoutX="12.0" layoutY="52.0" prefHeight="245.0" prefWidth="377.0" AnchorPane.bottomAnchor="273.0" AnchorPane.leftAnchor="12.0" AnchorPane.rightAnchor="787.0" AnchorPane.topAnchor="52.0">
         <columns>
           <TableColumn fx:id="warehouseIdColumn" prefWidth="142.0" text="ID" />
           <TableColumn fx:id="warehouseAddressColumn" prefWidth="133.0" text="Adress" />
@@ -26,10 +26,8 @@
             <TableColumn fx:id="storedSupplierIdColumn" prefWidth="91.0" text="SupplierId" />
         </columns>
       </TableView>
-      <Label fx:id="labelClickOnWarehouse" layoutX="98.0" layoutY="305.0" text="Click on a warehouse to view products" />
-      <TableView fx:id="tableViewCategory" layoutX="391.0" layoutY="303.0" prefHeight="198.0" prefWidth="377.0">
       <Label fx:id="labelClickOnWarehouse" layoutX="97.0" layoutY="303.0" text="Click on a warehouse to view products" />
-      <TableView fx:id="tableViewCategory" layoutX="391.0" layoutY="304.0" prefHeight="198.0" prefWidth="377.0">
+      <TableView fx:id="tableViewCategory" layoutX="391.0" layoutY="293.0" prefHeight="193.0" prefWidth="374.0" AnchorPane.bottomAnchor="73.0" AnchorPane.leftAnchor="391.0" AnchorPane.rightAnchor="408.0" AnchorPane.topAnchor="293.0">
         <columns>
           <TableColumn fx:id="categoryColumnProduct" prefWidth="376.0" text="Category" />
         </columns>
