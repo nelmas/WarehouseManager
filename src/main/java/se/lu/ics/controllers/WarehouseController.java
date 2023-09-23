@@ -5,7 +5,11 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
@@ -107,6 +111,11 @@ public class WarehouseController {
     @FXML private ComboBox<String> ComboBoxChooseWarehouse;
 
 
+    private ObservableList<String> productIds = FXCollections.observableArrayList();
+    private ObservableList<String> warehouseIds = FXCollections.observableArrayList();
+
+
+
 
     public void initialize() {
         // Warehouse table
@@ -122,6 +131,19 @@ public class WarehouseController {
         storedSupplierIdColumn.setCellValueFactory(new PropertyValueFactory<Stored, String>("supplierId"));
         storedTableView.getItems().addAll(StoredDAO.getStoredItems());
         calculateProductAmount();
+
+        // Populate ComboBoxChooseProduct with product IDs
+    productIds.addAll(ProductDAO.getProducts().stream()
+            .map(Product::getProductId)
+            .distinct()
+            .collect(Collectors.toList()));
+    ComboBoxChooseProduct.setItems(productIds);
+
+    // Populate ComboBoxChooseWarehouse with warehouse IDs
+    warehouseIds.addAll(WarehouseDAO.getWarehouses().stream()
+            .map(Warehouse::getWarehouseId)
+            .collect(Collectors.toList()));
+    ComboBoxChooseWarehouse.setItems(warehouseIds);
 
         // Category table
         categoryColumnProduct.setCellValueFactory(new PropertyValueFactory<Product, String>("productCategory"));
@@ -258,4 +280,108 @@ public class WarehouseController {
 
         System.out.println("Reset button clicked");
     }
+
+    // Add product to warehouse
+    @FXML
+    public void button_addProductToWarehouse_OnClick(ActionEvent event) {
+        try {
+            String selectedProduct = ComboBoxChooseProduct.getValue();
+            String selectedWarehouse = ComboBoxChooseWarehouse.getValue();
+            int quantity = Integer.parseInt(textFieldEnterQuantity.getText());
+
+            if (selectedProduct == null || selectedWarehouse == null || quantity <= 0) {
+                label_errorMessageAddRemoveProducts.setText("Please select a product, a warehouse, and enter a valid quantity.");
+            } else {
+                Product product = ProductDAO.getProductById(selectedProduct);
+                Warehouse warehouse = WarehouseDAO.getWarehouseById(selectedWarehouse);
+
+                // Check if the product is already stored in the warehouse
+                Stored existingStoredItem = null;
+                for (Stored stored : storedTableView.getItems()) {
+                    if (stored.getProduct().equals(product) && stored.getWarehouse().equals(warehouse)) {
+                        existingStoredItem = stored;
+                        break;
+                    }
+                }
+
+                if (existingStoredItem != null) {
+                    // Product already exists in the warehouse, update the quantity
+                    int newQuantity = existingStoredItem.getStock() + quantity;
+                    existingStoredItem.setStock(newQuantity);
+                } else {
+                    // Product doesn't exist in the warehouse, create a new Stored item
+                    Stored newStoredItem = new Stored(product, warehouse, quantity);
+                    storedTableView.getItems().add(newStoredItem);
+                }
+
+                // Update the database and clear input fields
+                updateDatabase();
+                clearAddRemoveProductFields();
+                label_errorMessageAddRemoveProducts.setText("");
+            }
+        } catch (NumberFormatException e) {
+            label_errorMessageAddRemoveProducts.setText("Please enter a valid quantity.");
+        }
+    }
+
+    // Remove product from warehouse
+    @FXML
+    public void button_removeProductFromWarehouse_OnClick(ActionEvent event) {
+        try {
+            String selectedProduct = ComboBoxChooseProduct.getValue();
+            String selectedWarehouse = ComboBoxChooseWarehouse.getValue();
+            int quantity = Integer.parseInt(textFieldEnterQuantity.getText());
+
+            if (selectedProduct == null || selectedWarehouse == null || quantity <= 0) {
+                label_errorMessageAddRemoveProducts.setText("Please select a product, a warehouse, and enter a valid quantity.");
+            } else {
+                Product product = ProductDAO.getProductById(selectedProduct);
+                Warehouse warehouse = WarehouseDAO.getWarehouseById(selectedWarehouse);
+
+                // Find the existing Stored item
+                Stored existingStoredItem = null;
+                for (Stored stored : storedTableView.getItems()) {
+                    if (stored.getProduct().equals(product) && stored.getWarehouse().equals(warehouse)) {
+                        existingStoredItem = stored;
+                        break;
+                    }
+                }
+
+                if (existingStoredItem != null) {
+                    int currentQuantity = existingStoredItem.getStock();
+                    if (quantity >= currentQuantity) {
+                        // Remove the entire quantity of the product from the warehouse
+                        storedTableView.getItems().remove(existingStoredItem);
+                    } else {
+                        // Reduce the quantity of the product in the warehouse
+                        existingStoredItem.setStock(currentQuantity - quantity);
+                    }
+
+                    // Update the database and clear input fields
+                    updateDatabase();
+                    clearAddRemoveProductFields();
+                    label_errorMessageAddRemoveProducts.setText("");
+                } else {
+                    label_errorMessageAddRemoveProducts.setText("Product not found in the selected warehouse.");
+                }
+            }
+        } catch (NumberFormatException e) {
+            label_errorMessageAddRemoveProducts.setText("Please enter a valid quantity.");
+        }
+    }
+
+    private void updateDatabase() {
+        // Update the database with the changes made in the storedTableView
+        // You can iterate through storedTableView.getItems() and update the database accordingly.
+        // This involves updating the 'stock' column in the 'Stored' table for each item.
+        // You should implement the database update logic here.
+    }
+
+    private void clearAddRemoveProductFields() {
+        ComboBoxChooseProduct.getSelectionModel().clearSelection();
+        ComboBoxChooseWarehouse.getSelectionModel().clearSelection();
+        textFieldEnterQuantity.clear();
+    }
+
+    
 }

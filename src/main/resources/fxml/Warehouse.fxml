@@ -51,8 +51,8 @@
       <Label fx:id="label_chooseWarehouse" layoutX="996.0" layoutY="114.0" text="Choose warehouse" />
       <TextField fx:id="textFieldEnterQuantity" layoutX="872.0" layoutY="216.0" />
       <Label fx:id="labelEnterQuantity" layoutX="914.0" layoutY="191.0" text="Enter quantity" />
-      <Button fx:id="buttonAddProduct" layoutX="836.0" layoutY="259.0" mnemonicParsing="false" text="Add products" />
-      <Button fx:id="buttonRemoveProduct" layoutX="960.0" layoutY="259.0" mnemonicParsing="false" text="Remove products" />
+      <Button fx:id="buttonAddProduct" layoutX="836.0" layoutY="259.0" mnemonicParsing="false" onAction="#button_addProductToWarehouse_OnClick" text="Add products" />
+      <Button fx:id="buttonRemoveProduct" layoutX="960.0" layoutY="259.0" mnemonicParsing="false" onAction="#button_removeProductFromWarehouse_OnClick" text="Remove products" />
       <Label fx:id="label_errorMessageAddRemoveProducts" layoutX="807.0" layoutY="312.0" />
    </children>
 </AnchorPane>
