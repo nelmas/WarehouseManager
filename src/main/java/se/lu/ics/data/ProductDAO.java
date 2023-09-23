@@ -113,6 +113,7 @@ public class ProductDAO {
                 // Handle the exception as needed
             }
         }
+            
 
         public static void updateProductInDatabase(Product updatedProduct) {
             String query = "UPDATE Product SET Name = ?, Category = ?, SupplierId = ? WHERE ProductId = ?";

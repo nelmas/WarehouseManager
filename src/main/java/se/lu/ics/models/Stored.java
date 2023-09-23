@@ -1,5 +1,7 @@
 package se.lu.ics.models;
 
+import java.util.Objects;
+
 public class Stored {
     private Product product;
     private Warehouse warehouse;
@@ -52,4 +54,9 @@ public class Stored {
     public String getProductCategory() {
         return product.getProductCategory();
     }
+
+    public String getWarehouseId() {
+        return warehouse.getWarehouseId();
+    }
+
 }

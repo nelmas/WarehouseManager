@@ -14,7 +14,7 @@ public class WarehouseDAO {
     private static ObservableList<Warehouse> warehouses = FXCollections.observableArrayList();
 
     static {
-        updateSuppliersFromDatabase();
+        updateWarehouseFromDatabase();
 
     }
 
@@ -24,7 +24,7 @@ public class WarehouseDAO {
     }
 
     // Update supplier from database method
-    public static void updateSuppliersFromDatabase() {
+    public static void updateWarehouseFromDatabase() {
         String query = "SELECT * FROM Warehouse";
         try (Connection connection = ConnectionHandler.getConnection()) {
             PreparedStatement statement = connection.prepareStatement(query);
@@ -78,5 +78,8 @@ public class WarehouseDAO {
         }
 
     }
+
+   
+    
     
 }
