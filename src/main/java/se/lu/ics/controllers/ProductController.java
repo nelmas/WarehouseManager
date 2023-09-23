@@ -13,8 +13,10 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import se.lu.ics.models.Product;
+import se.lu.ics.models.Stored;
 import se.lu.ics.models.Supplier;
 import se.lu.ics.data.ProductDAO;
+import se.lu.ics.data.StoredDAO;
 import se.lu.ics.data.SupplierDAO;
 
 public class ProductController {
@@ -227,18 +229,22 @@ public class ProductController {
       clearInputFields();
       clearLabels();
 
-      // Display a success message
-      label_errorMessage.setText("Product updated successfully");
-    } catch (Exception e) {
-      label_errorMessage.setText("Error: Please make sure you have proper data inputs in all fields");
+
+        // Display a success message
+        label_errorMessage.setText("Product updated successfully");
+   
+      } catch (Exception e) {
+        label_errorMessage.setText("Error: Please make sure you have proper data inputs in all fields");
     }
   }
+
 
   @FXML
   public void buttonRemoveProduct_OnClick(ActionEvent event) {
     // Get the selected product from the TableView
     Product productToRemove = tableViewProduct.getSelectionModel().getSelectedItem();
     String productId = productToRemove.getProductId();
+
 
     
 
@@ -247,6 +253,7 @@ public class ProductController {
       //tableViewProduct.getItems().remove(productToRemove);
 
       // Remove the product from the database
+
       ProductDAO.removeProductFromDatabase(productToRemove);
       tableViewProduct.refresh();
 

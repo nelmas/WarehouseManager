@@ -100,7 +100,7 @@ public class ProductDAO {
             }
         }
 
-        public static void removeProductFromDatabase(Product product) {
+        public static void removeProductFromProductTable(Product product) {
             String query = "DELETE FROM Product WHERE ProductId = ?";
         
             try (Connection connection = ConnectionHandler.getConnection();
@@ -133,5 +133,7 @@ public class ProductDAO {
                 // Handle the exception as needed
             }
         }
+
+       
 
 }
