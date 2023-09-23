@@ -36,6 +36,8 @@ public class ProductController {
   @FXML
   private TableView<Product> tableViewProduct;
   @FXML
+  private TableView<Product> tableView_supplierProductList;
+  @FXML
   private TableColumn<Product, String> columnProductId;
   @FXML
   private TableColumn<Product, String> columnProductName;
@@ -213,6 +215,7 @@ public class ProductController {
 
       // Refresh the table view to reflect the changes
       tableViewProduct.refresh();
+      tableView_supplierProductList.refresh();
 
       clearInputFields();
       clearLabels();
@@ -251,7 +254,7 @@ public class ProductController {
     textFieldProductId.clear();
     textFieldProductName.clear();
     textFieldProductCategory.clear();
-    //textFieldSupplierId.clear();
+   
   }
 
   // Search for product by id method
