@@ -1,6 +1,10 @@
 package se.lu.ics.models;
 
+
+import java.util.Objects;
+
 import se.lu.ics.data.StoredDAO;
+
 
 public class Stored {
     private Product product;
@@ -55,6 +59,12 @@ public class Stored {
         return product.getProductCategory();
     }
 
+
+    public String getWarehouseId() {
+        return warehouse.getWarehouseId();
+    }
+
+
     public static int getTotalStockInWarehouse(Warehouse warehouse) {
         int totalStock = 0;
     
@@ -67,4 +77,5 @@ public class Stored {
         return totalStock;
     }
     
+
 }

@@ -23,8 +23,10 @@ public class ProductController {
 
   @FXML
   private TextField textFieldProductId;
+
  // @FXML
   //private TextField textFieldSupplierId;
+
   @FXML
   private TextField textFieldProductName;
   @FXML
@@ -32,14 +34,18 @@ public class ProductController {
   @FXML
   private TextField textFieldSearchProduct;
   @FXML
+
   private ComboBox<String> comboBoxSupplierId;
   @FXML
+
   private Button buttonAddProduct;
   @FXML
   private TableView<Product> tableViewProduct;
   @FXML
+
   private TableView<Product> tableView_supplierProductList;
   @FXML
+
   private TableColumn<Product, String> columnProductId;
   @FXML
   private TableColumn<Product, String> columnProductName;
@@ -74,11 +80,13 @@ public class ProductController {
     filteredProducts = new FilteredList<>(ProductDAO.getProducts(), p -> true);
     tableViewProduct.setItems(filteredProducts);
 
+
     ObservableList<String> supplierIds = FXCollections.observableArrayList();
     for (Supplier supplier : SupplierDAO.getSuppliers()) {
       supplierIds.add(supplier.getSupplierId());
     }
     comboBoxSupplierId.setItems(supplierIds);
+
 
     textFieldSearchProduct.textProperty().addListener((observable, oldValue, newValue) -> {
       filteredProducts.setPredicate(product -> {
@@ -110,16 +118,19 @@ public class ProductController {
             textFieldProductName.setText(selectedProduct.getProductName());
             textFieldProductCategory.setText(selectedProduct.getProductCategory());
 
+
           }
         });
 
   };
+
 
   public void buttonAddProduct_OnClick(ActionEvent event) {
     try {
       String productId = textFieldProductId.getText();
       String productName = textFieldProductName.getText();
       String productCategory = textFieldProductCategory.getText();
+
 
       if (productName.isEmpty() || productId.isEmpty() || productCategory.isEmpty()) {
         label_errorMessage.setText("Product ID, Name and Category cannot be empty. Please fill in all fields.");
@@ -157,10 +168,12 @@ public class ProductController {
       // You might want to update your data source (ProductDAO) if needed
       ProductDAO.addProductToDatabase(productId, productName, productCategory, supplier);
 
+
       // Clear the input fields after adding the product
       textFieldProductId.clear();
       textFieldProductName.clear();
       textFieldProductCategory.clear();
+
 
     } catch (Exception e) {
       label_errorMessage.setText("Error: " + e.getMessage());
@@ -230,13 +243,12 @@ public class ProductController {
       clearLabels();
 
 
-        // Display a success message
-        label_errorMessage.setText("Product updated successfully");
-   
-      } catch (Exception e) {
-        label_errorMessage.setText("Error: Please make sure you have proper data inputs in all fields");
+
+    } catch (Exception e) {
+      label_errorMessage.setText("Error: Please make sure you have proper data inputs in all fields");
     }
   }
+
 
 
   @FXML
@@ -249,26 +261,31 @@ public class ProductController {
     
 
     //if (productToRemove != null) {
+
       // Remove the product from the TableView
       //tableViewProduct.getItems().remove(productToRemove);
 
       // Remove the product from the database
 
       ProductDAO.removeProductFromProductTable(productToRemove);
+
       tableViewProduct.refresh();
+
 
       // Clear the input fields (if needed)
       clearInputFields();
       clearLabels();
+
     
   }
-  
+
 
   private void clearInputFields() {
     textFieldProductId.clear();
     textFieldProductName.clear();
     textFieldProductCategory.clear();
-   
+
+
   }
 
   // Search for product by id method

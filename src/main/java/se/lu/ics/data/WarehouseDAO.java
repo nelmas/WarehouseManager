@@ -14,7 +14,7 @@ public class WarehouseDAO {
     private static ObservableList<Warehouse> warehouses = FXCollections.observableArrayList();
 
     static {
-        updateSuppliersFromDatabase();
+        updateWarehouseFromDatabase();
 
     }
 
@@ -24,7 +24,7 @@ public class WarehouseDAO {
     }
 
     // Update supplier from database method
-    public static void updateSuppliersFromDatabase() {
+    public static void updateWarehouseFromDatabase() {
         String query = "SELECT * FROM Warehouse";
         try (Connection connection = ConnectionHandler.getConnection()) {
             PreparedStatement statement = connection.prepareStatement(query);
@@ -69,6 +69,7 @@ public class WarehouseDAO {
 
     }
 
+
     public static Warehouse getWarehouseById(String warehouseId) {
         // You should replace this with your actual data retrieval logic
         // For example, if you have a list of warehouses in memory:
@@ -79,5 +80,6 @@ public class WarehouseDAO {
         }
         return null; // Return null if the warehouse is not found
     }
+
     
 }

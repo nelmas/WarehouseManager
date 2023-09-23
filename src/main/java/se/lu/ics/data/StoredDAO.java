@@ -5,8 +5,10 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
+import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import se.lu.ics.controllers.WarehouseController;
 import se.lu.ics.models.Product;
 import se.lu.ics.models.Stored;
 import se.lu.ics.models.Warehouse;
@@ -29,7 +31,8 @@ public class StoredDAO {
 
     // Update supplier from database method
     public static void updateStoredItemsFromDatabase() {
-        String query = "SELECT * FROM Stored";
+        String query = "SELECT DISTINCT ProductId, WarehouseId, Stock FROM Stored";
+               
         try (Connection connection = ConnectionHandler.getConnection()) {
             PreparedStatement statement = connection.prepareStatement(query);
             ResultSet resultSet = statement.executeQuery();
@@ -89,6 +92,7 @@ public class StoredDAO {
 
     }
 
+
     public static void updateStoredItem(Stored stored) throws SQLException {
         String updateQuery = "UPDATE Stored SET Stock = ? WHERE ProductId = ? AND WarehouseId = ?";
         try (Connection connection = ConnectionHandler.getConnection();
@@ -114,6 +118,7 @@ public class StoredDAO {
         return totalStock;
     }
     
+
     public static ObservableList<Stored> getLowStockProducts() {
         ObservableList<Stored> lowStockProducts = FXCollections.observableArrayList();
 
@@ -125,4 +130,69 @@ public class StoredDAO {
 
         return lowStockProducts;
     }
+
+    // Method for adding product to warehouse
+    public static void addProductToWarehouse(Stored stored) throws SQLException {
+        String productId = stored.getProductId();
+        String warehouseId = stored.getWarehouseId();
+        int stockToAdd = stored.getStock();
+    
+        try (Connection connection = ConnectionHandler.getConnection()) {
+            // Check if a record with the same ProductId and WarehouseId exists
+            String checkQuery = "SELECT Stock FROM Stored WHERE ProductId = ? AND WarehouseId = ?";
+            PreparedStatement checkStatement = connection.prepareStatement(checkQuery);
+            checkStatement.setString(1, productId);
+            checkStatement.setString(2, warehouseId);
+    
+            ResultSet resultSet = checkStatement.executeQuery();
+    
+            if (resultSet.next()) {
+                // Record exists, update the stock
+                int existingStock = resultSet.getInt("Stock");
+                int newStock = existingStock + stockToAdd;
+    
+                // Update the stock quantity
+                String updateQuery = "UPDATE Stored SET Stock = ? WHERE ProductId = ? AND WarehouseId = ?";
+                PreparedStatement updateStatement = connection.prepareStatement(updateQuery);
+                updateStatement.setInt(1, newStock);
+                updateStatement.setString(2, productId);
+                updateStatement.setString(3, warehouseId);
+                updateStatement.executeUpdate();
+            } else {
+                // Record does not exist, insert a new record
+                String insertQuery = "INSERT INTO Stored (ProductId, WarehouseId, Stock) VALUES (?, ?, ?)";
+                PreparedStatement insertStatement = connection.prepareStatement(insertQuery);
+                insertStatement.setString(1, productId);
+                insertStatement.setString(2, warehouseId);
+                insertStatement.setInt(3, stockToAdd);
+    
+                int rowsInserted = insertStatement.executeUpdate();
+                if (rowsInserted > 0) {
+                    stored = new Stored(ProductDAO.getProductById(productId),
+                            WarehouseDAO.getWarehouseById(warehouseId), stockToAdd);
+                    storedItems.add(stored);
+                }
+            }
+        }
+    }
+    
+
+    public static void removeProductFromWarehouse(Stored stored) throws SQLException {
+    String query = "UPDATE Stored SET Stock = ? WHERE ProductId = ? AND WarehouseId = ?";
+
+    
+        Connection connection = ConnectionHandler.getConnection();
+        PreparedStatement statement = connection.prepareStatement(query); {
+        statement.setInt(1, stored.getStock());
+        statement.setString(3, stored.getWarehouseId());
+        statement.setString(2, stored.getProductId());
+    
+        statement.executeUpdate();
+    
+        // After successfully removing the product from the warehouse, update your local data
+        storedItems.remove(stored);
+        
+    }
+    }   
+
 }
