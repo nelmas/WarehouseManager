@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
@@ -40,5 +41,6 @@
       </TableView>
       <Label layoutX="514.0" layoutY="42.0" text="Table with most rows" />
       <TextArea fx:id="metadataMostRowsTextArea" layoutX="527.0" layoutY="286.0" prefHeight="200.0" prefWidth="200.0" />
+      <Button fx:id="buttonOpenExcel" layoutX="53.0" layoutY="471.0" mnemonicParsing="false" onAction="#openExcel_OnClick" prefHeight="86.0" prefWidth="258.0" text="OPEN EXCEL-FILE" />
    </children>
 </AnchorPane>
