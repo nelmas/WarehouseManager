@@ -13,6 +13,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import se.lu.ics.models.Supplier;
 import se.lu.ics.data.ProductDAO;
+import se.lu.ics.data.StoredDAO;
 import se.lu.ics.data.SupplierDAO;
 import se.lu.ics.models.Product;
 public class SupplierController {
@@ -234,6 +235,7 @@ public class SupplierController {
     @FXML
     public void button_removeSupplier_OnClick() {
         try {
+            
             Supplier supplier = tableView_supplier.getSelectionModel().getSelectedItem();
             if (supplier == null) {
                 label_errorMessage.setText("Error: Please choose a supplier from the table above");

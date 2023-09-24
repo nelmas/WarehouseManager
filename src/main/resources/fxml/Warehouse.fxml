@@ -8,7 +8,7 @@
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="559.0" prefWidth="1173.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="se.lu.ics.controllers.WarehouseController">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="553.0" prefWidth="1172.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="se.lu.ics.controllers.WarehouseController">
    <children>
       <TableView fx:id="warehouseTableView" layoutX="12.0" layoutY="52.0" prefHeight="243.0" prefWidth="375.0" AnchorPane.bottomAnchor="264.0" AnchorPane.leftAnchor="12.0" AnchorPane.rightAnchor="786.0" AnchorPane.topAnchor="52.0">
         <columns>
@@ -16,8 +16,11 @@
           <TableColumn fx:id="warehouseAddressColumn" prefWidth="133.0" text="Adress" />
             <TableColumn fx:id="warehouseCapacityColumn" prefWidth="101.0" text="Capacity" />
         </columns>
+         <columnResizePolicy>
+            <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
+         </columnResizePolicy>
       </TableView>
-      <Button fx:id="warehouseAddButton" layoutX="257.0" layoutY="474.0" mnemonicParsing="false" onAction="#addWarehouseButtonClicked" prefHeight="26.0" prefWidth="46.0" text="+" AnchorPane.bottomAnchor="59.0" AnchorPane.leftAnchor="257.0" AnchorPane.rightAnchor="870.0" AnchorPane.topAnchor="474.0" />
+      <Button fx:id="warehouseAddButton" layoutX="257.0" layoutY="474.0" mnemonicParsing="false" onAction="#addWarehouseButtonClicked" prefHeight="26.0" prefWidth="45.0" text="+" AnchorPane.bottomAnchor="53.0" AnchorPane.leftAnchor="257.0" AnchorPane.rightAnchor="870.0" AnchorPane.topAnchor="474.0" />
       <TableView fx:id="storedTableView" layoutX="391.0" layoutY="52.0" prefHeight="243.0" prefWidth="451.0" AnchorPane.bottomAnchor="264.0" AnchorPane.leftAnchor="391.0" AnchorPane.rightAnchor="331.0" AnchorPane.topAnchor="52.0">
         <columns>
           <TableColumn fx:id="StoredProductIdColumn" prefWidth="106.0" text="ProductId" />
@@ -26,12 +29,18 @@
             <TableColumn fx:id="storedSupplierIdColumn" text="SupplierId" />
             <TableColumn fx:id="storedWarehouseIdColumn" prefWidth="86.0" text="WarehouseId" />
         </columns>
+         <columnResizePolicy>
+            <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
+         </columnResizePolicy>
       </TableView>
       <Label fx:id="labelClickOnWarehouse" layoutX="97.0" layoutY="303.0" text="Click on a warehouse to view products" />
       <TableView fx:id="tableViewCategory" layoutX="391.0" layoutY="299.0" prefHeight="190.0" prefWidth="451.0" AnchorPane.bottomAnchor="70.0" AnchorPane.leftAnchor="391.0" AnchorPane.rightAnchor="331.0" AnchorPane.topAnchor="299.0">
         <columns>
           <TableColumn fx:id="categoryColumnProduct" prefWidth="450.0" text="Category" />
         </columns>
+         <columnResizePolicy>
+            <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
+         </columnResizePolicy>
       </TableView>
       <Label fx:id="labelClickOnCategory" layoutX="462.0" layoutY="511.0" text="Click on a category to view certain producs" />
       <TextField fx:id="TextFieldWarehouseId" layoutX="145.0" layoutY="342.0" />
@@ -46,17 +55,17 @@
       <Label fx:id="labelAddWarehouseError" layoutX="82.0" layoutY="480.0" textFill="#d73d3d" />
       <Label fx:id="labelProductAmount" layoutX="697.0" layoutY="21.0" />
       <Label fx:id="label_infoAddRemoveProduct" layoutX="870.0" layoutY="52.0" prefHeight="36.0" prefWidth="283.0" text="Add or remove products from or to warehouses? Look here!" textAlignment="CENTER" wrapText="true" />
-      <Label fx:id="label_chooseProduct" layoutX="879.0" layoutY="114.0" text="Choose product" />
-      <ComboBox fx:id="ComboBoxChooseWarehouse" layoutX="1011.0" layoutY="141.0" prefWidth="150.0" promptText="Warehouse" />
-      <ComboBox fx:id="ComboBoxChooseProduct" layoutX="848.0" layoutY="141.0" prefWidth="150.0" promptText="Products" />
-      <Label fx:id="label_chooseWarehouse" layoutX="1033.0" layoutY="114.0" text="Choose warehouse" />
-      <TextField fx:id="textFieldEnterQuantity" layoutX="920.0" layoutY="201.0" />
-      <Label fx:id="labelEnterQuantity" layoutX="960.0" layoutY="184.0" text="Enter quantity" />
-      <Button fx:id="buttonAddProduct" layoutX="954.0" layoutY="233.0" mnemonicParsing="false" onAction="#button_addProductToWarehouse_OnClick" text="Add products" />
-      <Button fx:id="buttonRemoveProduct" layoutX="941.0" layoutY="267.0" mnemonicParsing="false" onAction="#button_removeProductFromStoredTable_Clicked" prefHeight="26.0" prefWidth="114.0" text="Remove products" />
-      <Label fx:id="label_errorMessageAddRemoveProducts" layoutX="903.0" layoutY="334.0" textFill="#ee2929" />
+      <Label fx:id="label_chooseProduct" layoutX="886.0" layoutY="123.0" text="Choose product" />
+      <ComboBox fx:id="ComboBoxChooseWarehouse" layoutX="1010.0" layoutY="141.0" prefHeight="26.0" prefWidth="151.0" promptText="Warehouse" />
+      <ComboBox fx:id="ComboBoxChooseProduct" layoutX="855.0" layoutY="141.0" prefWidth="150.0" promptText="Products" />
+      <Label fx:id="label_chooseWarehouse" layoutX="1028.0" layoutY="123.0" text="Choose warehouse" />
+      <TextField fx:id="textFieldEnterQuantity" layoutX="932.0" layoutY="197.0" />
+      <Label fx:id="labelEnterQuantity" layoutX="972.0" layoutY="180.0" text="Enter quantity" />
+      <Button fx:id="buttonAddProduct" layoutX="966.0" layoutY="229.0" mnemonicParsing="false" onAction="#button_addProductToWarehouse_OnClick" text="Add products" />
+      <Button fx:id="buttonRemoveProduct" layoutX="953.0" layoutY="263.0" mnemonicParsing="false" onAction="#button_removeProductFromStoredTable_Clicked" prefHeight="26.0" prefWidth="114.0" text="Remove products" />
+      <Label fx:id="label_errorMessageAddRemoveProducts" alignment="CENTER" layoutX="848.0" layoutY="335.0" prefHeight="36.0" prefWidth="317.0" textAlignment="CENTER" textFill="#ee2929" />
       <Button fx:id="lowStockButton" layoutX="544.0" layoutY="18.0" mnemonicParsing="false" onAction="#lowStockButtonClicked" text="Products with low stock" />
-      <Label fx:id="labelAddProductToWarehouseSuccess" layoutX="903.0" layoutY="334.0" textFill="#5aee43" />
-      <Button fx:id="buttonUpdateStock" layoutX="951.0" layoutY="299.0" mnemonicParsing="false" onAction="#button_UpdateProductFromWarehouse_OnClick" prefHeight="26.0" prefWidth="97.0" text="Update Stock" />
+      <Label fx:id="labelAddProductToWarehouseSuccess" alignment="CENTER" layoutX="848.0" layoutY="335.0" prefHeight="36.0" prefWidth="317.0" textFill="#5aee43" />
+      <Button fx:id="buttonUpdateStock" layoutX="963.0" layoutY="295.0" mnemonicParsing="false" onAction="#button_UpdateProductFromWarehouse_OnClick" prefHeight="26.0" prefWidth="97.0" text="Update Stock" />
    </children>
 </AnchorPane>
