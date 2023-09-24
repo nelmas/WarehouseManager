@@ -14,7 +14,7 @@
       </TableView>
       <TableView fx:id="metadataNameOfAllPrimaryKeys" layoutX="264.0" layoutY="67.0" prefHeight="150.0" prefWidth="183.0">
          <columns>
-            <TableColumn prefWidth="182.0" text="Primary Key Name" />
+            <TableColumn fx:id="primaryKeyColumn" prefWidth="182.0" text="Primary Key Name" />
          </columns>
       </TableView>
       <TableView fx:id="metadataNamesOfAllForeignKeys" layoutX="264.0" layoutY="298.0" prefHeight="150.0" prefWidth="183.0">

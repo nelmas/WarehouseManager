@@ -43,9 +43,15 @@ public class MetaDataController {
     private TableView<String> columnNamesTable;
     @FXML
     private TableView<String> columnTypesTable;
-
+    @FXML
+    private TableView<String> metadataNameOfAllPrimaryKeys;
+    @FXML
+    private TableColumn<String, String> primaryKeyColumn;
 
     public void initialize() {
+        // TABLES NAME INTO METADATA TABLE
+        System.out.println("MetaDataController initialize method called.");
+
         // Set up the columns in the table
         tableNameColumn.setCellValueFactory(data -> new SimpleStringProperty(data.getValue()));
 
@@ -54,6 +60,13 @@ public class MetaDataController {
 
         // Populate the TableView with table names
         metadataNamesOfAllTables.setItems(tableNames);
-    
+
+        // NAMES OF ALL PRIMARY KEYS INTO METADATA TABLE
+        
+        //Fetch the primary key names for all the tables in the list
+        primaryKeyColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue()));
+                metadataNameOfAllPrimaryKeys.setItems(MetadataDAO.getPrimaryKeyNamesForTable());
+
+           
+        }
     }
-}
