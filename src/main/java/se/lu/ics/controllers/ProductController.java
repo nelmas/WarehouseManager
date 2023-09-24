@@ -66,6 +66,15 @@ public class ProductController {
   @FXML
   private Button buttonUpdateProduct;
 
+  @FXML
+  private Button buttonCategoryFilterReset;
+
+  @FXML
+  private ComboBox<String> comboBoxCategoryFilter;
+
+  @FXML
+  private Label labelComboBoxFilterInfo;
+
   private FilteredList<Product> filteredProducts;
 
   public void initialize() {
@@ -80,7 +89,16 @@ public class ProductController {
     filteredProducts = new FilteredList<>(ProductDAO.getProducts(), p -> true);
     tableViewProduct.setItems(filteredProducts);
 
+    // Populate the product categories in the comboBoxCategoryFilter
+    ObservableList<String> productCategories = ProductDAO.getProductCategories();
+    comboBoxCategoryFilter.setItems(productCategories);
 
+    // Set up the event handler for the combo box selection change
+    comboBoxCategoryFilter.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
+      // Call a method to filter products based on the selected category
+      filterProductsByCategory(newValue);
+  });
+  
     ObservableList<String> supplierIds = FXCollections.observableArrayList();
     for (Supplier supplier : SupplierDAO.getSuppliers()) {
       supplierIds.add(supplier.getSupplierId());
@@ -322,5 +340,22 @@ public class ProductController {
     labelSupplierId.setText(null);
     label_errorMessage.setText(null);
   }
+
+  private void filterProductsByCategory(String selectedCategory) {
+    if (selectedCategory != null && !selectedCategory.isEmpty()) {
+        // Filter products by category and create a new list
+        filteredProducts.setPredicate(product -> product.getProductCategory().equalsIgnoreCase(selectedCategory));
+    } else {
+        // If no category is selected, show all products
+        filteredProducts.setPredicate(p -> true);
+    }
+}
+
+@FXML
+public void buttonCategoryFilterReset_OnClick(ActionEvent event) {
+    comboBoxCategoryFilter.getSelectionModel().clearSelection();
+    clearInputFields();
+    clearLabels();
+}
 
 }
