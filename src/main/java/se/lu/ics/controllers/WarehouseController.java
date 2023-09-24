@@ -383,7 +383,7 @@ public class WarehouseController {
         } catch (NumberFormatException e2) {
             label_errorMessageAddRemoveProducts.setText("Please enter a valid quantity.");
         }
-
+    }
 
         @FXML
         public void button_UpdateProductFromWarehouse_OnClick(ActionEvent event) throws SQLException {

@@ -210,6 +210,15 @@ public class StoredDAO {
         return null;
     
     }
+
+    public static int getStockInWarehouse(String productId, String warehouseId) {
+        for (Stored stored : storedItems) {
+            if (stored.getProductId().equals(productId) && stored.getWarehouseId().equals(warehouseId)) {
+                return stored.getStock();
+            }
+        }
+        return 0;
+    }
     }
 
 
