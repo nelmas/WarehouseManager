@@ -3,6 +3,7 @@
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextArea?>
 <?import javafx.scene.layout.AnchorPane?>
 
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="595.0" prefWidth="929.0" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="se.lu.ics.controllers.MetaDataController">
@@ -31,5 +32,13 @@
       <Label layoutX="264.0" layoutY="42.0" text="Names of all the Primary Keys" />
       <Label layoutX="264.0" layoutY="268.0" text="Names of all the Foreign Keys" />
       <Label layoutX="53.0" layoutY="257.0" prefHeight="40.0" prefWidth="165.0" text="Names of all Columns displayed in the Product Table" wrapText="true" />
+      <TableView fx:id="metadataTableWithMostRows" layoutX="514.0" layoutY="67.0" prefHeight="197.0" prefWidth="352.0">
+         <columns>
+            <TableColumn fx:id="mostRowsTableColumn" prefWidth="182.0" text="Table Name" />
+            <TableColumn fx:id="mostRowsRowAmountColumn" prefWidth="168.79998779296875" text="Row Amount" />
+         </columns>
+      </TableView>
+      <Label layoutX="514.0" layoutY="42.0" text="Table with most rows" />
+      <TextArea fx:id="metadataMostRowsTextArea" layoutX="527.0" layoutY="286.0" prefHeight="200.0" prefWidth="200.0" />
    </children>
 </AnchorPane>

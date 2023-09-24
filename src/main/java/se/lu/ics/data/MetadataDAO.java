@@ -85,4 +85,23 @@ public class MetadataDAO {
         return productColumns;
     }
 
+    public static String getTableWithMostRows() {
+        String query = "SELECT TOP 1 OBJECT_NAME(object_id) AS table_name, SUM(row_count) AS table_rows FROM sys.dm_db_partition_stats WHERE index_id < 2 AND OBJECT_NAME(object_id) IN ('Warehouse', 'Supplier', 'Stored', 'Product') GROUP BY object_id ORDER BY SUM(row_count) DESC";
+        try (Connection connection = ConnectionHandler.getConnection()) {
+            PreparedStatement statement = connection.prepareStatement(query);
+            ResultSet resultSet = statement.executeQuery();
+            while (resultSet.next()) {
+                String tableName = resultSet.getString("table_name");
+                String tableRows = resultSet.getString("table_rows");
+                String tableWithMostRows = "Table name: " + tableName + "\n Number of rows: " + tableRows;
+
+                return tableWithMostRows;
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
+
+    }
+
 }

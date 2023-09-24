@@ -11,6 +11,7 @@ import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
+import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import se.lu.ics.models.Product;
@@ -55,6 +56,14 @@ public class MetaDataController {
     private TableColumn<String, String> productColumnNamesColumn;
     @FXML
     private TableView<String> metadataNamesOfAllColumnsInProductTable;
+    @FXML
+    private TableColumn<String, String> mostRowsTableColumn;
+    @FXML
+    private TableColumn<String, String> mostRowsRowAmountColumn;
+    @FXML
+    private TableView<String> metadataTableWithMostRows;
+    @FXML
+    private TextArea metadataMostRowsTextArea;
 
     public void initialize() {
         // TABLES NAME INTO METADATA TABLE
@@ -64,7 +73,6 @@ public class MetaDataController {
         ObservableList<String> tableNames = MetadataDAO.getAllTableNames();
         // Populate the TableView with table names
         metadataNamesOfAllTables.setItems(tableNames);
-
         // NAMES OF ALL PRIMARY KEYS INTO METADATA TABLE
         primaryKeyColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue()));
         metadataNameOfAllPrimaryKeys.setItems(MetadataDAO.getPrimaryKeyNamesForTable());
@@ -75,6 +83,7 @@ public class MetaDataController {
         productColumnNamesColumn.setCellValueFactory(data -> new SimpleStringProperty(data.getValue()));
         ObservableList<String> productColumnNames = MetadataDAO.getProductColumn();
         metadataNamesOfAllColumnsInProductTable.setItems(productColumnNames);
-
+        // MOST ROWS INTO METADATA TABLE
+        metadataMostRowsTextArea.setText(MetadataDAO.getTableWithMostRows());
     }
 }
