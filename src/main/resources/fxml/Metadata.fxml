@@ -19,7 +19,7 @@
       </TableView>
       <TableView fx:id="metadataNamesOfAllForeignKeys" layoutX="264.0" layoutY="298.0" prefHeight="150.0" prefWidth="183.0">
          <columns>
-            <TableColumn prefWidth="182.0" text="Foreign Key Name" />
+            <TableColumn fx:id="foreignKeyColumn" prefWidth="182.0" text="Foreign Key Name" />
          </columns>
       </TableView>
       <TableView fx:id="metadataNamesOfAllColumnsInProductTable" layoutX="53.0" layoutY="298.0" prefHeight="150.0" prefWidth="165.0">
