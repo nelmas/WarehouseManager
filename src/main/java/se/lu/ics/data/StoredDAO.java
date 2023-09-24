@@ -51,20 +51,18 @@ public class StoredDAO {
         }
     }
 
-    public static void removeProductFromStoredTable(Stored product) {
+    public static void removeProductFromStoredTable(Stored product) throws SQLException {
         String query = "DELETE FROM Stored WHERE ProductId = ?";
 
-        try (Connection connection = ConnectionHandler.getConnection();
-                PreparedStatement statement = connection.prepareStatement(query)) {
+            Connection connection = ConnectionHandler.getConnection();
+                PreparedStatement statement = connection.prepareStatement(query); {
             statement.setString(1, product.getProductId());
 
             statement.executeUpdate();
 
             // After successfully removing the product, update your local data
             storedItems.remove(product);
-        } catch (SQLException e) {
-            e.printStackTrace();
-            // Handle the exception as needed
+            
         }
 
     }
@@ -106,17 +104,28 @@ public class StoredDAO {
         }
     }
 
-    public static int getTotalStockInWarehouse(Warehouse warehouse) {
-        int totalStock = 0;
-    
-        for (Stored stored : StoredDAO.storedItems) {
-            if (stored.getWarehouse().equals(warehouse)) {
-                totalStock += stored.getStock();
+
+
+    public static int getStockInWarehouse(String productId, String warehouseId) throws SQLException {
+        String query = "SELECT Stock FROM Stored WHERE ProductId = ? AND WarehouseId = ?";
+        int stock = 0;
+
+        try (Connection connection = ConnectionHandler.getConnection();
+             PreparedStatement statement = connection.prepareStatement(query)) {
+            statement.setString(1, productId);
+            statement.setString(2, warehouseId);
+
+            try (ResultSet resultSet = statement.executeQuery()) {
+                if (resultSet.next()) {
+                    stock = resultSet.getInt("Stock");
+                }
             }
         }
-    
-        return totalStock;
+
+        return stock;
     }
+
+  
     
 
     public static ObservableList<Stored> getLowStockProducts() {
@@ -137,28 +146,29 @@ public class StoredDAO {
         String warehouseId = stored.getWarehouseId();
         int stockToAdd = stored.getStock();
     
-        try (Connection connection = ConnectionHandler.getConnection()) {
+            Connection connection = ConnectionHandler.getConnection(); {
             // Check if a record with the same ProductId and WarehouseId exists
             String checkQuery = "SELECT Stock FROM Stored WHERE ProductId = ? AND WarehouseId = ?";
             PreparedStatement checkStatement = connection.prepareStatement(checkQuery);
             checkStatement.setString(1, productId);
             checkStatement.setString(2, warehouseId);
     
-            ResultSet resultSet = checkStatement.executeQuery();
+            
+            // ResultSet resultSet = checkStatement.executeQuery();
+                
+            // if (resultSet.next()) {
+            //     // Record exists, update the stock
+            //     int existingStock = resultSet.getInt("Stock");
+            //     int newStock = existingStock + stockToAdd;
     
-            if (resultSet.next()) {
-                // Record exists, update the stock
-                int existingStock = resultSet.getInt("Stock");
-                int newStock = existingStock + stockToAdd;
-    
-                // Update the stock quantity
-                String updateQuery = "UPDATE Stored SET Stock = ? WHERE ProductId = ? AND WarehouseId = ?";
-                PreparedStatement updateStatement = connection.prepareStatement(updateQuery);
-                updateStatement.setInt(1, newStock);
-                updateStatement.setString(2, productId);
-                updateStatement.setString(3, warehouseId);
-                updateStatement.executeUpdate();
-            } else {
+            //     // Update the stock quantity
+            //     String updateQuery = "UPDATE Stored SET Stock = ? WHERE ProductId = ? AND WarehouseId = ?";
+            //     PreparedStatement updateStatement = connection.prepareStatement(updateQuery);
+            //     updateStatement.setInt(1, newStock);
+            //     updateStatement.setString(2, productId);
+            //     updateStatement.setString(3, warehouseId);
+            //     updateStatement.executeUpdate();
+            
                 // Record does not exist, insert a new record
                 String insertQuery = "INSERT INTO Stored (ProductId, WarehouseId, Stock) VALUES (?, ?, ?)";
                 PreparedStatement insertStatement = connection.prepareStatement(insertQuery);
@@ -174,10 +184,10 @@ public class StoredDAO {
                 }
             }
         }
-    }
+    
     
 
-    public static void removeProductFromWarehouse(Stored stored) throws SQLException {
+    public static void updateProductFromWarehouse(Stored stored) throws SQLException {
     String query = "UPDATE Stored SET Stock = ? WHERE ProductId = ? AND WarehouseId = ?";
 
     
@@ -188,11 +198,24 @@ public class StoredDAO {
         statement.setString(2, stored.getProductId());
     
         statement.executeUpdate();
-    
+            System.out.println("New stock: " + stored.getStock());
+
+            
         // After successfully removing the product from the warehouse, update your local data
         storedItems.remove(stored);
         
     }
     }   
+    //Static getter for Stored product by ID
+    public static Stored getStoredProductById(String productId) {
+        for (Stored stored : storedItems) {
+            if (stored.getProductId().equals(productId)) {
+                return stored;
+            }
+        }
+        return null;
+    
+    }
+    }
 
-}
+
