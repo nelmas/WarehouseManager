@@ -341,6 +341,9 @@ public class WarehouseController {
                 labelAddProductToWarehouseSuccess.setText("");
                 label_errorMessageAddRemoveProducts.setText("Please make sure all fields are filled in");
                 System.out.println("Please fill in all fields");
+            
+            } else if (Integer.parseInt(quantityString) < 0) {
+                    label_errorMessageAddRemoveProducts.setText("Stock cannot be negative.");
 
             } else {
                 int quantity = Integer.parseInt(quantityString);
@@ -363,6 +366,7 @@ public class WarehouseController {
                     label_errorMessageAddRemoveProducts.setText("");
                     labelAddProductToWarehouseSuccess.setText("Products added to warehouse");
                 }
+
             }
         } catch (SQLException e1) {
             if (e1.getErrorCode() == 2627) {
@@ -372,20 +376,28 @@ public class WarehouseController {
         } catch (NumberFormatException e2) {
             label_errorMessageAddRemoveProducts.setText("Please enter a valid quantity.");
         }
+
     }
 
-    @FXML
-    public void button_UpdateProductFromWarehouse_OnClick(ActionEvent event) throws SQLException {
-        try {
-            String selectedProduct = ComboBoxChooseProduct.getValue();
-            String selectedWarehouse = ComboBoxChooseWarehouse.getValue();
-            String quantityString = textFieldEnterQuantity.getText();
 
-            if (selectedProduct == null || selectedWarehouse == null || quantityString.isEmpty()) {
-                label_errorMessageAddRemoveProducts
-                        .setText("Please select a product, a warehouse, and enter a valid quantity.");
-            } else {
-                int quantity = Integer.parseInt(quantityString);
+        @FXML
+        public void button_UpdateProductFromWarehouse_OnClick(ActionEvent event) throws SQLException {
+            try {
+                String selectedProduct = ComboBoxChooseProduct.getValue();
+                String selectedWarehouse = ComboBoxChooseWarehouse.getValue();
+                String stockString = textFieldEnterQuantity.getText();
+                
+                if (selectedProduct == null || selectedWarehouse == null || stockString.isEmpty()) {
+                    label_errorMessageAddRemoveProducts
+                            .setText("Please select a product, a warehouse, and enter a valid quantity.");
+                
+                } else if (Integer.parseInt(stockString) < 0) {
+                    clearLabels();
+                    label_errorMessageAddRemoveProducts.setText("Stock cannot be negative.");
+    
+                } else {
+                int stock = Integer.parseInt(stockString);
+
                 Product product = ProductDAO.getProductById(selectedProduct);
                 Warehouse warehouse = WarehouseDAO.getWarehouseById(selectedWarehouse);
 
@@ -398,9 +410,10 @@ public class WarehouseController {
 
                  } else {
                 
-                int stock = Integer.parseInt(quantityString);
+            
                 Stored stored = new Stored(product, warehouse, stock);
                 StoredDAO.updateProductFromWarehouse(stored);
+            
                 updateDatabase();
                 storedTableView.refresh();
                 label_errorMessageAddRemoveProducts.setText("");
@@ -451,5 +464,11 @@ public class WarehouseController {
             labelAddProductToWarehouseSuccess.setText("");
             label_errorMessageAddRemoveProducts.setText(e2.getMessage());
         }
+    }
+
+    @FXML
+    private void clearLabels() {
+        labelAddProductToWarehouseSuccess.setText("");
+        label_errorMessageAddRemoveProducts.setText("");
     }
 }
