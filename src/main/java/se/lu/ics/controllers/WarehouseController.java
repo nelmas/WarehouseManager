@@ -124,8 +124,14 @@ public class WarehouseController {
     @FXML
     private Label labelAddProductToWarehouseSuccess;
 
+    
     @FXML
     private ComboBox<String> ComboBoxChooseWarehouse;
+    
+    /*
+    @FXML
+    private ComboBox<Warehouse> ComboBoxChooseWarehouse;
+    */
 
     @FXML
     private Button buttonUpdateStock;
@@ -481,4 +487,14 @@ public class WarehouseController {
         labelAddProductToWarehouseSuccess.setText("");
         label_errorMessageAddRemoveProducts.setText("");
     }
+
+    // Method to update the warehouse ComboBox
+    public void updateWarehouseComboBox() {
+        warehouseIds.clear();
+        warehouseIds.addAll(WarehouseDAO.getWarehouses().stream()
+                .map(Warehouse::getWarehouseId)
+                .collect(Collectors.toList()));
+        ComboBoxChooseWarehouse.setItems(warehouseIds);
+    }
+
 }

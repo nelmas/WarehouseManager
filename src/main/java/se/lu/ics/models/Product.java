@@ -20,6 +20,13 @@ public class Product {
         this.supplier = supplier; 
     }
 
+    /*
+    @Override
+    public String toString() {
+        return productId;
+    }
+    */
+
     // Getter methods
 
     public Supplier getSupplier() {
