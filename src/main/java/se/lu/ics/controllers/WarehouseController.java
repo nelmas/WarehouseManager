@@ -380,6 +380,10 @@ public class WarehouseController {
     }
 
 
+
+    }
+
+
         @FXML
         public void button_UpdateProductFromWarehouse_OnClick(ActionEvent event) throws SQLException {
             try {
@@ -434,6 +438,10 @@ public class WarehouseController {
         storedTableView.getItems().addAll(StoredDAO.getStoredItems());
 
     }
+
+
+
+
 
     @FXML
     private void clearAddRemoveProductFields() {
