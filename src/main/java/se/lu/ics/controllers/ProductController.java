@@ -1,5 +1,7 @@
 package se.lu.ics.controllers;
 
+import java.sql.SQLException;
+
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.collections.transformation.FilteredList;
@@ -24,8 +26,8 @@ public class ProductController {
   @FXML
   private TextField textFieldProductId;
 
- // @FXML
-  //private TextField textFieldSupplierId;
+  // @FXML
+  // private TextField textFieldSupplierId;
 
   @FXML
   private TextField textFieldProductName;
@@ -75,7 +77,11 @@ public class ProductController {
   @FXML
   private Label labelComboBoxFilterInfo;
 
+  @FXML
   private FilteredList<Product> filteredProducts;
+
+ @FXML
+ private Label label_successMessageProduct; 
 
   public void initialize() {
     columnProductId.setCellValueFactory(new PropertyValueFactory<Product, String>("productId"));
@@ -97,14 +103,13 @@ public class ProductController {
     comboBoxCategoryFilter.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
       // Call a method to filter products based on the selected category
       filterProductsByCategory(newValue);
-  });
-  
+    });
+
     ObservableList<String> supplierIds = FXCollections.observableArrayList();
     for (Supplier supplier : SupplierDAO.getSuppliers()) {
       supplierIds.add(supplier.getSupplierId());
     }
     comboBoxSupplierId.setItems(supplierIds);
-
 
     textFieldSearchProduct.textProperty().addListener((observable, oldValue, newValue) -> {
       filteredProducts.setPredicate(product -> {
@@ -136,101 +141,53 @@ public class ProductController {
             textFieldProductName.setText(selectedProduct.getProductName());
             textFieldProductCategory.setText(selectedProduct.getProductCategory());
 
-
           }
         });
 
   };
 
-
   public void buttonAddProduct_OnClick(ActionEvent event) {
-    try {
+    ObservableList<Product> products = FXCollections.observableArrayList();
       String productId = textFieldProductId.getText();
       String productName = textFieldProductName.getText();
       String productCategory = textFieldProductCategory.getText();
-
-
-      if (productName.isEmpty() || productId.isEmpty() || productCategory.isEmpty()) {
-        label_errorMessage.setText("Product ID, Name and Category cannot be empty. Please fill in all fields.");
-        return;
-      }
-      {
-        for (Product existingProduct : tableViewProduct.getItems()) {
-          if (existingProduct.getProductId().equals(productId)) {
-              label_errorMessage.setText("Product ID must be unique. Please enter a non-existing ID.");
-              return; // Exit the method to prevent adding the product
-          }
-      }
-      }
-
-      productName = productName.substring(0, 1).toUpperCase() + productName.substring(1).toLowerCase();
-      productCategory = productCategory.substring(0, 1).toUpperCase() + productCategory.substring(1).toLowerCase();
-      
       String supplierId = comboBoxSupplierId.getValue();
-      if (supplierId == null) {
-        label_errorMessage.setText("Please select a supplier.");
-        return;
-      }
-      Supplier supplier = SupplierDAO.getSupplierById(supplierId);
-      if (supplier == null) {
-        label_errorMessage.setText("Supplier cannot be found.");
-        return;
-      }
 
-      // Create a Product object with the provided data
-      //Product product = new Product(productId, productName, productCategory, supplier);
+      try {
+
+        if (productId.isEmpty() || productName.isEmpty() || productCategory.isEmpty() || supplierId == null) {
+          label_successMessageProduct.setText("");
+          label_errorMessage.setText("Make sure all fields are filled in.");
+          
+        } else {
+          Supplier supplier = SupplierDAO.getSupplierById(supplierId);
+          Product product = new Product(productId, productName, productCategory, supplier );
+          ProductDAO.addProductToDatabase(productId, productName, productCategory, supplier);
+          tableViewProduct.getItems().addAll(products);
+          label_errorMessage.setText("");
+          label_successMessageProduct.setText("Product added successfully");
+
+        }
+
+      } catch (SQLException e1) {
+        if(e1.getErrorCode() == 2627) {
+          label_successMessageProduct.setText("");
+          label_errorMessage.setText("Product ID already exists. Please enter a new Product ID.");
+        }
+        if(e1.getErrorCode() == 0) {
+          label_successMessageProduct.setText("");
+          label_errorMessage.setText("Connection to database lost.");
+        }
       
-      // Add the product to the TableView
-      //tableViewProduct.getItems().addAll(product);
-
-      // You might want to update your data source (ProductDAO) if needed
-      ProductDAO.addProductToDatabase(productId, productName, productCategory, supplier);
-
-
-      // Clear the input fields after adding the product
-      textFieldProductId.clear();
-      textFieldProductName.clear();
-      textFieldProductCategory.clear();
-
-
-    } catch (Exception e) {
-      label_errorMessage.setText("Error: " + e.getMessage());
+      } catch (NullPointerException e3) {
+        label_successMessageProduct.setText("");
+        label_errorMessage.setText("Please select a supplier.");
+      
+      } 
+      
+      
     }
-  }
 
-  /*
-   * public void buttonAddProduct_OnClick() {
-   * 
-   * try {
-   * String productId = textFieldProductId.getText();
-   * String productName = textFieldProductName.getText();
-   * String productCategory = textFieldProductCategory.getText();
-   * Supplier supplierId =
-   * SupplierDAO.getSupplierById(textFieldSupplierId.getText());
-   * // Create a Product object with the provided data
-   * 
-   * Product product = new Product(productId, productName, productCategory,
-   * supplierId);
-   * 
-   * 
-   * // Add the product to the TableView
-   * 
-   * //tableViewProduct.getItems().add(product);
-   * 
-   * // You might want to update your data source (ProductDAO) if needed
-   * //ProductDAO.addProductToDatabase(product);
-   * 
-   * // Clear the input fields after adding the product
-   * textFieldProductId.clear();
-   * textFieldProductName.clear();
-   * textFieldProductCategory.clear();
-   * 
-   * 
-   * } catch (Exception e) {
-   * label_errorMessage.setText("Error: " + e.getMessage());
-   * }
-   * }
-   */
 
   @FXML
   public void buttonUpdateProduct_OnClick(ActionEvent event) {
@@ -260,49 +217,46 @@ public class ProductController {
       clearInputFields();
       clearLabels();
 
-
-
     } catch (Exception e) {
       label_errorMessage.setText("Error: Please make sure you have proper data inputs in all fields");
     }
   }
 
-
-
   @FXML
   public void buttonRemoveProduct_OnClick(ActionEvent event) {
-    // Get the selected product from the TableView
-    Product productToRemove = tableViewProduct.getSelectionModel().getSelectedItem();
-    String productId = productToRemove.getProductId();
+    try {
+      Product productToRemove = tableViewProduct.getSelectionModel().getSelectedItem();
 
 
-    
-
-    //if (productToRemove != null) {
-
-      // Remove the product from the TableView
-      //tableViewProduct.getItems().remove(productToRemove);
-
-      // Remove the product from the database
-
-      ProductDAO.removeProductFromProductTable(productToRemove);
-
-      tableViewProduct.refresh();
-
+      if (productToRemove == null) {
+        label_errorMessage.setText("Error: Please select a product to remove.");
+        return;
+      } else {
+        ProductDAO.removeProductFromProductTable(productToRemove);
+        tableViewProduct.getItems().remove(productToRemove);
+        tableViewProduct.refresh();
+        label_errorMessage.setText("");
+        label_successMessageProduct.setText("Product removed successfully");
+      }
 
       // Clear the input fields (if needed)
       clearInputFields();
       clearLabels();
 
+    } catch (SQLException e1) {
+      label_successMessageProduct.setText("");
+      label_errorMessage.setText("Product must be removed from warehouse first");
     
+    } catch (NumberFormatException e2) {
+      label_successMessageProduct.setText("");
+      label_errorMessage.setText("Error: Please make sure you have proper data inputs in all fields");
+    }
   }
-
 
   private void clearInputFields() {
     textFieldProductId.clear();
     textFieldProductName.clear();
     textFieldProductCategory.clear();
-
 
   }
 
@@ -319,43 +273,30 @@ public class ProductController {
 
   }
 
-  /*
-   * public void buttonUpdateProduct_OnClick(ActionEvent event) {
-   * String productId = textFieldProductId.getText();
-   * String productName = textFieldProductName.getText();
-   * String productCategory = textFieldProductCategory.getText();
-   * 
-   * Product productToUpdate =
-   * tableViewProduct.getSelectionModel().getSelectedItem();
-   * productToUpdate.setProductId(productId);
-   * productToUpdate.setProductName(productName);
-   * productToUpdate.setProductCategory(productCategory);
-   * 
-   * tableViewProduct.refresh();
-   * 
-   * }
-   */
+
 
   private void clearLabels() {
+    label_errorMessage.setText(null);
+    label_successMessageProduct.setText(null);
     labelSupplierId.setText(null);
     label_errorMessage.setText(null);
   }
 
   private void filterProductsByCategory(String selectedCategory) {
     if (selectedCategory != null && !selectedCategory.isEmpty()) {
-        // Filter products by category and create a new list
-        filteredProducts.setPredicate(product -> product.getProductCategory().equalsIgnoreCase(selectedCategory));
+      // Filter products by category and create a new list
+      filteredProducts.setPredicate(product -> product.getProductCategory().equalsIgnoreCase(selectedCategory));
     } else {
-        // If no category is selected, show all products
-        filteredProducts.setPredicate(p -> true);
+      // If no category is selected, show all products
+      filteredProducts.setPredicate(p -> true);
     }
-}
+  }
 
-@FXML
-public void buttonCategoryFilterReset_OnClick(ActionEvent event) {
+  @FXML
+  public void buttonCategoryFilterReset_OnClick(ActionEvent event) {
     comboBoxCategoryFilter.getSelectionModel().clearSelection();
     clearInputFields();
     clearLabels();
-}
+  }
 
 }
