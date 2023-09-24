@@ -361,10 +361,7 @@ public class WarehouseController {
 
 
         }
-    } catch (NumberFormatException e) {
-        label_errorMessageAddRemoveProducts.setText("Please enter a valid quantity.");
     }
-}
 
 
     // Remove product from warehouse
@@ -404,7 +401,7 @@ public class WarehouseController {
         storedTableView.getItems().addAll(StoredDAO.getStoredItems());
 
     }
-}
+
 
     @FXML
     private void clearAddRemoveProductFields() {
