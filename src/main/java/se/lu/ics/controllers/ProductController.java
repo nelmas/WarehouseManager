@@ -17,6 +17,7 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import se.lu.ics.models.Product;
 import se.lu.ics.models.Stored;
 import se.lu.ics.models.Supplier;
+import se.lu.ics.Main;
 import se.lu.ics.data.ProductDAO;
 import se.lu.ics.data.StoredDAO;
 import se.lu.ics.data.SupplierDAO;
@@ -80,8 +81,12 @@ public class ProductController {
   @FXML
   private FilteredList<Product> filteredProducts;
 
- @FXML
- private Label label_successMessageProduct; 
+  @FXML
+  private Label label_successMessageProduct;
+  @FXML 
+  private Label label_totalNumberOfProducts;
+  @FXML 
+  private Button button_totalNumberOfProducts; 
 
   public void initialize() {
     columnProductId.setCellValueFactory(new PropertyValueFactory<Product, String>("productId"));
@@ -106,21 +111,25 @@ public class ProductController {
     comboBoxCategoryFilter.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
       // Call a method to filter products based on the selected category
       filterProductsByCategory(newValue);
-  });
-  
-  /*
-    ObservableList<String> supplierIds = FXCollections.observableArrayList();
-    for (Supplier supplier : SupplierDAO.getSuppliers()) {
-      supplierIds.add(supplier.getSupplierId());
-    }
-    comboBoxSupplierId.setItems(supplierIds);
-    */
+    });
+
+    /*
+     * ObservableList<String> supplierIds = FXCollections.observableArrayList();
+     * for (Supplier supplier : SupplierDAO.getSuppliers()) {
+     * supplierIds.add(supplier.getSupplierId());
+     * }
+     * comboBoxSupplierId.setItems(supplierIds);
+     */
 
     textFieldSearchProduct.textProperty().addListener((observable, oldValue, newValue) -> {
       filteredProducts.setPredicate(product -> {
         if (newValue == null || newValue.isEmpty()) {
           return true;
         }
+
+        
+
+        
 
         String lowerCaseFilter = newValue.toLowerCase();
 
@@ -147,91 +156,103 @@ public class ProductController {
             textFieldProductCategory.setText(selectedProduct.getProductCategory());
 
           }
-        });
+        }); 
 
-  };
+  }
 
   public void buttonAddProduct_OnClick(ActionEvent event) {
-    ObservableList<Product> products = FXCollections.observableArrayList();
-      String productId = textFieldProductId.getText();
-      String productName = textFieldProductName.getText();
-      String productCategory = textFieldProductCategory.getText();
-      String supplierId = comboBoxSupplierId.getValue();
 
-      try {
+    String productId = textFieldProductId.getText();
+    String productName = textFieldProductName.getText();
+    String productCategory = textFieldProductCategory.getText();
+    String supplierId = comboBoxSupplierId.getValue();
 
-        if (productId.isEmpty() || productName.isEmpty() || productCategory.isEmpty() || supplierId == null) {
-          label_successMessageProduct.setText("");
-          label_errorMessage.setText("Make sure all fields are filled in.");
-          
-        } else {
-          Supplier supplier = SupplierDAO.getSupplierById(supplierId);
-          Product product = new Product(productId, productName, productCategory, supplier );
-          ProductDAO.addProductToDatabase(productId, productName, productCategory, supplier);
-          tableViewProduct.getItems().addAll(products);
-          label_errorMessage.setText("");
-          label_successMessageProduct.setText("Product added successfully");
+    try {
 
-        }
-
-      } catch (SQLException e1) {
-        if(e1.getErrorCode() == 2627) {
-          label_successMessageProduct.setText("");
-          label_errorMessage.setText("Product ID already exists. Please enter a new Product ID.");
-        }
-        if(e1.getErrorCode() == 0) {
-          label_successMessageProduct.setText("");
-          label_errorMessage.setText("Connection to database lost.");
-        }
-      
-      } catch (NullPointerException e3) {
+      if (productId.isEmpty() || productName.isEmpty() || productCategory.isEmpty() || supplierId == null) {
         label_successMessageProduct.setText("");
-        label_errorMessage.setText("Please select a supplier.");
-      
-      } 
-      
-      
+        label_errorMessage.setText("Make sure all fields are filled in.");
+
+      } else {
+        Supplier supplier = SupplierDAO.getSupplierById(supplierId);
+        ProductDAO.addProductToDatabase(productId, productName, productCategory, supplier);
+        label_errorMessage.setText("");
+        label_successMessageProduct.setText("Product added successfully");
+        WarehouseController.refreshStoredTable();
+
+      }
+
+    } catch (SQLException e1) {
+      if (e1.getErrorCode() == 2627) {
+        label_successMessageProduct.setText("");
+        label_errorMessage.setText("Product ID already exists. Please enter a new Product ID.");
+      }
+      if (e1.getErrorCode() == 0) {
+        label_successMessageProduct.setText("");
+        label_errorMessage.setText("Connection to database lost.");
+      }
+
+    } catch (NullPointerException e3) {
+      label_successMessageProduct.setText("");
+      label_errorMessage.setText("Please select a supplier.");
+
     }
 
+  }
 
   @FXML
-  public void buttonUpdateProduct_OnClick(ActionEvent event) {
+public void buttonUpdateProduct_OnClick(ActionEvent event) {
     Product selectedProduct = tableViewProduct.getSelectionModel().getSelectedItem();
 
     if (selectedProduct == null) {
-      label_errorMessage.setText("Error: Please select a product to update.");
-      return;
+        label_errorMessage.setText("Error: Please select a product to update.");
+        return;
+    }
+    String productId = textFieldProductId.getText();
+    String productName = textFieldProductName.getText();
+    String productCategory = textFieldProductCategory.getText();
+    String productSupplier = comboBoxSupplierId.getValue();
+
+    if (!validateProductFields(productName, productCategory, productSupplier)) {
+        return;
+    }
+      //If you try to change the value of productId, you will get an error message
+    if (!productId.equals(selectedProduct.getProductId())) {
+        label_errorMessage.setText("Error: Product ID cannot be changed.");
+        return;
+    // Update the product properties
     }
 
     try {
-      // Get the updated values from the text fields
-      String productName = textFieldProductName.getText();
-      String productCategory = textFieldProductCategory.getText();
-
-      // Update the selected product's information
       selectedProduct.setProductName(productName);
       selectedProduct.setProductCategory(productCategory);
-
-      // Update the product in the data source (assuming ProductDAO handles this)
-      ProductDAO.updateProductInDatabase(selectedProduct);
-
-      // Refresh the table view to reflect the changes
-      tableViewProduct.refresh();
-      tableView_supplierProductList.refresh();
-
-      clearInputFields();
-      clearLabels();
-
-    } catch (Exception e) {
-      label_errorMessage.setText("Error: Please make sure you have proper data inputs in all fields");
+      selectedProduct.setSupplier(SupplierDAO.getSupplierById(productSupplier));
+        ProductDAO.updateProductInDatabase(selectedProduct);
+        label_errorMessage.setText("");
+        label_successMessageProduct.setText("Product updated successfully");
+        tableViewProduct.refresh();
+        clearInputFields();
+    } catch (SQLException e1) {
+        if (e1.getErrorCode() == 2627) {
+            label_errorMessage.setText("Product ID already exists. Please enter a new Product ID.");
+        }
+      }
     }
-  }
+
+
+private boolean validateProductFields(String productName, String productCategory, String productSupplier) {
+    if (productName.isEmpty() || productCategory.isEmpty() || productSupplier == null) {
+        label_successMessageProduct.setText("");
+        label_errorMessage.setText("Make sure all fields are filled in.");
+        return false;
+    }
+    return true;
+}
 
   @FXML
   public void buttonRemoveProduct_OnClick(ActionEvent event) {
     try {
       Product productToRemove = tableViewProduct.getSelectionModel().getSelectedItem();
-
 
       if (productToRemove == null) {
         label_errorMessage.setText("Error: Please select a product to remove.");
@@ -251,7 +272,7 @@ public class ProductController {
     } catch (SQLException e1) {
       label_successMessageProduct.setText("");
       label_errorMessage.setText("Product must be removed from warehouse first");
-    
+
     } catch (NumberFormatException e2) {
       label_successMessageProduct.setText("");
       label_errorMessage.setText("Error: Please make sure you have proper data inputs in all fields");
@@ -278,8 +299,6 @@ public class ProductController {
 
   }
 
-
-
   private void clearLabels() {
     label_errorMessage.setText(null);
     label_successMessageProduct.setText(null);
@@ -303,6 +322,20 @@ public class ProductController {
     clearInputFields();
     clearLabels();
     initialize();
+  }
+
+  public void updateDatabase(Product product) throws SQLException {
+
+    ProductDAO.updateProductInDatabase(product);
+    tableViewProduct.getItems().clear();
+    tableViewProduct.getItems().addAll(ProductDAO.getProducts());
+
 }
+  @FXML
+  public void showNumberOfProductsInDatabase_OnClick() {
+  int numberOfProducts = ProductDAO.getNumberOfProducts(); 
+  label_totalNumberOfProducts.setText("Total number of products: " + numberOfProducts);
+      }
+
 
 }

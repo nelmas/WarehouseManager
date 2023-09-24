@@ -113,7 +113,7 @@ public class ProductDAO {
         }
             
 
-        public static void updateProductInDatabase(Product updatedProduct) {
+        public static void updateProductInDatabase(Product updatedProduct) throws SQLException {
             String query = "UPDATE Product SET Name = ?, Category = ?, SupplierId = ? WHERE ProductId = ?";
 
             try (Connection connection = ConnectionHandler.getConnection();
@@ -124,10 +124,7 @@ public class ProductDAO {
                 statement.setString(4, updatedProduct.getProductId());
 
                 statement.executeUpdate();
-            } catch (SQLException e) {
-                e.printStackTrace();
-                // Handle the exception as needed
-            }
+                 }
         }
 
         // Retrieve unique product categories from the database
@@ -152,6 +149,29 @@ public class ProductDAO {
         return categories;
     }
 
+    //Static getter for product by name
+    public static Product getProductByName(String productName) {
+        for (Product product : products) {
+            if (product.getProductName().equals(productName)) {
+                return product;
+            }
+        }
+        return null;
+    }
+
+    //Static getter for product by supplier
+    public static Product getProductBySupplier(Supplier supplier) {
+        for (Product product : products) {
+            if (product.getSupplier().equals(supplier)) {
+                return product;
+            }
+        }
+        return null;
+    }
+//Method to retreive number of products in database
+    public static int getNumberOfProducts() {
+        return products.size();
+    }
        
 
 }
