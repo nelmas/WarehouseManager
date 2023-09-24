@@ -89,6 +89,9 @@ public class ProductController {
     filteredProducts = new FilteredList<>(ProductDAO.getProducts(), p -> true);
     tableViewProduct.setItems(filteredProducts);
 
+    ObservableList<String> supplierIds = SupplierDAO.getAllSupplierIds();
+    comboBoxSupplierId.setItems(supplierIds);
+
     // Populate the product categories in the comboBoxCategoryFilter
     ObservableList<String> productCategories = ProductDAO.getProductCategories();
     comboBoxCategoryFilter.setItems(productCategories);
@@ -99,12 +102,13 @@ public class ProductController {
       filterProductsByCategory(newValue);
   });
   
+  /*
     ObservableList<String> supplierIds = FXCollections.observableArrayList();
     for (Supplier supplier : SupplierDAO.getSuppliers()) {
       supplierIds.add(supplier.getSupplierId());
     }
     comboBoxSupplierId.setItems(supplierIds);
-
+    */
 
     textFieldSearchProduct.textProperty().addListener((observable, oldValue, newValue) -> {
       filteredProducts.setPredicate(product -> {
@@ -356,6 +360,7 @@ public void buttonCategoryFilterReset_OnClick(ActionEvent event) {
     comboBoxCategoryFilter.getSelectionModel().clearSelection();
     clearInputFields();
     clearLabels();
+    initialize();
 }
 
 }
