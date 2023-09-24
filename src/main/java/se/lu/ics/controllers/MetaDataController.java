@@ -17,6 +17,7 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import se.lu.ics.models.Product;
 import se.lu.ics.models.Stored;
 import se.lu.ics.models.Supplier;
+import se.lu.ics.data.ExcelHandler;
 import se.lu.ics.data.MetadataDAO;
 import se.lu.ics.data.ProductDAO;
 import se.lu.ics.data.StoredDAO;
@@ -64,6 +65,8 @@ public class MetaDataController {
     private TableView<String> metadataTableWithMostRows;
     @FXML
     private TextArea metadataMostRowsTextArea;
+    @FXML
+    private Button buttonOpenExcel;
 
     public void initialize() {
         // TABLES NAME INTO METADATA TABLE
@@ -85,5 +88,12 @@ public class MetaDataController {
         metadataNamesOfAllColumnsInProductTable.setItems(productColumnNames);
         // MOST ROWS INTO METADATA TABLE
         metadataMostRowsTextArea.setText(MetadataDAO.getTableWithMostRows());
+
+        
     }
+    // OPEN EXCEL-FILE
+    @FXML
+        public void openExcel_OnClick() {
+                ExcelHandler.openExcelFile();
+        }
 }

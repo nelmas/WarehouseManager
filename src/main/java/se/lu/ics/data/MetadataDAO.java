@@ -21,7 +21,6 @@ public class MetadataDAO {
 
             while (resultSet.next()) {
                 String tableName = resultSet.getString("TABLE_NAME");
-                
                 tableNames.add(tableName);
             }
         } catch (SQLException e) {

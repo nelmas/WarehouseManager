@@ -94,6 +94,7 @@ public class ProductDAO {
                 // After successfully inserting the product, you can update your local data
                 products.add(product);
                 }
+                updateProductsFromDatabase();
             }
            
         }
