@@ -209,9 +209,7 @@ public class SupplierController {
                 label_errorMessage.setText("Please fill in all fields");
             
             } else {
-                Supplier supplier = new Supplier(supplierId, name, address, email);
                 SupplierDAO.addSupplierToDatabase(name, supplierId, address, email);
-                tableView_supplier.getItems().add(supplier);
                 label_errorMessage.setText("");
                 label_successMessage.setText("Supplier added successfully");
             }
@@ -219,17 +217,17 @@ public class SupplierController {
         } catch (SQLException e1) {
             if (e1.getErrorCode() == 2627) {
                 label_successMessage.setText("");
-            label_errorMessage.setText("Supplier with this ID already exists");
-             System.out.println("Supplier with this ID already exists");
+                label_errorMessage.setText("Supplier with this ID already exists");
+                System.out.println("Supplier with this ID already exists");
             }
-            if(e1.getErrorCode() == 0) {
+            if (e1.getErrorCode() == 0) {
                 label_successMessage.setText("");
                 label_errorMessage.setText("Connection to database lost");
             }
-            
+            e1.printStackTrace(); // Add this line to print the exception details
         } catch (Exception e) {
-            System.out.println(e.getMessage());
-            label_errorMessage.setText("Something went wrong, please try again" + e.getMessage());
+            e.printStackTrace(); // Add this line to print the exception details
+            label_errorMessage.setText("Something went wrong, please try again: " + e.getMessage());
         }
         
     }
@@ -240,6 +238,11 @@ public class SupplierController {
             Supplier supplier = tableView_supplier.getSelectionModel().getSelectedItem();
             if (supplier == null) {
                 label_errorMessage.setText("Error: Please choose a supplier from the table above");
+            
+            } else if (SupplierDAO.hasProducts(supplier)) {
+                clearLabels();
+                label_errorMessage.setText("Error: Supplier has products, please remove them first");
+
             } else {
                 // Remove the selected supplier from the data source (assuming SupplierDAO
                 // handles this)
@@ -248,6 +251,7 @@ public class SupplierController {
                 // Remove the supplier from the table view and refresh it
                 tableView_supplier.getItems().remove(supplier);
                 tableView_supplier.refresh(); // Refresh the table view
+                clearLabels();
             }
         } catch (SQLException e) {
             label_errorMessage.setText("Error: " + e.getMessage());
@@ -293,6 +297,11 @@ public class SupplierController {
         textField_supplierName.clear();
         textField_supplierAddress.clear();
         textField_supplierEmail.clear();
+    }
+
+    private void clearLabels() {
+        label_errorMessage.setText("");
+        label_successMessage.setText("");
     }
 
 }
