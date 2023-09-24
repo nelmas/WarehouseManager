@@ -330,14 +330,6 @@ public class WarehouseController {
 
     }
 
-    // Calculate remaining capacity based on current stock in the warehouse
-    @FXML
-    private int calculateRemainingCapacity(Warehouse warehouse, String productId, String warehouseId)
-            throws SQLException {
-        int currentStock = StoredDAO.getStockInWarehouse(productId, warehouseId);
-        return warehouse.getWarehouseCapacity() - currentStock;
-    }
-
     @FXML
     public void button_addProductToWarehouse_OnClick(ActionEvent event) {
         try {
@@ -359,7 +351,8 @@ public class WarehouseController {
                 Warehouse warehouse = WarehouseDAO.getWarehouseById(selectedWarehouse);
 
                 // Calculate the remaining capacity in the warehouse
-                int remainingCapacity = calculateRemainingCapacity(warehouse, selectedProduct, selectedWarehouse);
+                int remainingCapacity = StoredDAO.calculateRemainingCapacity(warehouse, selectedProduct,
+                        selectedWarehouse);
 
                 if (quantity > remainingCapacity) {
                     labelAddProductToWarehouseSuccess.setText("");
@@ -383,7 +376,9 @@ public class WarehouseController {
         } catch (NumberFormatException e2) {
             label_errorMessageAddRemoveProducts.setText("Please enter a valid quantity.");
         }
-}
+
+    }
+
 
         @FXML
         public void button_UpdateProductFromWarehouse_OnClick(ActionEvent event) throws SQLException {
@@ -392,7 +387,7 @@ public class WarehouseController {
                 String selectedWarehouse = ComboBoxChooseWarehouse.getValue();
                 String stockString = textFieldEnterQuantity.getText();
                 
-                if (selectedProduct.isEmpty() || selectedWarehouse.isEmpty() || stockString.isEmpty()) {
+                if (selectedProduct == null || selectedWarehouse == null || stockString.isEmpty()) {
                     label_errorMessageAddRemoveProducts
                             .setText("Please select a product, a warehouse, and enter a valid quantity.");
                 
@@ -402,8 +397,20 @@ public class WarehouseController {
     
                 } else {
                 int stock = Integer.parseInt(stockString);
+
                 Product product = ProductDAO.getProductById(selectedProduct);
                 Warehouse warehouse = WarehouseDAO.getWarehouseById(selectedWarehouse);
+
+                // Calculate the remaining capacity in the warehouse
+                int remainingCapacity = StoredDAO.calculateRemainingCapacity(warehouse, selectedProduct, selectedWarehouse);
+
+                 if (quantity > remainingCapacity) {
+                    labelAddProductToWarehouseSuccess.setText("");
+                    label_errorMessageAddRemoveProducts.setText("Adding this quantity will exceed warehouse capacity.");
+
+                 } else {
+                
+            
                 Stored stored = new Stored(product, warehouse, stock);
                 StoredDAO.updateProductFromWarehouse(stored);
             
@@ -412,7 +419,7 @@ public class WarehouseController {
                 label_errorMessageAddRemoveProducts.setText("");
                 labelAddProductToWarehouseSuccess.setText("Stock successfully updated");
                 label_errorMessageAddRemoveProducts.setText("");
-
+                    }
             }
         } catch (NumberFormatException e) {
             label_errorMessageAddRemoveProducts.setText("Please enter a valid quantity.");
