@@ -35,7 +35,7 @@ public class MetadataDAO {
         String query = "SELECT CONSTRAINT_NAME FROM INFORMATION_SCHEMA.TABLE_CONSTRAINTS WHERE CONSTRAINT_TYPE = 'PRIMARY KEY'";
 
         try (Connection connection = ConnectionHandler.getConnection();
-            PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+                PreparedStatement preparedStatement = connection.prepareStatement(query)) {
             ResultSet resultSet = preparedStatement.executeQuery();
 
             while (resultSet.next()) {
@@ -56,7 +56,7 @@ public class MetadataDAO {
         try (Connection connection = ConnectionHandler.getConnection()) {
             PreparedStatement statement = connection.prepareStatement(query);
             ResultSet resultSet = statement.executeQuery();
-            
+
             while (resultSet.next()) {
                 String foreignKeys = resultSet.getString("CONSTRAINT_NAME");
                 foreignKeysList.add(foreignKeys);
@@ -65,6 +65,24 @@ public class MetadataDAO {
             e.printStackTrace();
         }
         return foreignKeysList;
+    }
+
+    public static ObservableList<String> getProductColumn() {
+        ObservableList<String> productColumns = FXCollections.observableArrayList();
+        String query = "SELECT COLUMN_NAME FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME = 'Product'";
+
+        try (Connection connection = ConnectionHandler.getConnection()) {
+            PreparedStatement statement = connection.prepareStatement(query);
+            ResultSet resultSet = statement.executeQuery();
+
+            while (resultSet.next()) {
+                String productColumn = resultSet.getString("COLUMN_NAME");
+                productColumns.add(productColumn);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return productColumns;
     }
 
 }

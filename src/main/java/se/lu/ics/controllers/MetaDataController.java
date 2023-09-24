@@ -51,27 +51,30 @@ public class MetaDataController {
     private TableView<String> metadataNamesOfAllForeignKeys;
     @FXML
     private TableColumn<String, String> foreignKeyColumn;
+    @FXML
+    private TableColumn<String, String> productColumnNamesColumn;
+    @FXML
+    private TableView<String> metadataNamesOfAllColumnsInProductTable;
 
     public void initialize() {
         // TABLES NAME INTO METADATA TABLE
-        System.out.println("MetaDataController initialize method called.");
-
         // Set up the columns in the table
         tableNameColumn.setCellValueFactory(data -> new SimpleStringProperty(data.getValue()));
-
         // Retrieve table names from the MetadataDAO
         ObservableList<String> tableNames = MetadataDAO.getAllTableNames();
-
         // Populate the TableView with table names
         metadataNamesOfAllTables.setItems(tableNames);
 
         // NAMES OF ALL PRIMARY KEYS INTO METADATA TABLE
         primaryKeyColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue()));
         metadataNameOfAllPrimaryKeys.setItems(MetadataDAO.getPrimaryKeyNamesForTable());
-
         // NAMES OF ALL FOREIGN KEYS INTO METADATA TABLE
         foreignKeyColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue()));
         metadataNamesOfAllForeignKeys.setItems(MetadataDAO.getForeignKeysForTable());
+        // PRODUCT COLUMN NAMES INTO METADATA TABLE
+        productColumnNamesColumn.setCellValueFactory(data -> new SimpleStringProperty(data.getValue()));
+        ObservableList<String> productColumnNames = MetadataDAO.getProductColumn();
+        metadataNamesOfAllColumnsInProductTable.setItems(productColumnNames);
 
     }
 }

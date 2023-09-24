@@ -24,7 +24,7 @@
       </TableView>
       <TableView fx:id="metadataNamesOfAllColumnsInProductTable" layoutX="53.0" layoutY="298.0" prefHeight="150.0" prefWidth="165.0">
          <columns>
-            <TableColumn prefWidth="164.0" text="Column Name" />
+            <TableColumn fx:id="productColumnNamesColumn" prefWidth="164.0" text="Column Name" />
          </columns>
       </TableView>
       <Label layoutX="53.0" layoutY="42.0" text="Names of all tables" />
