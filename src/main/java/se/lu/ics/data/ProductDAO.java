@@ -135,6 +135,28 @@ public class ProductDAO {
             }
         }
 
+        // Retrieve unique product categories from the database
+    public static ObservableList<String> getProductCategories() {
+        ObservableList<String> categories = FXCollections.observableArrayList();
+
+        String query = "SELECT DISTINCT Category FROM Product";
+
+        try (Connection connection = ConnectionHandler.getConnection();
+             PreparedStatement statement = connection.prepareStatement(query);
+             ResultSet resultSet = statement.executeQuery()) {
+
+            while (resultSet.next()) {
+                String category = resultSet.getString("Category");
+                categories.add(category);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            // Handle the exception as needed
+        }
+
+        return categories;
+    }
+
        
 
 }

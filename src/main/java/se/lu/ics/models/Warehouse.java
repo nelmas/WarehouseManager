@@ -1,7 +1,10 @@
 package se.lu.ics.models;
 
+import java.sql.SQLException;
+
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import se.lu.ics.data.StoredDAO;
 
 public class Warehouse {
 
@@ -39,6 +42,9 @@ public class Warehouse {
     public int getWarehouseCapacity() {
         return warehouseCapacity;
     }
+
+
+
 
     public void setCapacity(int warehouseCapacity) {
         this.warehouseCapacity = warehouseCapacity;
