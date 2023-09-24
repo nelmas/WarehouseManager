@@ -33,11 +33,12 @@
       <Button fx:id="buttonRemoveProduct" layoutX="458.0" layoutY="340.0" mnemonicParsing="false" onAction="#buttonRemoveProduct_OnClick" text="Remove" />
       <Label layoutX="402.0" layoutY="94.0" prefHeight="38.0" prefWidth="170.0" text="Add or remove a product by filling in the text areas below" wrapText="true" />
       <Label fx:id="labelSupplierId" layoutX="406.0" layoutY="283.0" text="Choose a supplier:" />
-      <Label fx:id="label_errorMessage" layoutX="29.0" layoutY="378.0" />
+      <Label fx:id="label_errorMessage" layoutX="29.0" layoutY="378.0" textFill="#ee3131" />
       <Button fx:id="buttonUpdateProduct" layoutX="536.0" layoutY="340.0" mnemonicParsing="false" onAction="#buttonUpdateProduct_OnClick" text="Update Product Information" />
       <ComboBox fx:id="comboBoxSupplierId" layoutX="403.0" layoutY="302.0" prefWidth="150.0" />
       <ComboBox fx:id="comboBoxCategoryFilter" layoutX="208.0" layoutY="69.0" prefWidth="150.0" />
       <Label fx:id="labelComboBoxFilterInfo" layoutX="208.0" layoutY="46.0" text="Filter by product category" />
       <Button fx:id="buttonCategoryFilterReset" layoutX="365.0" layoutY="69.0" mnemonicParsing="false" onAction="#buttonCategoryFilterReset_OnClick" text="Reset" />
+      <Label fx:id="label_successMessageProduct" layoutX="34.0" layoutY="378.0" textFill="#24f532" />
    </children>
 </AnchorPane>
