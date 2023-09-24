@@ -380,6 +380,8 @@ public class WarehouseController {
 
     }
 
+
+
     @FXML
     public void button_UpdateProductFromWarehouse_OnClick(ActionEvent event) throws SQLException {
         try {
@@ -405,7 +407,7 @@ public class WarehouseController {
                 int remainingCapacity = StoredDAO.calculateRemainingCapacity(warehouse, selectedProduct,
                         selectedWarehouse);
 
-                if (stock > remainingCapacity) {
+                 if (stock > remainingCapacity) {
                     labelAddProductToWarehouseSuccess.setText("");
                     label_errorMessageAddRemoveProducts.setText("Adding this quantity will exceed warehouse capacity.");
 
@@ -434,6 +436,10 @@ public class WarehouseController {
         storedTableView.getItems().addAll(StoredDAO.getStoredItems());
 
     }
+
+
+
+
 
     @FXML
     private void clearAddRemoveProductFields() {
