@@ -15,7 +15,6 @@ import se.lu.ics.models.Supplier;
 import se.lu.ics.data.ProductDAO;
 import se.lu.ics.data.SupplierDAO;
 import se.lu.ics.models.Product;
-
 public class SupplierController {
 
     @FXML
@@ -252,6 +251,7 @@ public class SupplierController {
                 tableView_supplier.getItems().remove(supplier);
                 tableView_supplier.refresh(); // Refresh the table view
                 clearLabels();
+                clearTextFields();
             }
         } catch (SQLException e) {
             label_errorMessage.setText("Error: " + e.getMessage());
