@@ -78,6 +78,8 @@ public class WarehouseController {
     @FXML
     private TableColumn<Stored, String> storedSupplierIdColumn;
     @FXML
+    private TableColumn<Stored, String> storedWarehouseIdColumn;
+    @FXML
     private Label labelStock;
     @FXML
     private Label labelProductAmount;
@@ -125,6 +127,9 @@ public class WarehouseController {
     @FXML
     private ComboBox<String> ComboBoxChooseWarehouse;
 
+    @FXML
+    private Button buttonUpdateStock;
+
     private ObservableList<String> productIds = FXCollections.observableArrayList();
     private ObservableList<String> warehouseIds = FXCollections.observableArrayList();
 
@@ -140,6 +145,7 @@ public class WarehouseController {
         StoredProductNameColumn.setCellValueFactory(new PropertyValueFactory<Stored, String>("productName"));
         StoredStockColumn.setCellValueFactory(new PropertyValueFactory<Stored, Integer>("stock"));
         storedSupplierIdColumn.setCellValueFactory(new PropertyValueFactory<Stored, String>("supplierId"));
+        storedWarehouseIdColumn.setCellValueFactory(new PropertyValueFactory<Stored, String>("warehouseId"));
         storedTableView.getItems().addAll(StoredDAO.getStoredItems());
         calculateProductAmount();
 
@@ -178,7 +184,7 @@ public class WarehouseController {
             if (newSelection != null) {
                 labelClickOnWarehouse.setVisible(false);
                 showProductsFromWarehouse();
-                calculateProductAmount(); 
+                calculateProductAmount();
 
             }
         });
@@ -188,7 +194,7 @@ public class WarehouseController {
             if (newSelection != null) {
                 labelClickOnCategory.setVisible(false);
                 showProductsFromCategory();
-                calculateProductAmount(); 
+                calculateProductAmount();
             }
         });
     }
@@ -207,26 +213,24 @@ public class WarehouseController {
     }
 
     // Method that shows product based on the category we press
-    
+
     @FXML
     public void showProductsFromCategory() {
         labelProductAmount.setVisible(true);
         labelStock.setVisible(true);
         calculateProductAmount();
         Product selectedCategory = tableViewCategory.getSelectionModel().getSelectedItem();
-        
+
         Set<Stored> uniqueItems = new HashSet<>(); // Use a Set to store unique items
-        
+
         // Iterate through stored items and add unique items to the set
         for (Stored stored : StoredDAO.getStoredInfoWithProductCategory(selectedCategory.getProductCategory())) {
             uniqueItems.add(stored);
         }
-        
+
         storedTableView.getItems().clear();
         storedTableView.getItems().addAll(uniqueItems); // Populate the table with unique items
     }
-    
-    
 
     @FXML
     public void addWarehouseButtonClicked() {
@@ -287,12 +291,11 @@ public class WarehouseController {
 
     @FXML
     public void calculateProductAmount() {
-        
+
         int productAmount = 0;
-    
-            productAmount += storedTableView.getItems().size();
-            
-        
+
+        productAmount += storedTableView.getItems().size();
+
         labelProductAmount.setText("Product amount: " + productAmount);
     }
 
@@ -309,6 +312,11 @@ public class WarehouseController {
         labelClickOnCategory.setVisible(true);
         storedTableView.getItems().clear();
         storedTableView.getItems().addAll(StoredDAO.getStoredItems());
+        ComboBoxChooseProduct.getSelectionModel().clearSelection();
+        ComboBoxChooseWarehouse.getSelectionModel().clearSelection();
+        textFieldEnterQuantity.clear();
+        labelAddProductToWarehouseSuccess.setText("");
+        label_errorMessageAddRemoveProducts.setText("");
         calculateProductAmount();
         System.out.println("Reset button clicked");
     }
@@ -322,71 +330,100 @@ public class WarehouseController {
 
     }
 
-    // Add product to warehouse
     @FXML
-
     public void button_addProductToWarehouse_OnClick(ActionEvent event) {
         try {
             String selectedProduct = ComboBoxChooseProduct.getValue();
             String selectedWarehouse = ComboBoxChooseWarehouse.getValue();
-            int quantity = Integer.parseInt(textFieldEnterQuantity.getText());
+            String quantityString = textFieldEnterQuantity.getText();
 
-            System.out.println("Selected Product: " + selectedProduct); // Debugging line
-            System.out.println("Selected Warehouse: " + selectedWarehouse); // Debugging line
-            System.out.println("Quantity: " + quantity); // Debugging line
+            if (selectedProduct == null || selectedWarehouse == null || quantityString.isEmpty()) {
+                labelAddProductToWarehouseSuccess.setText("");
+                label_errorMessageAddRemoveProducts.setText("Please make sure all fields are filled in");
+                System.out.println("Please fill in all fields");
+            
+            } else if (Integer.parseInt(quantityString) < 0) {
+                    label_errorMessageAddRemoveProducts.setText("Stock cannot be negative.");
 
-            if (selectedProduct.isEmpty() || selectedWarehouse.isEmpty() || quantity <= 0) {
-                label_errorMessageAddRemoveProducts
-                        .setText("Please select a product, a warehouse, and enter a valid quantity.");
             } else {
+                int quantity = Integer.parseInt(quantityString);
                 Product product = ProductDAO.getProductById(selectedProduct);
                 Warehouse warehouse = WarehouseDAO.getWarehouseById(selectedWarehouse);
-                Stored stored = new Stored(product, warehouse, quantity);
-                StoredDAO.addProductToWarehouse(stored);
-                updateDatabase();
-                storedTableView.refresh();
-                label_errorMessageAddRemoveProducts.setText("");
-                labelAddProductToWarehouseSuccess.setText("Products added to warehouse");
+
+                // Calculate the remaining capacity in the warehouse
+                int remainingCapacity = StoredDAO.calculateRemainingCapacity(warehouse, selectedProduct,
+                        selectedWarehouse);
+
+                if (quantity > remainingCapacity) {
+                    labelAddProductToWarehouseSuccess.setText("");
+                    label_errorMessageAddRemoveProducts.setText("Adding this quantity will exceed warehouse capacity.");
+                } else {
+                    // Proceed with adding the product to the Stored table
+                    Stored stored = new Stored(product, warehouse, quantity);
+                    StoredDAO.addProductToWarehouse(stored);
+                    updateDatabase();
+                    storedTableView.refresh();
+                    label_errorMessageAddRemoveProducts.setText("");
+                    labelAddProductToWarehouseSuccess.setText("Products added to warehouse");
+                }
 
             }
         } catch (SQLException e1) {
             if (e1.getErrorCode() == 2627) {
                 label_errorMessageAddRemoveProducts.setText("Product already exists in another warehouse.");
                 labelAddProductToWarehouseSuccess.setText("");
-                System.out.println(e1.getMessage());
             }
         } catch (NumberFormatException e2) {
-            labelAddProductToWarehouseSuccess.setText("");
             label_errorMessageAddRemoveProducts.setText("Please enter a valid quantity.");
-
-
         }
+
     }
 
 
-    // Remove product from warehouse
 
-    @FXML
-    public void button_removeProductFromWarehouse_OnClick(ActionEvent event) throws SQLException {
-        try {
-            String selectedProduct = ComboBoxChooseProduct.getValue();
-            String selectedWarehouse = ComboBoxChooseWarehouse.getValue();
-            int quantity = Integer.parseInt(textFieldEnterQuantity.getText());
+    }
 
-            if (selectedProduct.isEmpty() || selectedWarehouse.isEmpty() || quantity <= 0) {
-                label_errorMessageAddRemoveProducts
-                        .setText("Please select a product, a warehouse, and enter a valid quantity.");
-            } else {
+
+        @FXML
+        public void button_UpdateProductFromWarehouse_OnClick(ActionEvent event) throws SQLException {
+            try {
+                String selectedProduct = ComboBoxChooseProduct.getValue();
+                String selectedWarehouse = ComboBoxChooseWarehouse.getValue();
+                String stockString = textFieldEnterQuantity.getText();
+                
+                if (selectedProduct == null || selectedWarehouse == null || stockString.isEmpty()) {
+                    label_errorMessageAddRemoveProducts
+                            .setText("Please select a product, a warehouse, and enter a valid quantity.");
+                
+                } else if (Integer.parseInt(stockString) < 0) {
+                    clearLabels();
+                    label_errorMessageAddRemoveProducts.setText("Stock cannot be negative.");
+    
+                } else {
+                int stock = Integer.parseInt(stockString);
+
                 Product product = ProductDAO.getProductById(selectedProduct);
                 Warehouse warehouse = WarehouseDAO.getWarehouseById(selectedWarehouse);
-                Stored stored = new Stored(product, warehouse, quantity);
-                StoredDAO.removeProductFromWarehouse(stored);
+
+                // Calculate the remaining capacity in the warehouse
+                int remainingCapacity = StoredDAO.calculateRemainingCapacity(warehouse, selectedProduct, selectedWarehouse);
+
+                 if (stock > remainingCapacity) {
+                    labelAddProductToWarehouseSuccess.setText("");
+                    label_errorMessageAddRemoveProducts.setText("Adding this quantity will exceed warehouse capacity.");
+
+                 } else {
+                
+            
+                Stored stored = new Stored(product, warehouse, stock);
+                StoredDAO.updateProductFromWarehouse(stored);
+            
                 updateDatabase();
                 storedTableView.refresh();
                 label_errorMessageAddRemoveProducts.setText("");
-                labelAddProductToWarehouseSuccess.setText("Products removed from warehouse");
+                labelAddProductToWarehouseSuccess.setText("Stock successfully updated");
                 label_errorMessageAddRemoveProducts.setText("");
-
+                    }
             }
         } catch (NumberFormatException e) {
             label_errorMessageAddRemoveProducts.setText("Please enter a valid quantity.");
@@ -403,11 +440,43 @@ public class WarehouseController {
     }
 
 
+
+
+
     @FXML
     private void clearAddRemoveProductFields() {
         ComboBoxChooseProduct.getSelectionModel().clearSelection();
         ComboBoxChooseWarehouse.getSelectionModel().clearSelection();
         textFieldEnterQuantity.clear();
     }
-    //Method to not show any duplicates in Stored table
+
+    @FXML
+    private void button_removeProductFromStoredTable_Clicked(ActionEvent event) {
+        String selectedProduct = ComboBoxChooseProduct.getValue();
+
+        try {
+            Stored product = StoredDAO.getStoredProductById(selectedProduct);
+
+            // Assuming you have a method like removeProductFromStoredTableWithoutStock in
+            // StoredDAO
+            StoredDAO.removeProductFromStoredTable(product);
+
+            labelAddProductToWarehouseSuccess.setText("Product was successfully removed");
+            label_errorMessageAddRemoveProducts.setText("");
+            updateDatabase();
+            storedTableView.refresh();
+        } catch (SQLException e1) {
+            labelAddProductToWarehouseSuccess.setText("");
+            label_errorMessageAddRemoveProducts.setText(e1.getMessage());
+        } catch (Exception e2) {
+            labelAddProductToWarehouseSuccess.setText("");
+            label_errorMessageAddRemoveProducts.setText(e2.getMessage());
+        }
+    }
+
+    @FXML
+    private void clearLabels() {
+        labelAddProductToWarehouseSuccess.setText("");
+        label_errorMessageAddRemoveProducts.setText("");
+    }
 }
