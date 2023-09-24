@@ -106,23 +106,17 @@ public class StoredDAO {
 
 
 
-    public static int getStockInWarehouse(String productId, String warehouseId) throws SQLException {
-        String query = "SELECT Stock FROM Stored WHERE ProductId = ? AND WarehouseId = ?";
-        int stock = 0;
-
-        try (Connection connection = ConnectionHandler.getConnection();
-             PreparedStatement statement = connection.prepareStatement(query)) {
-            statement.setString(1, productId);
-            statement.setString(2, warehouseId);
-
-            try (ResultSet resultSet = statement.executeQuery()) {
-                if (resultSet.next()) {
-                    stock = resultSet.getInt("Stock");
-                }
+  //Static getter for total stock in warehouse
+    public static int getTotalStockInWarehouse(Warehouse warehouse) {
+        int totalStock = 0;
+    
+        for (Stored stored : storedItems) {
+            if (stored.getWarehouse().equals(warehouse)) {
+                totalStock += stored.getStock();
             }
         }
-
-        return stock;
+    
+        return totalStock;
     }
 
   
