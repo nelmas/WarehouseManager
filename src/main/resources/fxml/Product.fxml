@@ -8,7 +8,7 @@
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="488.0" prefWidth="904.0" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="se.lu.ics.controllers.ProductController">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="488.0" prefWidth="904.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="se.lu.ics.controllers.ProductController">
    <children>
       <TableView fx:id="tableViewProduct" layoutX="29.0" layoutY="100.0" prefHeight="271.0" prefWidth="357.0">
         <columns>
@@ -36,5 +36,8 @@
       <Label fx:id="label_errorMessage" layoutX="29.0" layoutY="378.0" />
       <Button fx:id="buttonUpdateProduct" layoutX="536.0" layoutY="340.0" mnemonicParsing="false" onAction="#buttonUpdateProduct_OnClick" text="Update Product Information" />
       <ComboBox fx:id="comboBoxSupplierId" layoutX="403.0" layoutY="302.0" prefWidth="150.0" />
+      <ComboBox fx:id="comboBoxCategoryFilter" layoutX="208.0" layoutY="69.0" prefWidth="150.0" />
+      <Label fx:id="labelComboBoxFilterInfo" layoutX="208.0" layoutY="46.0" text="Filter by product category" />
+      <Button fx:id="buttonCategoryFilterReset" layoutX="365.0" layoutY="69.0" mnemonicParsing="false" onAction="#buttonCategoryFilterReset_OnClick" text="Reset" />
    </children>
 </AnchorPane>
