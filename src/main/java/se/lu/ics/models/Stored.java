@@ -63,19 +63,6 @@ public class Stored {
     public String getWarehouseId() {
         return warehouse.getWarehouseId();
     }
-
-
-    public static int getTotalStockInWarehouse(Warehouse warehouse) {
-        int totalStock = 0;
-    
-        for (Stored stored : StoredDAO.storedItems) {
-            if (stored.getWarehouse().equals(warehouse)) {
-                totalStock += stored.getStock();
-            }
-        }
-    
-        return totalStock;
-    }
     
 
 }

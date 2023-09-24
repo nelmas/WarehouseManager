@@ -40,5 +40,7 @@
       <Label fx:id="labelComboBoxFilterInfo" layoutX="208.0" layoutY="46.0" text="Filter by product category" />
       <Button fx:id="buttonCategoryFilterReset" layoutX="365.0" layoutY="69.0" mnemonicParsing="false" onAction="#buttonCategoryFilterReset_OnClick" text="Reset" />
       <Label fx:id="label_successMessageProduct" layoutX="34.0" layoutY="378.0" textFill="#24f532" />
+      <Label fx:id="label_totalNumberOfProducts" layoutX="217.0" layoutY="447.0" />
+      <Button fx:id="button_totalNumberOfProducts" layoutX="29.0" layoutY="442.0" mnemonicParsing="false" onAction="#showNumberOfProductsInDatabase_OnClick" text="Total Number Of Products" />
    </children>
 </AnchorPane>

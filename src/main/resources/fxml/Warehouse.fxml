@@ -49,7 +49,7 @@
       <Label fx:id="labelWarehouseId" layoutX="60.0" layoutY="347.0" text="Warehouse ID:" />
       <Label fx:id="labelWarehouseAddress" layoutX="27.0" layoutY="393.0" text="Warehouse Address:" />
       <Label fx:id="labelWarehouseCapacity" layoutX="23.0" layoutY="443.0" text="Warehouse Capacity:" />
-      <Label fx:id="labelStock" layoutX="383.0" layoutY="21.0" />
+      <Label fx:id="labelStock" layoutX="133.0" layoutY="23.0" />
       <Button fx:id="resetButtonWarehouse" layoutX="14.0" layoutY="10.0" mnemonicParsing="false" onAction="#resetButtonWarehouse" text="Reset" />
       <Label fx:id="labelAddWarehouseSuccess" layoutX="139.0" layoutY="480.0" textFill="#1eee0b" />
       <Label fx:id="labelAddWarehouseError" layoutX="82.0" layoutY="480.0" textFill="#d73d3d" />
@@ -63,9 +63,12 @@
       <Label fx:id="labelEnterQuantity" layoutX="972.0" layoutY="180.0" text="Enter quantity" />
       <Button fx:id="buttonAddProduct" layoutX="966.0" layoutY="229.0" mnemonicParsing="false" onAction="#button_addProductToWarehouse_OnClick" text="Add products" />
       <Button fx:id="buttonRemoveProduct" layoutX="953.0" layoutY="263.0" mnemonicParsing="false" onAction="#button_removeProductFromStoredTable_Clicked" prefHeight="26.0" prefWidth="114.0" text="Remove products" />
-      <Label fx:id="label_errorMessageAddRemoveProducts" alignment="CENTER" layoutX="848.0" layoutY="335.0" prefHeight="36.0" prefWidth="317.0" textAlignment="CENTER" textFill="#ee2929" />
+      <Label fx:id="label_errorMessageAddRemoveProducts" alignment="CENTER" layoutX="847.0" layoutY="375.0" prefHeight="36.0" prefWidth="317.0" textAlignment="CENTER" textFill="#ee2929" />
       <Button fx:id="lowStockButton" layoutX="544.0" layoutY="18.0" mnemonicParsing="false" onAction="#lowStockButtonClicked" text="Products with low stock" />
-      <Label fx:id="labelAddProductToWarehouseSuccess" alignment="CENTER" layoutX="848.0" layoutY="335.0" prefHeight="36.0" prefWidth="317.0" textFill="#5aee43" />
+      <Label fx:id="labelAddProductToWarehouseSuccess" alignment="CENTER" layoutX="848.0" layoutY="371.0" prefHeight="36.0" prefWidth="317.0" textFill="#5aee43" />
       <Button fx:id="buttonUpdateStock" layoutX="963.0" layoutY="295.0" mnemonicParsing="false" onAction="#button_UpdateProductFromWarehouse_OnClick" prefHeight="26.0" prefWidth="97.0" text="Update Stock" />
+      <Label fx:id="labelTotalStock" layoutX="391.0" layoutY="21.0" prefHeight="17.0" prefWidth="146.0" />
+      <Button fx:id="button_CalculateTotalStock" layoutX="938.0" layoutY="331.0" mnemonicParsing="false" onAction="#calculateTotalStockForProduct_OnClick" text="Calculate Product Stock" />
+      <Label fx:id="label_totalProductStock" alignment="CENTER" layoutX="858.0" layoutY="363.0" prefHeight="17.0" prefWidth="283.0" textAlignment="CENTER" />
    </children>
 </AnchorPane>

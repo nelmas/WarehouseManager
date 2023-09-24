@@ -65,6 +65,8 @@ public class WarehouseController {
     private Label labelAddWarehouseSuccess;
     @FXML
     private Button lowStockButton;
+    @FXML 
+    private Label labelTotalStock;
 
     // Stored
     @FXML
@@ -83,9 +85,13 @@ public class WarehouseController {
     private Label labelStock;
     @FXML
     private Label labelProductAmount;
+    @FXML 
+    private Button button_CalculateTotalStock; 
+    @FXML
+    private Label label_totalProductStock; 
 
     // Category
-    @FXML
+    @FXML 
     private TableView<Product> tableViewCategory;
     @FXML
     private TableColumn<Product, String> categoryColumnProduct;
@@ -210,11 +216,24 @@ public class WarehouseController {
     public void showProductsFromWarehouse() {
 
         calculateProductAmount();
+        calculateTotalStockInWarehouse(); 
         Warehouse selectedWarehouse = warehouseTableView.getSelectionModel().getSelectedItem();
         storedTableView.getItems().clear();
         storedTableView.getItems().addAll(StoredDAO.getStoredInfoWithWarehouse(selectedWarehouse));
         calculateCapacity(selectedWarehouse);
         labelStock.setVisible(true);
+        labelProductAmount.setVisible(true);
+    }
+
+    @FXML 
+    //Calculate total stock of one product across all warehouses
+    public void calculateTotalStockForProduct_OnClick(ActionEvent event) {
+        String selectedProduct = ComboBoxChooseProduct.getValue(); 
+        Product product = ProductDAO.getProductById(selectedProduct);
+        clearLabels();
+        label_errorMessageAddRemoveProducts.setText("");
+        label_totalProductStock.setText("Total stock: " + StoredDAO.getTotalStock(product));
+        labelTotalStock.setVisible(true);
         labelProductAmount.setVisible(true);
     }
 
@@ -224,6 +243,7 @@ public class WarehouseController {
     public void showProductsFromCategory() {
         labelProductAmount.setVisible(true);
         labelStock.setVisible(true);
+        calculateTotalStockInWarehouse(); 
         calculateProductAmount();
         Product selectedCategory = tableViewCategory.getSelectionModel().getSelectedItem();
 
@@ -255,6 +275,11 @@ public class WarehouseController {
                 WarehouseDAO.addWarehouse(warehouseId, warehouseAddress, warehouseCapacity);
                 warehouseTableView.getItems().clear();
                 warehouseTableView.getItems().addAll(WarehouseDAO.getWarehouses());
+                warehouseTableView.refresh();
+                warehouseIds.clear();
+                warehouseIds.addAll(WarehouseDAO.getWarehouses().stream()
+                        .map(Warehouse::getWarehouseId)
+                        .collect(Collectors.toList()));
                 labelAddWarehouseSuccess.setText("Warehouse added");
                 labelAddWarehouseError.setText("");
             }
@@ -297,11 +322,8 @@ public class WarehouseController {
 
     @FXML
     public void calculateProductAmount() {
-
         int productAmount = 0;
-
         productAmount += storedTableView.getItems().size();
-
         labelProductAmount.setText("Product amount: " + productAmount);
     }
 
@@ -323,6 +345,9 @@ public class WarehouseController {
         textFieldEnterQuantity.clear();
         labelAddProductToWarehouseSuccess.setText("");
         label_errorMessageAddRemoveProducts.setText("");
+        labelTotalStock.setVisible(false);
+        label_totalProductStock.setText("");
+
         calculateProductAmount();
         System.out.println("Reset button clicked");
     }
@@ -344,11 +369,13 @@ public class WarehouseController {
             String quantityString = textFieldEnterQuantity.getText();
 
             if (selectedProduct == null || selectedWarehouse == null || quantityString.isEmpty()) {
+                clearLabels(); 
                 labelAddProductToWarehouseSuccess.setText("");
                 label_errorMessageAddRemoveProducts.setText("Please make sure all fields are filled in");
                 System.out.println("Please fill in all fields");
 
             } else if (Integer.parseInt(quantityString) < 0) {
+                clearLabels(); 
                 label_errorMessageAddRemoveProducts.setText("Stock cannot be negative.");
 
             } else {
@@ -361,12 +388,14 @@ public class WarehouseController {
                         selectedWarehouse);
 
                 if (quantity > remainingCapacity) {
+                    clearLabels(); 
                     labelAddProductToWarehouseSuccess.setText("");
                     label_errorMessageAddRemoveProducts.setText("Adding this quantity will exceed warehouse capacity.");
                 } else {
                     // Proceed with adding the product to the Stored table
                     Stored stored = new Stored(product, warehouse, quantity);
                     StoredDAO.addProductToWarehouse(stored);
+                    clearLabels(); 
                     updateDatabase();
                     storedTableView.refresh();
                     label_errorMessageAddRemoveProducts.setText("");
@@ -396,6 +425,7 @@ public class WarehouseController {
             String stockString = textFieldEnterQuantity.getText();
 
             if (selectedProduct == null || selectedWarehouse == null || stockString.isEmpty()) {
+                clearLabels(); 
                 label_errorMessageAddRemoveProducts
                         .setText("Please select a product, a warehouse, and enter a valid quantity.");
 
@@ -414,6 +444,7 @@ public class WarehouseController {
                         selectedWarehouse);
 
                  if (stock > remainingCapacity) {
+                    clearLabels(); 
                     labelAddProductToWarehouseSuccess.setText("");
                     label_errorMessageAddRemoveProducts.setText("Adding this quantity will exceed warehouse capacity.");
 
@@ -421,7 +452,7 @@ public class WarehouseController {
 
                     Stored stored = new Stored(product, warehouse, stock);
                     StoredDAO.updateProductFromWarehouse(stored);
-
+                    clearLabels(); 
                     updateDatabase();
                     storedTableView.refresh();
                     label_errorMessageAddRemoveProducts.setText("");
@@ -443,7 +474,18 @@ public class WarehouseController {
 
     }
 
-
+    @FXML 
+    public void calculateTotalStockInWarehouse() {
+        
+        Warehouse selectedWarehouse = warehouseTableView.getSelectionModel().getSelectedItem();
+        StoredDAO.getTotalStockInWarehouse(selectedWarehouse); 
+        labelTotalStock.setText("Total stock: " + StoredDAO.getTotalStockInWarehouse(selectedWarehouse));
+        storedTableView.getItems().clear();
+        storedTableView.getItems().addAll(StoredDAO.getStoredInfoWithWarehouse(selectedWarehouse));
+        calculateCapacity(selectedWarehouse);
+        labelTotalStock.setVisible(true);
+        labelProductAmount.setVisible(true);
+    }
 
 
 
@@ -460,6 +502,7 @@ public class WarehouseController {
             String selectedProduct = ComboBoxChooseProduct.getValue();
 
             if (selectedProduct == null) {
+                clearLabels(); 
                 labelAddProductToWarehouseSuccess.setText("");
                 label_errorMessageAddRemoveProducts.setText("Please select a product to remove.");
 
@@ -470,22 +513,34 @@ public class WarehouseController {
 
                 labelAddProductToWarehouseSuccess.setText("Product was successfully removed");
                 label_errorMessageAddRemoveProducts.setText("");
+                clearLabels(); 
                 updateDatabase();
                 storedTableView.refresh();
             }
         } catch (SQLException e1) {
+            clearLabels();
             labelAddProductToWarehouseSuccess.setText("");
             label_errorMessageAddRemoveProducts.setText(e1.getMessage());
         } catch (Exception e2) {
+            clearLabels();
             labelAddProductToWarehouseSuccess.setText("");
-            label_errorMessageAddRemoveProducts.setText(e2.getMessage());
-        }
+            label_errorMessageAddRemoveProducts.setText("Product does not exist in warehouse");
+        } 
+          
     }
 
     @FXML
     private void clearLabels() {
         labelAddProductToWarehouseSuccess.setText("");
         label_errorMessageAddRemoveProducts.setText("");
+        labelTotalStock.setText("");
+        label_totalProductStock.setText(""); 
+        labelAddWarehouseError.setText("");
+    }
+
+    public static void refreshStoredTable() {
+        StoredDAO.updateStoredItemsFromDatabase();
+
     }
 
     // Method to update the warehouse ComboBox

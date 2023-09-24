@@ -35,7 +35,7 @@
       <Label fx:id="label_supplierId" layoutX="43.0" layoutY="329.0" text="Supplier ID" />
       <Label fx:id="label_supplierName" layoutX="42.0" layoutY="386.0" text="Supplier Name" />
       <Label fx:id="label_supplierAddress" layoutX="43.0" layoutY="444.0" text="Supplier Address" />
-      <Label fx:id="label_errorMessage" layoutX="214.0" layoutY="392.0" prefHeight="17.0" prefWidth="298.0" textFill="RED" />
+      <Label fx:id="label_errorMessage" layoutX="214.0" layoutY="392.0" prefHeight="17.0" prefWidth="298.0" textFill="#171717" />
       <Label fx:id="label_supplierEmail" layoutX="42.0" layoutY="503.0" text="Supplier Email" />
       <TextField fx:id="textField_supplierEmail" layoutX="41.0" layoutY="522.0" />
       <Label fx:id="label_supplierRemove" layoutX="280.0" layoutY="559.0" prefHeight="26.0" prefWidth="341.0" text="Remove a supplier? Mark a supplier from the table, and press &quot;Remove&quot;" textAlignment="CENTER" wrapText="true">

@@ -209,22 +209,26 @@ public class StoredDAO {
             String selectedWarehouse) {
         int remainingCapacity = warehouse.getWarehouseCapacity();
         for (Stored stored : getStoredItems()) {
-            if (stored.getWarehouse().getWarehouseId().equals(selectedWarehouse) && !stored.getProductId().equals(selectedProduct)) {
+            if (stored.getWarehouse().getWarehouseId().equals(selectedWarehouse)
+                    && !stored.getProductId().equals(selectedProduct)) {
                 remainingCapacity -= stored.getStock();
             }
         }
         return remainingCapacity;
     }
 
+    //Method for calculating total stock (product.getStock) in all warehouses
+    public static int getTotalStock(Product product) {
+        int totalStock = 0;
+        for (Stored stored : storedItems) {
+            if (stored.getProduct().equals(product)) {
+                totalStock += stored.getStock();
+            }
+        }
+        return totalStock;
+    }
+
+
 }
-// public static int getStockInWarehouse(String productId, String warehouseId) {
-// for (Stored stored : storedItems) {
-// if (stored.getProductId().equals(productId) &&
-// stored.getWarehouseId().equals(warehouseId)) {
-// System.out.println("Stock in warehouse: " + stored.getProductId());
-// return stored.getStock();
-// }
-// }
-// return 0;
-// }
-// }
+
+
