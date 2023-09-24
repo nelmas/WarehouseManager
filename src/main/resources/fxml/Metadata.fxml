@@ -1,6 +1,36 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
 <?import javafx.scene.layout.AnchorPane?>
 
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="se.lu.ics.controllers.StoredController" />
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="595.0" prefWidth="929.0" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="se.lu.ics.controllers.StoredController">
+   <children>
+      <TableView fx:id="metadataNamesOfAllTables" layoutX="53.0" layoutY="67.0" prefHeight="150.0" prefWidth="165.0">
+        <columns>
+          <TableColumn prefWidth="164.0" text="Table Name" />
+        </columns>
+      </TableView>
+      <TableView fx:id="metadataNameOfAllPrimaryKeys" layoutX="264.0" layoutY="67.0" prefHeight="150.0" prefWidth="183.0">
+         <columns>
+            <TableColumn prefWidth="182.0" text="Primary Key Name" />
+         </columns>
+      </TableView>
+      <TableView fx:id="metadataNamesOfAllForeignKeys" layoutX="264.0" layoutY="298.0" prefHeight="150.0" prefWidth="183.0">
+         <columns>
+            <TableColumn prefWidth="182.0" text="Foreign Key Name" />
+         </columns>
+      </TableView>
+      <TableView fx:id="metadataNamesOfAllColumnsInProductTable" layoutX="53.0" layoutY="298.0" prefHeight="150.0" prefWidth="165.0">
+         <columns>
+            <TableColumn prefWidth="164.0" text="Column Name" />
+         </columns>
+      </TableView>
+      <Label layoutX="53.0" layoutY="42.0" text="Names of all tables" />
+      <Label layoutX="264.0" layoutY="42.0" text="Names of all the Primary Keys" />
+      <Label layoutX="264.0" layoutY="268.0" text="Names of all the Foreign Keys" />
+      <Label layoutX="53.0" layoutY="257.0" prefHeight="40.0" prefWidth="165.0" text="Names of all Columns displayed in the Product Table" wrapText="true" />
+   </children>
+</AnchorPane>
