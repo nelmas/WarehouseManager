@@ -383,7 +383,7 @@ public class WarehouseController {
         } catch (NumberFormatException e2) {
             label_errorMessageAddRemoveProducts.setText("Please enter a valid quantity.");
         }
-    }
+}
 
         @FXML
         public void button_UpdateProductFromWarehouse_OnClick(ActionEvent event) throws SQLException {
@@ -397,6 +397,7 @@ public class WarehouseController {
                             .setText("Please select a product, a warehouse, and enter a valid quantity.");
                 
                 } else if (Integer.parseInt(stockString) < 0) {
+                    clearLabels();
                     label_errorMessageAddRemoveProducts.setText("Stock cannot be negative.");
     
                 } else {
@@ -405,6 +406,7 @@ public class WarehouseController {
                 Warehouse warehouse = WarehouseDAO.getWarehouseById(selectedWarehouse);
                 Stored stored = new Stored(product, warehouse, stock);
                 StoredDAO.updateProductFromWarehouse(stored);
+            
                 updateDatabase();
                 storedTableView.refresh();
                 label_errorMessageAddRemoveProducts.setText("");
@@ -455,5 +457,11 @@ public class WarehouseController {
             labelAddProductToWarehouseSuccess.setText("");
             label_errorMessageAddRemoveProducts.setText(e2.getMessage());
         }
+    }
+
+    @FXML
+    private void clearLabels() {
+        labelAddProductToWarehouseSuccess.setText("");
+        label_errorMessageAddRemoveProducts.setText("");
     }
 }
