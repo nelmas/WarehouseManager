@@ -5,12 +5,11 @@
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.layout.AnchorPane?>
 
-
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="595.0" prefWidth="929.0" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="se.lu.ics.controllers.StoredController">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="595.0" prefWidth="929.0" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="se.lu.ics.controllers.MetaDataController">
    <children>
       <TableView fx:id="metadataNamesOfAllTables" layoutX="53.0" layoutY="67.0" prefHeight="150.0" prefWidth="165.0">
         <columns>
-          <TableColumn prefWidth="164.0" text="Table Name" />
+          <TableColumn fx:id="tableNameColumn" prefWidth="164.0" text="Table Name" />
         </columns>
       </TableView>
       <TableView fx:id="metadataNameOfAllPrimaryKeys" layoutX="264.0" layoutY="67.0" prefHeight="150.0" prefWidth="183.0">
