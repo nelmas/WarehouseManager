@@ -77,7 +77,7 @@ public class ProductDAO {
             products.remove(product);
         }
 
-        public static void addProductToDatabase(String productId, String productName, String productCategory, Supplier supplier) {
+        public static void addProductToDatabase(String productId, String productName, String productCategory, Supplier supplier) throws SQLException {
             String query = "INSERT INTO Product (ProductId, Name, Category, SupplierId) VALUES (?, ?, ?, ?)";
             String supplierId = supplier.getSupplierId();
         
@@ -94,13 +94,12 @@ public class ProductDAO {
                 // After successfully inserting the product, you can update your local data
                 products.add(product);
                 }
-            } catch (SQLException e) {
-                e.printStackTrace();
-                // Handle the exception as needed
+                updateProductsFromDatabase();
             }
+           
         }
 
-        public static void removeProductFromProductTable(Product product) {
+        public static void removeProductFromProductTable(Product product) throws SQLException {
             String query = "DELETE FROM Product WHERE ProductId = ?";
         
             try (Connection connection = ConnectionHandler.getConnection();
@@ -111,10 +110,7 @@ public class ProductDAO {
         
                 // After successfully removing the product, update your local data
                 products.remove(product);
-            } catch (SQLException e) {
-                e.printStackTrace();
-                // Handle the exception as needed
-            }
+                 }
         }
             
 

@@ -17,6 +17,12 @@ public class Supplier {
         this.email = email;
     }
 
+    //Axels tillagda kod
+    @Override
+    public String toString() {
+        return supplierId;
+    }
+
     // Getters and Setters
     public String getSupplierName() {
         return supplierName;
