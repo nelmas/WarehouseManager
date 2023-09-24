@@ -10,6 +10,7 @@ import java.sql.SQLException;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.fxml.FXML;
 
 public class SupplierDAO {
     private static ObservableList<Supplier> suppliers = FXCollections.observableArrayList();
@@ -45,7 +46,7 @@ public class SupplierDAO {
     }
 
     // Method for registering a supplier
-    public void addSupplier(Supplier supplier) {
+    public static void addSupplier(Supplier supplier) {
         suppliers.add(supplier);
     }
 
@@ -151,6 +152,12 @@ public class SupplierDAO {
         }
 
         return suppliedProducts;
+    }
+
+    // Checks if a supplier has products
+    public static boolean hasProducts(Supplier supplier) {
+        ObservableList<Product> suppliedProducts = getSuppliedProducts(supplier);
+        return !suppliedProducts.isEmpty();
     }
 
     public static ObservableList<String> getAllSupplierIds() {

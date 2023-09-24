@@ -404,7 +404,7 @@ public class WarehouseController {
                 // Calculate the remaining capacity in the warehouse
                 int remainingCapacity = StoredDAO.calculateRemainingCapacity(warehouse, selectedProduct, selectedWarehouse);
 
-                 if (quantity > remainingCapacity) {
+                 if (stock > remainingCapacity) {
                     labelAddProductToWarehouseSuccess.setText("");
                     label_errorMessageAddRemoveProducts.setText("Adding this quantity will exceed warehouse capacity.");
 
